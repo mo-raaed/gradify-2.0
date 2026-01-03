@@ -115,3 +115,4 @@ export default {
 
 This configuration tells Convex to trust JWT tokens issued by your Clerk instance.
 
+
