@@ -1,49 +1,109 @@
-# Welcome to your Convex + React (Vite) + Clerkapp
+# Gradify 2.0 - GPA Calculator for AUIS Students
 
-This is a [Convex](https://convex.dev/) project created with [`npm create convex`](https://www.npmjs.com/package/create-convex).
+A modern GPA calculator built with React, Convex, and Clerk authentication. Upload your AUIS unofficial transcript to automatically import your courses, or manually enter your grades. Simulate future grades to see how they affect your GPA.
 
-After the initial setup (<2 minutes) you'll have a working full-stack app using:
+## Features
 
-- Convex as your backend (database, server logic)
-- [React](https://react.dev/) as your frontend (web page interactivity)
-- [Vite](https://vitest.dev/) for optimized web hosting
-- [Tailwind](https://tailwindcss.com/) for building great looking accessible UI
-- [Clerk](https://clerk.com/) for authentication
+- **PDF Transcript Import**: Upload your AUIS unofficial transcript and automatically parse all your courses
+- **Real-time GPA Calculation**: See your semester and cumulative GPA update instantly
+- **Grade Simulation**: Change grades for in-progress courses to predict your future GPA
+- **Retake Detection**: Automatically handles retaken courses (only latest attempt counts)
+- **Data Persistence**: Your data is saved and synced across devices via Convex
+- **Authentication**: Secure login with Clerk
 
-## Get started
+## Tech Stack
 
-If you just cloned this codebase and didn't use `npm create convex`, run:
+- **Frontend**: React + Vite + TypeScript
+- **Backend**: Convex (serverless functions + database)
+- **Auth**: Clerk
+- **Styling**: Tailwind CSS v4
+- **Hosting**: Netlify (frontend) + Convex Cloud (backend)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A Convex account (free tier available)
+- A Clerk account (free tier available)
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/gradify-2.0.git
+   cd gradify-2.0
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up Clerk:
+   - Create a Clerk application at [clerk.com](https://clerk.com)
+   - Follow the setup guide in `CLERK_SETUP_GUIDE.md`
+   - Copy your publishable key
+
+4. Set up Convex:
+   ```bash
+   npx convex dev
+   ```
+   - This will prompt you to create a new project or link an existing one
+   - Set the `CLERK_JWT_ISSUER_DOMAIN` environment variable in your Convex dashboard
+
+5. Create a `.env.local` file:
+   ```
+   VITE_CONVEX_URL=https://your-deployment.convex.cloud
+   VITE_CLERK_PUBLISHABLE_KEY=pk_test_your-key-here
+   ```
+
+6. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Deployment to Netlify
+
+1. Push your code to GitHub
+
+2. Connect your repo to Netlify
+
+3. Set build settings:
+   - Build command: `npm run build`
+   - Publish directory: `dist`
+
+4. Add environment variables in Netlify:
+   - `VITE_CONVEX_URL` - Your Convex deployment URL
+   - `VITE_CLERK_PUBLISHABLE_KEY` - Your Clerk publishable key
+
+5. Deploy!
+
+## Project Structure
 
 ```
-npm install
-npm run dev
+src/
+├── components/          # React components
+│   ├── ui/             # Base UI components (Button, Dialog, etc.)
+│   ├── Dashboard.tsx   # Main dashboard view
+│   ├── SemesterCard.tsx
+│   ├── CourseRow.tsx
+│   └── ...
+├── lib/                # Utility functions
+│   ├── gpaCalculator.ts  # GPA calculation logic
+│   ├── transcriptParser.ts  # Transcript text parsing
+│   └── pdfParser.ts    # PDF extraction
+├── App.tsx
+└── main.tsx
+
+convex/
+├── schema.ts           # Database schema
+├── users.ts            # User management
+├── transcripts.ts      # Transcript CRUD operations
+└── lib/
+    └── gpaCalculator.ts  # Server-side GPA utilities
 ```
 
-If you're reading this README on GitHub and want to use this template, run:
+## License
 
-```
-npm create convex@latest -- -t react-vite-clerk
-```
-
-Then:
-
-1. Follow steps 1 to 3 in the [Clerk onboarding guide](https://docs.convex.dev/auth/clerk#get-started)
-2. Paste the Issuer URL as `CLERK_JWT_ISSUER_DOMAIN` to your dev deployment environment variable settings on the Convex dashboard (see [docs](https://docs.convex.dev/auth/clerk#configuring-dev-and-prod-instances))
-3. Paste your publishable key as `VITE_CLERK_PUBLISHABLE_KEY="<your publishable key>"` to the `.env.local` file in this directory.
-
-If you want to sync Clerk user data via webhooks, check out this [example repo](https://github.com/thomasballinger/convex-clerk-users-table/).
-
-## Learn more
-
-To learn more about developing your project with Convex, check out:
-
-- The [Tour of Convex](https://docs.convex.dev/get-started) for a thorough introduction to Convex principles.
-- The rest of [Convex docs](https://docs.convex.dev/) to learn about all Convex features.
-- [Stack](https://stack.convex.dev/) for in-depth articles on advanced topics.
-
-## Join the community
-
-Join thousands of developers building full-stack apps with Convex:
-
-- Join the [Convex Discord community](https://convex.dev/community) to get help in real-time.
-- Follow [Convex on GitHub](https://github.com/get-convex/), star and contribute to the open-source implementation of Convex.
+MIT License - see LICENSE.txt

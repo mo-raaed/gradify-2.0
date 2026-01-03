@@ -8,7 +8,10 @@
  * @module
  */
 
-import type * as myFunctions from "../myFunctions.js";
+import type * as lib_gpaCalculator from "../lib/gpaCalculator.js";
+import type * as lib_transcriptParser from "../lib/transcriptParser.js";
+import type * as transcripts from "../transcripts.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -17,7 +20,10 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  myFunctions: typeof myFunctions;
+  "lib/gpaCalculator": typeof lib_gpaCalculator;
+  "lib/transcriptParser": typeof lib_transcriptParser;
+  transcripts: typeof transcripts;
+  users: typeof users;
 }>;
 
 /**

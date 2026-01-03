@@ -1,156 +1,131 @@
-"use client";
-
 import {
   Authenticated,
   Unauthenticated,
   useMutation,
-  useQuery,
 } from "convex/react";
+import { useEffect } from "react";
 import { api } from "../convex/_generated/api";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
+import { GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dashboard } from "@/components/Dashboard";
 
 export default function App() {
   return (
-    <>
-      <header className="sticky top-0 z-10 bg-light dark:bg-dark p-4 border-b-2 border-slate-200 dark:border-slate-800 flex flex-row justify-between items-center">
-        Convex + React + Clerk
-        <UserButton />
-      </header>
-      <main className="p-8 flex flex-col gap-16">
-        <h1 className="text-4xl font-bold text-center">
-          Convex + React + Clerk
-        </h1>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main>
         <Authenticated>
-          <Content />
+          <AuthenticatedContent />
         </Authenticated>
         <Unauthenticated>
-          <SignInForm />
+          <LandingPage />
         </Unauthenticated>
       </main>
-    </>
-  );
-}
-
-function SignInForm() {
-  return (
-    <div className="flex flex-col gap-8 w-96 mx-auto">
-      <p>Log in to see the numbers</p>
-      <SignInButton mode="modal">
-        <button className="bg-dark dark:bg-light text-light dark:text-dark text-sm px-4 py-2 rounded-md border-2">
-          Sign in
-        </button>
-      </SignInButton>
-      <SignUpButton mode="modal">
-        <button className="bg-dark dark:bg-light text-light dark:text-dark text-sm px-4 py-2 rounded-md border-2">
-          Sign up
-        </button>
-      </SignUpButton>
     </div>
   );
 }
 
-function Content() {
-  const { viewer, numbers } =
-    useQuery(api.myFunctions.listNumbers, {
-      count: 10,
-    }) ?? {};
-  const addNumber = useMutation(api.myFunctions.addNumber);
-
-  if (viewer === undefined || numbers === undefined) {
-    return (
-      <div className="mx-auto">
-        <p>loading... (consider a loading skeleton)</p>
-      </div>
-    );
-  }
-
+function Header() {
   return (
-    <div className="flex flex-col gap-8 max-w-lg mx-auto">
-      <p>Welcome {viewer ?? "Anonymous"}!</p>
-      <p>
-        Click the button below and open this page in another window - this data
-        is persisted in the Convex cloud database!
-      </p>
-      <p>
-        <button
-          className="bg-dark dark:bg-light text-light dark:text-dark text-sm px-4 py-2 rounded-md border-2"
-          onClick={() => {
-            void addNumber({ value: Math.floor(Math.random() * 10) });
-          }}
-        >
-          Add a random number
-        </button>
-      </p>
-      <p>
-        Numbers:{" "}
-        {numbers?.length === 0
-          ? "Click the button!"
-          : numbers?.join(", ") ?? "..."}
-      </p>
-      <p>
-        Edit{" "}
-        <code className="text-sm font-bold font-mono bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded-md">
-          convex/myFunctions.ts
-        </code>{" "}
-        to change your backend
-      </p>
-      <p>
-        Edit{" "}
-        <code className="text-sm font-bold font-mono bg-slate-200 dark:bg-slate-800 px-1 py-0.5 rounded-md">
-          src/App.tsx
-        </code>{" "}
-        to change your frontend
-      </p>
-      <div className="flex flex-col">
-        <p className="text-lg font-bold">Useful resources:</p>
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-2 w-1/2">
-            <ResourceCard
-              title="Convex docs"
-              description="Read comprehensive documentation for all Convex features."
-              href="https://docs.convex.dev/home"
-            />
-            <ResourceCard
-              title="Stack articles"
-              description="Learn about best practices, use cases, and more from a growing
-            collection of articles, videos, and walkthroughs."
-              href="https://www.typescriptlang.org/docs/handbook/2/basic-types.html"
-            />
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <GraduationCap className="h-7 w-7 text-primary" />
+          <span className="text-xl font-serif font-bold tracking-tight">
+            Gradify
+          </span>
+        </div>
+        <Authenticated>
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "h-9 w-9",
+              },
+            }}
+          />
+        </Authenticated>
+      </div>
+    </header>
+  );
+}
+
+function AuthenticatedContent() {
+  const upsertUser = useMutation(api.users.upsertUser);
+
+  // Ensure user exists in database on first load
+  useEffect(() => {
+    upsertUser();
+  }, [upsertUser]);
+
+  return <Dashboard />;
+}
+
+function LandingPage() {
+  return (
+    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
+      <div className="max-w-2xl mx-auto text-center">
+        {/* Hero */}
+        <div className="mb-12">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6 ring-1 ring-primary/20">
+            <GraduationCap className="h-12 w-12 text-primary" />
           </div>
-          <div className="flex flex-col gap-2 w-1/2">
-            <ResourceCard
-              title="Templates"
-              description="Browse our collection of templates to get started quickly."
-              href="https://www.convex.dev/templates"
-            />
-            <ResourceCard
-              title="Discord"
-              description="Join our developer community to ask questions, trade tips & tricks,
-            and show off your projects."
-              href="https://www.convex.dev/community"
-            />
+          <h1 className="text-4xl sm:text-5xl font-serif font-bold tracking-tight mb-4">
+            Track Your Academic Journey
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed">
+            Upload your AUIS transcript, track your GPA in real-time, and simulate 
+            future grades to plan your path to success.
+          </p>
+        </div>
+
+        {/* Features */}
+        <div className="grid sm:grid-cols-3 gap-6 mb-12">
+          <div className="p-4 rounded-xl bg-card border border-border">
+            <div className="text-3xl mb-2">📄</div>
+            <h3 className="font-semibold mb-1">PDF Import</h3>
+            <p className="text-sm text-muted-foreground">
+              Upload your unofficial transcript and we'll parse it automatically
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-card border border-border">
+            <div className="text-3xl mb-2">📊</div>
+            <h3 className="font-semibold mb-1">GPA Tracking</h3>
+            <p className="text-sm text-muted-foreground">
+              See your semester and cumulative GPA update in real-time
+            </p>
+          </div>
+          <div className="p-4 rounded-xl bg-card border border-border">
+            <div className="text-3xl mb-2">🎯</div>
+            <h3 className="font-semibold mb-1">Grade Simulation</h3>
+            <p className="text-sm text-muted-foreground">
+              Predict your GPA by simulating grades for in-progress courses
+            </p>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
 
-function ResourceCard({
-  title,
-  description,
-  href,
-}: {
-  title: string;
-  description: string;
-  href: string;
-}) {
-  return (
-    <div className="flex flex-col gap-2 bg-slate-200 dark:bg-slate-800 p-4 rounded-md h-28 overflow-auto">
-      <a href={href} className="text-sm underline hover:no-underline">
-        {title}
-      </a>
-      <p className="text-xs">{description}</p>
+        {/* Auth Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <SignInButton mode="modal">
+            <Button size="lg" className="w-full sm:w-auto min-w-[160px]">
+              Sign In
+            </Button>
+          </SignInButton>
+          <SignUpButton mode="modal">
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full sm:w-auto min-w-[160px]"
+            >
+              Create Account
+            </Button>
+          </SignUpButton>
+        </div>
+
+        <p className="mt-8 text-xs text-muted-foreground">
+          Built for AUIS students · Your data stays private
+        </p>
+      </div>
     </div>
   );
 }
