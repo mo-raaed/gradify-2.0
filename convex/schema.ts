@@ -26,6 +26,16 @@ const semesterValidator = v.object({
   semesterGPA: v.number(),
   cumulativeGPA: v.number(),
   courses: v.array(courseValidator),
+  planned: v.optional(v.boolean()), // True for planned/future semesters
+});
+
+// Graduation settings validator - user preferences for goal planning
+const graduationSettingsValidator = v.object({
+  graduationCredits: v.optional(v.number()), // Total credits needed to graduate
+  maxSemesters: v.optional(v.number()), // Maximum semesters remaining (optional)
+  coursesPerSemester: v.optional(v.number()), // Default courses per semester (default: 5)
+  creditsPerCourse: v.optional(v.number()), // Default credits per course (default: 3)
+  includeWinterSummer: v.optional(v.boolean()), // Whether to suggest winter/summer terms
 });
 
 export default defineSchema({
@@ -34,6 +44,8 @@ export default defineSchema({
     clerkId: v.string(),
     email: v.string(),
     name: v.optional(v.string()),
+    // Graduation settings for GPA goal planning
+    graduationSettings: v.optional(graduationSettingsValidator),
   }).index("by_clerkId", ["clerkId"]),
 
   // Transcripts table - stores all user grade data
@@ -46,4 +58,4 @@ export default defineSchema({
 });
 
 // Export validators for reuse in functions
-export { courseValidator, semesterValidator };
+export { courseValidator, semesterValidator, graduationSettingsValidator };
