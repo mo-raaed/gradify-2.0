@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Plus, Trash2, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus, Trash2, BookOpen, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GpaDisplay } from "./GpaDisplay";
 import { CourseRow } from "./CourseRow";
@@ -29,21 +29,43 @@ export function SemesterCard({
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
 
+  // Check if this is a planned semester
+  const isPlanned = semester.planned === true;
+
   // Filter out retaken courses for display count
   const displayedCourses = semester.courses.filter((c) => !c.retaken);
   const totalCredits = displayedCourses.reduce((sum, c) => sum + c.credits, 0);
 
   return (
-    <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md">
+    <div
+      className={`rounded-xl border shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md ${
+        isPlanned
+          ? "border-dashed border-primary/40 bg-primary/5"
+          : "border-border bg-card"
+      }`}
+    >
       {/* Header */}
       <div
-        className="flex items-center justify-between px-4 py-3 bg-muted/30 cursor-pointer select-none"
+        className={`flex items-center justify-between px-4 py-3 cursor-pointer select-none ${
+          isPlanned ? "bg-primary/10" : "bg-muted/30"
+        }`}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
-          <BookOpen className="h-5 w-5 text-primary" />
+          {isPlanned ? (
+            <Calendar className="h-5 w-5 text-primary" />
+          ) : (
+            <BookOpen className="h-5 w-5 text-primary" />
+          )}
           <div>
-            <h3 className="font-serif font-semibold text-lg">{semester.name}</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="font-serif font-semibold text-lg">{semester.name}</h3>
+              {isPlanned && (
+                <span className="px-2 py-0.5 rounded-full bg-primary/20 text-xs font-medium text-primary">
+                  Planned
+                </span>
+              )}
+            </div>
             <p className="text-sm text-muted-foreground">
               {displayedCourses.length} courses · {totalCredits} credits
             </p>
@@ -54,7 +76,7 @@ export function SemesterCard({
           <div className="flex gap-2">
             <GpaDisplay
               gpa={semester.semesterGPA}
-              label="Semester"
+              label={isPlanned ? "Projected" : "Semester"}
               size="sm"
               variant="secondary"
             />

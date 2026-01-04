@@ -56,6 +56,7 @@ export interface Semester {
   semesterGPA: number;
   cumulativeGPA: number;
   courses: Course[];
+  planned?: boolean; // True for planned/future semesters
 }
 
 // Transcript data interface

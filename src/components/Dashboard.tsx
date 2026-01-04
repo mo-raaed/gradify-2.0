@@ -8,17 +8,20 @@ import {
   RotateCcw,
   GraduationCap,
   Loader2,
+  Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GpaDisplay } from "./GpaDisplay";
 import { SemesterCard } from "./SemesterCard";
 import { TranscriptUploader } from "./TranscriptUploader";
 import { AddSemesterDialog } from "./AddSemesterDialog";
+import { GpaGoalPlanner } from "./GpaGoalPlanner";
 import type { TranscriptData } from "@/lib/gpaCalculator";
 
 export function Dashboard() {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isAddSemesterOpen, setIsAddSemesterOpen] = useState(false);
+  const [isGoalPlannerOpen, setIsGoalPlannerOpen] = useState(false);
 
   // Convex queries and mutations
   const transcript = useQuery(api.transcripts.getMyTranscript);
@@ -157,6 +160,15 @@ export function Dashboard() {
             <Button
               variant="outline"
               size="icon"
+              onClick={() => setIsGoalPlannerOpen(true)}
+              title="GPA Goal Planner"
+              className="text-primary hover:text-primary"
+            >
+              <Target className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
               onClick={() => setIsUploadOpen(true)}
               title="Upload new transcript"
             >
@@ -243,6 +255,12 @@ export function Dashboard() {
         onOpenChange={setIsAddSemesterOpen}
         onAddSemester={handleAddSemester}
         existingSemesterCount={transcript.semesters.length}
+      />
+
+      <GpaGoalPlanner
+        open={isGoalPlannerOpen}
+        onOpenChange={setIsGoalPlannerOpen}
+        semesters={transcript.semesters}
       />
     </div>
   );

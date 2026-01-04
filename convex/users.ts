@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { query, mutation, internalMutation } from "./_generated/server";
+import { graduationSettingsValidator } from "./schema";
 
 /**
  * Get the current authenticated user
@@ -14,6 +15,7 @@ export const getCurrentUser = query({
       clerkId: v.string(),
       email: v.string(),
       name: v.optional(v.string()),
+      graduationSettings: v.optional(graduationSettingsValidator),
     }),
     v.null()
   ),
@@ -106,6 +108,86 @@ export const createUserInternal = internalMutation({
       email: args.email,
       name: args.name,
     });
+  },
+});
+
+/**
+ * Update graduation settings for the authenticated user
+ */
+export const updateGraduationSettings = mutation({
+  args: {
+    graduationCredits: v.optional(v.number()),
+    maxSemesters: v.optional(v.number()),
+    coursesPerSemester: v.optional(v.number()),
+    creditsPerCourse: v.optional(v.number()),
+    includeWinterSummer: v.optional(v.boolean()),
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Merge with existing settings
+    const existingSettings = user.graduationSettings ?? {};
+    const newSettings = {
+      ...existingSettings,
+      ...(args.graduationCredits !== undefined && { graduationCredits: args.graduationCredits }),
+      ...(args.maxSemesters !== undefined && { maxSemesters: args.maxSemesters }),
+      ...(args.coursesPerSemester !== undefined && { coursesPerSemester: args.coursesPerSemester }),
+      ...(args.creditsPerCourse !== undefined && { creditsPerCourse: args.creditsPerCourse }),
+      ...(args.includeWinterSummer !== undefined && { includeWinterSummer: args.includeWinterSummer }),
+    };
+
+    await ctx.db.patch(user._id, {
+      graduationSettings: newSettings,
+    });
+
+    return null;
+  },
+});
+
+/**
+ * Get graduation settings for the authenticated user
+ */
+export const getGraduationSettings = query({
+  args: {},
+  returns: v.union(
+    v.object({
+      graduationCredits: v.optional(v.number()),
+      maxSemesters: v.optional(v.number()),
+      coursesPerSemester: v.optional(v.number()),
+      creditsPerCourse: v.optional(v.number()),
+      includeWinterSummer: v.optional(v.boolean()),
+    }),
+    v.null()
+  ),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return null;
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      return null;
+    }
+
+    return user.graduationSettings ?? null;
   },
 });
 
