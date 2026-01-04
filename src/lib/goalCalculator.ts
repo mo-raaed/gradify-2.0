@@ -627,7 +627,7 @@ export function separatePlannedSemesters(
       grade: string;
       gradePoints: number;
       includeInGpa: boolean;
-      gradeType: "normal" | "pass-fail" | "transfer";
+      gradeType: "normal" | "in_progress" | "withdrawn" | "withdraw_fail";
       retaken: boolean;
     }>;
   }>;
@@ -643,7 +643,7 @@ export function separatePlannedSemesters(
       grade: string;
       gradePoints: number;
       includeInGpa: boolean;
-      gradeType: "normal" | "pass-fail" | "transfer";
+      gradeType: "normal" | "in_progress" | "withdrawn" | "withdraw_fail";
       retaken: boolean;
     }>;
   }> = [];
