@@ -10,6 +10,7 @@ A modern GPA calculator built with React, Convex, and Clerk authentication. Uplo
 - **Retake Detection**: Automatically handles retaken courses (only latest attempt counts)
 - **Data Persistence**: Your data is saved and synced across devices via Convex
 - **Authentication**: Secure login with Clerk
+- **GPA Goal**: Under development
 
 ## Tech Stack
 
