@@ -46,10 +46,10 @@ export function AddSemesterDialog({
     const name = useCustom && customName.trim()
       ? customName.trim()
       : `${year} ${term}`;
-    
+
     onAddSemester(name);
     onOpenChange(false);
-    
+
     // Reset form
     setYear(years[5]);
     setTerm("Fall");
@@ -61,7 +61,7 @@ export function AddSemesterDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-serif text-xl">Add Semester</DialogTitle>
+          <DialogTitle className="text-xl">Add Semester</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -131,4 +131,3 @@ export function AddSemesterDialog({
     </Dialog>
   );
 }
-

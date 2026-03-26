@@ -59,13 +59,13 @@ export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
   return (
     <tr
       className={cn(
-        "group border-b border-border/50 transition-colors hover:bg-muted/30",
+        "group transition-colors hover:bg-secondary/50",
         isSimulated && "bg-primary/5",
         course.retaken && "opacity-50"
       )}
     >
       {/* Course Code */}
-      <td className="px-3 py-2 w-[120px]">
+      <td className="px-4 py-3 w-[120px]">
         {isEditingCode ? (
           <Input
             value={editCode}
@@ -95,7 +95,7 @@ export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
       </td>
 
       {/* Course Name */}
-      <td className="px-3 py-2">
+      <td className="px-4 py-3">
         {isEditingName ? (
           <Input
             value={editName}
@@ -125,7 +125,7 @@ export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
       </td>
 
       {/* Credits */}
-      <td className="px-3 py-2 w-[80px] text-center">
+      <td className="px-4 py-3 w-[80px] text-center">
         <Select
           value={course.credits.toString()}
           onValueChange={handleCreditsChange}
@@ -144,12 +144,12 @@ export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
       </td>
 
       {/* Grade */}
-      <td className="px-3 py-2 w-[100px] text-center">
+      <td className="px-4 py-3 w-[100px] text-center">
         <Select value={course.grade} onValueChange={handleGradeChange}>
           <SelectTrigger
             className={cn(
               "h-8 w-20 mx-auto text-sm font-medium",
-              isSimulated && "ring-2 ring-primary ring-offset-1"
+              isSimulated && "ring-2 ring-primary/50 ring-offset-1"
             )}
           >
             <SelectValue />
@@ -165,7 +165,7 @@ export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
       </td>
 
       {/* Delete Button */}
-      <td className="px-3 py-2 w-[50px] text-center">
+      <td className="px-4 py-3 w-[50px] text-center">
         <Button
           variant="ghost"
           size="icon"
@@ -179,4 +179,3 @@ export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
     </tr>
   );
 }
-

@@ -66,7 +66,7 @@ export function AddCourseDialog({
       credits: parseInt(credits),
       grade,
     });
-    
+
     // Reset form
     setCourseCode("");
     setCourseName("");
@@ -79,7 +79,7 @@ export function AddCourseDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-serif text-xl">Add Course</DialogTitle>
+          <DialogTitle className="text-xl">Add Course</DialogTitle>
           <p className="text-sm text-muted-foreground">
             Adding to {semesterName}
           </p>
@@ -151,4 +151,3 @@ export function AddCourseDialog({
     </Dialog>
   );
 }
-

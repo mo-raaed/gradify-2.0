@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gradify - Master Your Academic Universe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed-dim": "#87cdee",
+                        "on-error": "#490006",
+                        "on-primary-container": "#00224d",
+                        "inverse-primary": "#005cbd",
+                        "primary-fixed": "#68a0ff",
+                        "outline": "#71767e",
+                        "surface-container-low": "#0e141a",
+                        "on-surface-variant": "#a7abb4",
+                        "secondary-fixed": "#95dbfc",
+                        "on-secondary-fixed-variant": "#005872",
+                        "inverse-surface": "#f8f9ff",
+                        "error-container": "#9f0519",
+                        "error-dim": "#d7383b",
+                        "surface-container-high": "#1a2028",
+                        "surface-container-lowest": "#000000",
+                        "surface-container": "#141a21",
+                        "background": "#0a0f15",
+                        "primary": "#81aeff",
+                        "primary-dim": "#0072e5",
+                        "surface-container-highest": "#1f262f",
+                        "on-background": "#e1e5ee",
+                        "on-secondary-fixed": "#00394c",
+                        "secondary-container": "#066481",
+                        "surface-variant": "#1f262f",
+                        "on-secondary-container": "#e7f6ff",
+                        "primary-container": "#68a0ff",
+                        "on-surface": "#e1e5ee",
+                        "on-tertiary": "#006164",
+                        "surface-bright": "#252d36",
+                        "tertiary-fixed-dim": "#63e1e7",
+                        "surface-tint": "#81aeff",
+                        "on-error-container": "#ffa8a3",
+                        "tertiary-dim": "#63e1e7",
+                        "surface": "#0a0f15",
+                        "on-tertiary-fixed": "#004346",
+                        "secondary": "#8fd5f7",
+                        "inverse-on-surface": "#50555d",
+                        "tertiary": "#9dfaff",
+                        "surface-dim": "#0a0f15",
+                        "on-primary-fixed-variant": "#002b5e",
+                        "outline-variant": "#43484f",
+                        "error": "#ff716c",
+                        "on-tertiary-fixed-variant": "#006266",
+                        "on-primary-fixed": "#000000",
+                        "primary-fixed-dim": "#4b92ff",
+                        "on-tertiary-container": "#00585b",
+                        "tertiary-fixed": "#72eff5",
+                        "secondary-dim": "#81c7e8",
+                        "tertiary-container": "#72eff5",
+                        "on-secondary": "#004a61",
+                        "on-primary": "#002d62"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .inner-glow-blue {
+            box-shadow: inset 0 0 20px rgba(0, 127, 255, 0.1);
+        }
+        .glass-card {
+            background: rgba(31, 38, 47, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .tonal-transition {
+            background: linear-gradient(180deg, rgba(10, 15, 21, 0) 0%, rgba(20, 26, 33, 1) 100%);
+        }
+        body {
+            background-color: #0a0f15;
+            color: #e1e5ee;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body class="selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-slate-900/60 backdrop-blur-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400 font-['Plus_Jakarta_Sans']">
+                Aura Midnight
+            </div>
+<div class="hidden md:flex space-x-10 items-center">
+<a class="text-blue-500 font-bold border-b-2 border-blue-500 pb-1 font-['Plus_Jakarta_Sans'] tracking-tight" href="#">Explore</a>
+<a class="text-slate-300 hover:text-blue-400 transition-colors font-['Plus_Jakarta_Sans'] tracking-tight duration-300 ease-in-out hover:scale-105" href="#">Nebulae</a>
+<a class="text-slate-300 hover:text-blue-400 transition-colors font-['Plus_Jakarta_Sans'] tracking-tight duration-300 ease-in-out hover:scale-105" href="#">Celestial</a>
+<a class="text-slate-300 hover:text-blue-400 transition-colors font-['Plus_Jakarta_Sans'] tracking-tight duration-300 ease-in-out hover:scale-105" href="#">Energy</a>
+</div>
+<div class="flex items-center space-x-6">
+<span class="material-symbols-outlined text-slate-300 cursor-pointer hover:text-primary transition-colors">shutter_speed</span>
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary-fixed px-8 py-2.5 rounded-full font-bold text-sm hover:shadow-[0_0_15px_rgba(0,127,255,0.3)] transition-all duration-300">
+                    Get Started
+                </button>
+</div>
+</div>
+</nav>
+<main class="relative pt-32 pb-20">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-7 space-y-8">
+<div class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-variant border border-outline-variant/15 text-secondary text-xs font-bold tracking-[0.1em] uppercase">
+                    The Future of Academic Velocity
+                </div>
+<h1 class="text-6xl md:text-[5rem] font-extrabold leading-[1.05] tracking-tighter text-on-surface">
+                    Master Your <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Academic Universe</span>
+</h1>
+<p class="text-on-surface-variant text-lg md:text-xl max-w-2xl leading-relaxed font-light">
+                    Gradify orchestrates your educational trajectory using celestial-grade algorithms. Real-time GPA synchronization meets predictive modeling to redefine your scholarly journey.
+                </p>
+<div class="flex flex-wrap gap-6 pt-4">
+<button class="bg-gradient-to-r from-primary to-secondary text-on-primary-fixed px-10 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_25px_rgba(129,174,255,0.4)] transition-all transform hover:-translate-y-1">
+                        Ignite Your Potential
+                    </button>
+<button class="px-10 py-4 rounded-full border-[1.5px] border-outline-variant/30 text-primary font-bold text-lg hover:bg-primary/5 transition-all">
+                        View Demo
+                    </button>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="relative w-full aspect-square rounded-full bg-gradient-to-tr from-primary-dim/20 to-secondary/10 flex items-center justify-center p-8 overflow-hidden">
+<!-- Ornamental Orbitals -->
+<div class="absolute inset-0 border border-primary/10 rounded-full scale-90"></div>
+<div class="absolute inset-0 border border-secondary/5 rounded-full scale-[1.1]"></div>
+<div class="relative w-full h-full glass-card rounded-full overflow-hidden shadow-2xl border border-outline-variant/20">
+<img alt="Celestial digital network" class="w-full h-full object-cover opacity-60" data-alt="Digital representation of a cosmic neural network with glowing cerulean nodes and electric blue data pathways on an obsidian background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe1x85V8ja9mGDjfGDz2tmzhFDSiidiRRgGuyRZ_8G_NqG4JAH43PazWQlp12bNoxmPl9yFGXzNO7K1lXZd1vmI9ZZrfivFZRCJS94khkYBXs_nnq_HRZqYoykSRxGbf-d_KFPxiYqxhAPcJMY84XThC681OnjHnEWipBJrv3-H9vg4HR-w0Uceqarje3G1VTGZT0nlW4EHRN5rsXvujvwao_0o-bGlOTBkl961x_3JnIBS1nxQH6KIn8LP2_ZXuhUf_7BTMRLWQ"/>
+</div>
+</div>
+<!-- Floating Metric -->
+<div class="absolute -bottom-4 -left-8 glass-card px-6 py-4 rounded-3xl border border-outline-variant/20 shadow-xl">
+<div class="text-secondary text-xs font-bold tracking-widest uppercase mb-1">Current Velocity</div>
+<div class="text-3xl font-black text-on-surface">4.0 <span class="text-primary text-sm font-normal">GPA</span></div>
+</div>
+</div>
+</section>
+<!-- Feature Bento Grid -->
+<section class="max-w-7xl mx-auto px-8 mt-40">
+<div class="text-center mb-20 space-y-4">
+<h2 class="text-4xl md:text-5xl font-extrabold tracking-tight">Ethereal Tools</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto">Harness the energy of high-fidelity data visualization and automated academic intelligence.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Feature 1: Transcript Sync -->
+<div class="md:col-span-8 glass-card rounded-[3rem] p-10 relative overflow-hidden group border border-outline-variant/10">
+<div class="relative z-10 flex flex-col justify-between h-full">
+<div class="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-primary text-3xl">sync_alt</span>
+</div>
+<div>
+<h3 class="text-3xl font-bold mb-4">Transcript Sync</h3>
+<p class="text-on-surface-variant text-lg max-w-md leading-relaxed">
+                                Seamlessly tether your institutional records to our dashboard. Real-time updates ensure your academic pulse is never a beat behind.
+                            </p>
+</div>
+</div>
+<!-- Background Illustration -->
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-20 group-hover:opacity-40 transition-opacity">
+<img alt="Data synchronization" class="w-full h-full object-cover" data-alt="Abstract visualization of data streams flowing between circular portals with neon blue highlights and dark slate shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMAydjzbuZusONW3DaUm7eoPpWEpe4_0J8UKsZ4vBLO62jkt_y_YWLznpznCShLdmnjSXyMk45Q41pLgGPrdOTVkqX1berCP5HGP2HBwb5L3n5Cfz4S1jfwfUo8YxlVkDUrkH4LLWEjb1sIH28UhdSIYCB4ZxFhhZZ4H3bpRBepv-FR0FDE3DH0mr0d1QvTT9DteSl-JZb75TD37JjXuCLCpSAYo8V-FUlA_mbOwtYcID66puyvzOxNTuoWPbu4hDH23MrOcps1g"/>
+</div>
+</div>
+<!-- Feature 2: GPA Pulse -->
+<div class="md:col-span-4 bg-surface-container-high rounded-[3rem] p-10 flex flex-col justify-between relative overflow-hidden border border-outline-variant/5">
+<div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-secondary text-3xl">query_stats</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold mb-3">GPA Pulse</h3>
+<p class="text-on-surface-variant text-base">
+                            Dynamic visual feedback of your performance metrics. High-velocity charts that move as fast as your ambition.
+                        </p>
+</div>
+<!-- Small Sparkle -->
+<div class="absolute -right-4 -bottom-4 w-24 h-24 bg-secondary/10 blur-3xl rounded-full"></div>
+</div>
+<!-- Feature 3: Predictive Modeling -->
+<div class="md:col-span-12 glass-card rounded-[3rem] p-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center border border-outline-variant/10">
+<div>
+<div class="bg-tertiary/10 w-16 h-16 rounded-full flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-tertiary text-3xl">insights</span>
+</div>
+<h3 class="text-4xl font-black mb-6 tracking-tight">Predictive Modeling</h3>
+<p class="text-on-surface-variant text-xl leading-relaxed mb-8">
+                            Simulate future outcomes based on current trajectories. Our celestial engine calculates "What-If" scenarios to map your optimal path to graduation.
+                        </p>
+<ul class="space-y-4">
+<li class="flex items-center space-x-3 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Bayesian Inference Engine</span>
+</li>
+<li class="flex items-center space-x-3 text-on-surface">
+<span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Degree Completion Forecasting</span>
+</li>
+</ul>
+</div>
+<div class="relative">
+<div class="rounded-3xl overflow-hidden border border-outline-variant/20 shadow-2xl">
+<img alt="Predictive data" class="w-full h-auto" data-alt="Modern analytics dashboard showing futuristic glowing charts and predictive line graphs in cyan and deep blue colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcT6jusDpDNXCDxrdREKAMtskbQkFOa3LNbEeFFwbhWtA8JAFaglXqvadDlK_ni9zOfwZlgUygPAiOgcPD2-WwrCXZlytPe1tYR_LJwVhQgNrj_zmYXk6i-wNwcFFnY-WedQiAED4Z7TSZ5KshXwQs3RX7kyoRv57RxmZHpFF-XhyCfY1ylOuuoyDx2JTv4CRE9ez5GwHXs6rhlKf7Sn01vOYH5pSOWA_sgJQnotMaSD95jKAKs99vPXoSTDmJf4e5_-l4mjQC4g"/>
+</div>
+<div class="absolute -top-6 -right-6 bg-primary px-6 py-3 rounded-full text-on-primary-fixed font-bold shadow-lg">98% Accuracy</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-5xl mx-auto px-8 mt-40">
+<div class="bg-gradient-to-br from-surface-container-high to-surface-container rounded-[4rem] p-16 text-center relative overflow-hidden border border-primary/10">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(0,127,255,0.2),transparent_70%)]"></div>
+</div>
+<h2 class="text-4xl md:text-6xl font-black mb-8 leading-tight">Ready to Ascend?</h2>
+<p class="text-on-surface-variant text-xl mb-12 max-w-2xl mx-auto">Join the constellation of elite students who have optimized their academic destiny with Gradify.</p>
+<div class="flex justify-center">
+<button class="bg-white text-surface px-12 py-5 rounded-full font-black text-xl hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-all">
+                        Launch Dashboard
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full rounded-t-[9999px] mt-20 bg-slate-950/80 backdrop-blur-2xl py-12 px-6 space-y-6 flex flex-col items-center border-t border-primary/5">
+<div class="text-lg font-black text-blue-500 font-['Plus_Jakarta_Sans'] tracking-tight">AURA MIDNIGHT</div>
+<div class="flex space-x-12">
+<a class="text-slate-500 hover:text-blue-300 transition-all font-['Plus_Jakarta_Sans'] text-sm tracking-wide uppercase" href="#">Privacy</a>
+<a class="text-slate-500 hover:text-blue-300 transition-all font-['Plus_Jakarta_Sans'] text-sm tracking-wide uppercase" href="#">Terms</a>
+<a class="text-slate-500 hover:text-blue-300 transition-all font-['Plus_Jakarta_Sans'] text-sm tracking-wide uppercase" href="#">Social</a>
+<a class="text-slate-500 hover:text-blue-300 transition-all font-['Plus_Jakarta_Sans'] text-sm tracking-wide uppercase" href="#">Contact</a>
+</div>
+<p class="text-slate-500 font-['Plus_Jakarta_Sans'] text-xs uppercase tracking-widest opacity-80">
+            © 2024 Aura Midnight Celestial. Boundless Architecture.
+        </p>
+</footer>
+</body></html>

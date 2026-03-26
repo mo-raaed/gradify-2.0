@@ -7,11 +7,11 @@ interface GpaDisplayProps {
   variant?: "primary" | "secondary";
 }
 
-export function GpaDisplay({ 
-  gpa, 
-  label, 
-  size = "md", 
-  variant = "primary" 
+export function GpaDisplay({
+  gpa,
+  label,
+  size = "md",
+  variant = "primary"
 }: GpaDisplayProps) {
   const sizeClasses = {
     sm: "text-xl",
@@ -34,11 +34,11 @@ export function GpaDisplay({
   return (
     <div
       className={cn(
-        "rounded-xl text-center transition-all duration-300",
+        "rounded-[2rem] text-center transition-all duration-300",
         containerSizes[size],
-        variant === "primary" 
-          ? "bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20" 
-          : "bg-muted/50 border border-border"
+        variant === "primary"
+          ? "bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20"
+          : "bg-secondary"
       )}
     >
       <p className={cn("text-muted-foreground font-medium", labelSizes[size])}>
@@ -46,7 +46,7 @@ export function GpaDisplay({
       </p>
       <p
         className={cn(
-          "font-bold tracking-tight font-serif",
+          "font-bold tracking-tight",
           sizeClasses[size],
           variant === "primary" ? "text-primary" : "text-foreground"
         )}
@@ -56,4 +56,3 @@ export function GpaDisplay({
     </div>
   );
 }
-

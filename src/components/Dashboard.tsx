@@ -87,10 +87,10 @@ export function Dashboard() {
       <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-4">
         <div className="w-full max-w-lg">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 mb-4">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20 mb-4">
               <GraduationCap className="h-10 w-10 text-primary" />
             </div>
-            <h1 className="text-3xl font-serif font-bold mb-2">
+            <h1 className="text-3xl font-bold mb-2">
               Welcome to Gradify
             </h1>
             <p className="text-muted-foreground max-w-md mx-auto">
@@ -142,7 +142,7 @@ export function Dashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-serif font-bold">Your Transcript</h1>
+          <h1 className="text-2xl font-bold">Your Transcript</h1>
           <p className="text-muted-foreground">
             {transcript.semesters.length} semesters
           </p>
@@ -265,4 +265,3 @@ export function Dashboard() {
     </div>
   );
 }
-

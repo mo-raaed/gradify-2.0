@@ -182,7 +182,7 @@ export function GpaGoalPlanner({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl font-serif">
+          <DialogTitle className="flex items-center gap-2 text-xl">
             <Target className="h-5 w-5 text-primary" />
             GPA Goal Planner
           </DialogTitle>
@@ -195,7 +195,7 @@ export function GpaGoalPlanner({
         {step === "settings" && (
           <div className="space-y-6">
             {/* Current Status */}
-            <div className="p-4 rounded-lg bg-muted/50 space-y-2">
+            <div className="p-6 rounded-[2rem] bg-secondary space-y-2">
               <h3 className="font-medium flex items-center gap-2">
                 <Info className="h-4 w-4" />
                 Current Status
@@ -213,13 +213,13 @@ export function GpaGoalPlanner({
                   <>
                     <div>
                       <span className="text-muted-foreground">In-Progress Credits:</span>{" "}
-                      <span className="font-semibold text-amber-600 dark:text-amber-400">
+                      <span className="font-semibold text-amber-600">
                         {currentStats.inProgressCredits}
                       </span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">IP Semesters:</span>{" "}
-                      <span className="font-semibold text-amber-600 dark:text-amber-400">
+                      <span className="font-semibold text-amber-600">
                         {currentStats.inProgressSemesters.length}
                       </span>
                     </div>
@@ -227,7 +227,7 @@ export function GpaGoalPlanner({
                 )}
               </div>
               {currentStats.inProgressCredits > 0 && (
-                <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">
+                <p className="text-xs text-amber-600 mt-2">
                   Your in-progress courses will be included in the plan with suggested grades.
                 </p>
               )}
@@ -302,7 +302,7 @@ export function GpaGoalPlanner({
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-lg border">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-secondary">
                   <div>
                     <Label htmlFor="includeWinterSummer" className="cursor-pointer">
                       Include Winter/Summer Terms
@@ -316,7 +316,7 @@ export function GpaGoalPlanner({
                     type="checkbox"
                     checked={includeWinterSummer}
                     onChange={(e) => setIncludeWinterSummer(e.target.checked)}
-                    className="h-4 w-4 rounded border-gray-300"
+                    className="h-4 w-4 rounded border-gray-300 accent-primary"
                   />
                 </div>
               </div>
@@ -425,10 +425,10 @@ export function GpaGoalPlanner({
                   <button
                     type="button"
                     onClick={() => setPlanningMode("breakdown")}
-                    className={`p-4 rounded-lg border text-left transition-colors ${
+                    className={`p-4 rounded-[2rem] text-left transition-all hover:scale-[1.02] ${
                       planningMode === "breakdown"
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
+                        ? "bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20"
+                        : "bg-secondary hover:bg-muted"
                     }`}
                   >
                     <h4 className="font-medium">Semester Breakdown</h4>
@@ -439,10 +439,10 @@ export function GpaGoalPlanner({
                   <button
                     type="button"
                     onClick={() => setPlanningMode("interactive")}
-                    className={`p-4 rounded-lg border text-left transition-colors ${
+                    className={`p-4 rounded-[2rem] text-left transition-all hover:scale-[1.02] ${
                       planningMode === "interactive"
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50"
+                        ? "bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20"
+                        : "bg-secondary hover:bg-muted"
                     }`}
                   >
                     <h4 className="font-medium">Interactive Planner</h4>
@@ -472,17 +472,17 @@ export function GpaGoalPlanner({
           <div className="space-y-6">
             {/* Feasibility Status */}
             <div
-              className={`p-4 rounded-lg ${
+              className={`p-4 rounded-[2rem] ${
                 pathway.feasibility.isAchievable
-                  ? "bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900"
-                  : "bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900"
+                  ? "bg-green-500/10"
+                  : "bg-amber-500/10"
               }`}
             >
               <div className="flex items-start gap-3">
                 {pathway.feasibility.isAchievable ? (
-                  <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
                 ) : (
-                  <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+                  <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />
                 )}
                 <div>
                   <h3 className="font-medium">
