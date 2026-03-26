@@ -9,10 +9,11 @@ import { GpaDisplay } from "../GpaDisplay";
 interface MobileNavProps {
   cumulativeGPA?: number;
   major?: string;
-  onGpaGoalClick?: () => void;
+  onGpaGoalClick: () => void;
+  onMajorUpdate: (major: string) => void;
 }
 
-export function MobileNav({ cumulativeGPA, major, onGpaGoalClick }: MobileNavProps) {
+export function MobileNav({ cumulativeGPA, major, onGpaGoalClick, onMajorUpdate }: MobileNavProps) {
   const { mobileNavOpen, setMobileNavOpen } = useLayout();
 
   return (
@@ -74,7 +75,7 @@ export function MobileNav({ cumulativeGPA, major, onGpaGoalClick }: MobileNavPro
 
             {/* Footer */}
             <div className="shrink-0 p-4 border-t border-border/5">
-              <SidebarFooter major={major} />
+              <SidebarFooter major={major} onMajorUpdate={onMajorUpdate} />
             </div>
           </div>
         </DialogContent>

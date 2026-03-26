@@ -6,18 +6,27 @@ import { cn } from "@/lib/utils";
 
 interface AppShellProps {
   children: ReactNode;
+  major?: string;
+  cumulativeGPA?: number;
+  onMajorUpdate: (major: string) => void;
+  onGpaGoalClick: () => void;
 }
 
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children, major, cumulativeGPA, onMajorUpdate, onGpaGoalClick }: AppShellProps) {
   const { sidebarCollapsed } = useLayout();
 
   return (
     <div className="min-h-screen bg-background">
       {/* Desktop/Tablet Sidebar */}
-      <Sidebar />
+      <Sidebar major={major} onMajorUpdate={onMajorUpdate} onGpaGoalClick={onGpaGoalClick} />
 
       {/* Mobile Navigation */}
-      <MobileNav />
+      <MobileNav
+        cumulativeGPA={cumulativeGPA}
+        major={major}
+        onGpaGoalClick={onGpaGoalClick}
+        onMajorUpdate={onMajorUpdate}
+      />
 
       {/* Main Content Area */}
       <main

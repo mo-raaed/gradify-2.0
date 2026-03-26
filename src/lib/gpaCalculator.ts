@@ -63,6 +63,7 @@ export interface Semester {
 export interface TranscriptData {
   semesters: Semester[];
   cumulativeGPA: number;
+  major?: string;
 }
 
 /**

@@ -24,6 +24,47 @@ function isValidSemester(line: string): boolean {
 }
 
 /**
+ * Extract major from transcript text
+ * Looks for common patterns in AUIS transcripts
+ */
+function extractMajor(textLines: string[]): string | undefined {
+  for (const line of textLines) {
+    const lowerLine = line.toLowerCase();
+
+    // Common patterns for major/program information
+    if (lowerLine.includes("major:") || lowerLine.includes("program:")) {
+      // Extract text after "major:" or "program:"
+      const match = line.match(/(?:major|program):\s*(.+?)(?:\s|$)/i);
+      if (match && match[1]) {
+        return match[1].trim();
+      }
+    }
+
+    // Look for "Bachelor of" or "Master of" patterns
+    const degreeMatch = line.match(/(?:Bachelor|Master|B\.?[AS]\.?|M\.?[AS]\.?)\s+(?:of|in|Of|In)\s+(.+?)(?:\s{2,}|\n|$)/i);
+    if (degreeMatch && degreeMatch[1]) {
+      return degreeMatch[1].trim();
+    }
+
+    // Look for common CS/Engineering program names directly
+    if (lowerLine.includes("computer science") && !lowerLine.includes("course")) {
+      return "Computer Science";
+    }
+    if (lowerLine.includes("software engineering") && !lowerLine.includes("course")) {
+      return "Software Engineering";
+    }
+    if (lowerLine.includes("electrical engineering") && !lowerLine.includes("course")) {
+      return "Electrical Engineering";
+    }
+    if (lowerLine.includes("business administration") && !lowerLine.includes("course")) {
+      return "Business Administration";
+    }
+  }
+
+  return undefined;
+}
+
+/**
  * Parse raw transcript text into structured data
  * This implements the same logic as the original Python parse_transcript function
  */
@@ -34,7 +75,10 @@ export function parseTranscriptText(rawText: string): TranscriptData {
     .map((ln) => ln.trim())
     .filter((ln) => ln.length > 0 && !ln.includes("APP"));
 
-  // 2) Find all semester headers and their indices
+  // 2) Extract major from early lines in the transcript
+  const major = extractMajor(lines.slice(0, 50)); // Check first 50 lines for major info
+
+  // 3) Find all semester headers and their indices
   const semesterIndices: Array<[number, string]> = [];
   lines.forEach((line, index) => {
     if (isValidSemester(line)) {
@@ -44,7 +88,7 @@ export function parseTranscriptText(rawText: string): TranscriptData {
 
   const semesters: Semester[] = [];
 
-  // 3) Process each semester block
+  // 4) Process each semester block
   for (let idx = 0; idx < semesterIndices.length; idx++) {
     const [start, semesterName] = semesterIndices[idx];
     const end = idx + 1 < semesterIndices.length 
@@ -127,7 +171,7 @@ export function parseTranscriptText(rawText: string): TranscriptData {
     });
   }
 
-  // 4) Sort semesters chronologically
+  // 5) Sort semesters chronologically
   semesters.sort((a, b) => {
     const [yearA, termA] = semesterSortKey(a.name);
     const [yearB, termB] = semesterSortKey(b.name);
@@ -135,7 +179,13 @@ export function parseTranscriptText(rawText: string): TranscriptData {
     return termA - termB;
   });
 
-  // 5) Recalculate all GPAs (includes retake detection)
-  return recalculateAllGPAs(semesters);
+  // 6) Recalculate all GPAs (includes retake detection)
+  const result = recalculateAllGPAs(semesters);
+
+  // 7) Add major field to result
+  return {
+    ...result,
+    major,
+  };
 }
 

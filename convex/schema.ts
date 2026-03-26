@@ -53,6 +53,7 @@ export default defineSchema({
     userId: v.id("users"),
     semesters: v.array(semesterValidator),
     cumulativeGPA: v.number(),
+    major: v.optional(v.string()), // Student's major/program
     updatedAt: v.number(),
   }).index("by_userId", ["userId"]),
 });

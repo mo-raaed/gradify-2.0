@@ -4,7 +4,13 @@ import { cn } from "@/lib/utils";
 import { SidebarNav } from "./SidebarNav";
 import { SidebarFooter } from "./SidebarFooter";
 
-export function Sidebar() {
+interface SidebarProps {
+  major?: string;
+  onMajorUpdate: (major: string) => void;
+  onGpaGoalClick: () => void;
+}
+
+export function Sidebar({ major, onMajorUpdate, onGpaGoalClick }: SidebarProps) {
   const { sidebarCollapsed } = useLayout();
 
   return (
@@ -32,12 +38,12 @@ export function Sidebar() {
 
       {/* Middle: Navigation (flex-grow) */}
       <nav className="flex-1 overflow-y-auto py-4 px-3">
-        <SidebarNav />
+        <SidebarNav onGpaGoalClick={onGpaGoalClick} />
       </nav>
 
       {/* Bottom: Footer */}
       <div className="shrink-0 p-4 border-t border-border/5">
-        <SidebarFooter />
+        <SidebarFooter major={major} onMajorUpdate={onMajorUpdate} />
       </div>
     </aside>
   );

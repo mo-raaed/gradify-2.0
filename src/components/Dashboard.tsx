@@ -20,10 +20,14 @@ import { useLayout } from "@/context/LayoutContext";
 import { useSearch } from "@/hooks/useSearch";
 import type { TranscriptData } from "@/lib/gpaCalculator";
 
-export function Dashboard() {
+interface DashboardProps {
+  isGoalPlannerOpen: boolean;
+  setIsGoalPlannerOpen: (open: boolean) => void;
+}
+
+export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: DashboardProps) {
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isAddSemesterOpen, setIsAddSemesterOpen] = useState(false);
-  const [isGoalPlannerOpen, setIsGoalPlannerOpen] = useState(false);
 
   // Convex queries and mutations
   const transcript = useQuery(api.transcripts.getMyTranscript);
@@ -63,6 +67,7 @@ export function Dashboard() {
     await saveTranscript({
       semesters: data.semesters,
       cumulativeGPA: data.cumulativeGPA,
+      major: data.major,
     });
   };
 

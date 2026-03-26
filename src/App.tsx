@@ -2,8 +2,9 @@ import {
   Authenticated,
   Unauthenticated,
   useMutation,
+  useQuery,
 } from "convex/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../convex/_generated/api";
 import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { GraduationCap, FileText, BarChart3, Target } from "lucide-react";
@@ -27,16 +28,32 @@ export default function App() {
 
 function AuthenticatedContent() {
   const upsertUser = useMutation(api.users.upsertUser);
+  const updateMajor = useMutation(api.transcripts.updateMajor);
+  const transcript = useQuery(api.transcripts.getMyTranscript);
+  const [isGoalPlannerOpen, setIsGoalPlannerOpen] = useState(false);
 
   // Ensure user exists in database on first load
   useEffect(() => {
     upsertUser();
   }, [upsertUser]);
 
+  // Handle major update
+  const handleMajorUpdate = async (major: string) => {
+    await updateMajor({ major });
+  };
+
   return (
     <LayoutProvider>
-      <AppShell>
-        <Dashboard />
+      <AppShell
+        major={transcript?.major}
+        cumulativeGPA={transcript?.cumulativeGPA}
+        onMajorUpdate={handleMajorUpdate}
+        onGpaGoalClick={() => setIsGoalPlannerOpen(true)}
+      >
+        <Dashboard
+          isGoalPlannerOpen={isGoalPlannerOpen}
+          setIsGoalPlannerOpen={setIsGoalPlannerOpen}
+        />
       </AppShell>
     </LayoutProvider>
   );
