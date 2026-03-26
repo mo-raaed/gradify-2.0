@@ -1,5 +1,4 @@
 import { GraduationCap } from "lucide-react";
-import { useLayout } from "@/context/LayoutContext";
 import { cn } from "@/lib/utils";
 import { SidebarNav } from "./SidebarNav";
 import { SidebarFooter } from "./SidebarFooter";
@@ -11,8 +10,6 @@ interface SidebarProps {
 }
 
 export function Sidebar({ major, onMajorUpdate, onGpaGoalClick }: SidebarProps) {
-  const { sidebarCollapsed } = useLayout();
-
   return (
     <aside
       className={cn(

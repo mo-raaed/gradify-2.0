@@ -157,7 +157,7 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
   // Filter semesters based on active filter
   const filteredSemesters = transcript.semesters.filter((semester) => {
     if (activeFilter === "completed") {
-      return semester.courses.some((c) => c.gradeType === "completed");
+      return semester.planned !== true;
     } else if (activeFilter === "planned") {
       return semester.planned === true;
     }

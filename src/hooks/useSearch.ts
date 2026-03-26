@@ -2,6 +2,12 @@ import { useEffect, useMemo } from "react";
 import { useLayout, type SearchResult } from "@/context/LayoutContext";
 import type { Semester } from "@/lib/gpaCalculator";
 
+type SearchState = {
+  results: SearchResult[];
+  highlightedCourses: Set<string>;
+  highlightedSemesters: Set<string>;
+};
+
 /**
  * Custom hook for searching and filtering transcript data
  * Searches courses by code/name, semesters by name, and filters by grade
@@ -15,9 +21,13 @@ export function useSearch(semesters: Semester[]) {
   } = useLayout();
 
   // Perform search
-  const results = useMemo(() => {
+  const results = useMemo<SearchState>(() => {
     if (!searchQuery.trim()) {
-      return [];
+      return {
+        results: [],
+        highlightedCourses: new Set<string>(),
+        highlightedSemesters: new Set<string>(),
+      };
     }
 
     const query = searchQuery.toLowerCase();

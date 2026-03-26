@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useCallback, useRef, useEffect, type ReactNode } from "react";
-import type { Course, Semester } from "@/lib/gpaCalculator";
 
 // Types for search results
 export interface SearchResult {
@@ -38,8 +37,8 @@ interface LayoutContextState {
   setHighlightedSemesters: (semesters: Set<string>) => void;
 
   // Scroll refs for semester cards
-  semesterRefs: Map<string, React.RefObject<HTMLDivElement>>;
-  registerSemesterRef: (id: string, ref: React.RefObject<HTMLDivElement>) => void;
+  semesterRefs: Map<string, React.RefObject<HTMLDivElement | null>>;
+  registerSemesterRef: (id: string, ref: React.RefObject<HTMLDivElement | null>) => void;
 
   // Active section tracking (for breadcrumbs)
   activeSection: string | null;
@@ -89,13 +88,13 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
   const [highlightedSemesters, setHighlightedSemesters] = useState<Set<string>>(new Set());
 
   // Semester refs
-  const semesterRefsRef = useRef<Map<string, React.RefObject<HTMLDivElement>>>(new Map());
+  const semesterRefsRef = useRef<Map<string, React.RefObject<HTMLDivElement | null>>>(new Map());
 
   // Active section
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // Register semester ref
-  const registerSemesterRef = useCallback((id: string, ref: React.RefObject<HTMLDivElement>) => {
+  const registerSemesterRef = useCallback((id: string, ref: React.RefObject<HTMLDivElement | null>) => {
     semesterRefsRef.current.set(id, ref);
   }, []);
 

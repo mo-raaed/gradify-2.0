@@ -1,7 +1,6 @@
 import { type ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import { MobileNav } from "./MobileNav";
-import { useLayout } from "@/context/LayoutContext";
 import { cn } from "@/lib/utils";
 
 interface AppShellProps {
@@ -13,8 +12,6 @@ interface AppShellProps {
 }
 
 export function AppShell({ children, major, cumulativeGPA, onMajorUpdate, onGpaGoalClick }: AppShellProps) {
-  const { sidebarCollapsed } = useLayout();
-
   return (
     <div className="min-h-screen bg-background">
       {/* Desktop/Tablet Sidebar */}

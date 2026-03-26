@@ -8,35 +8,25 @@ interface DashboardSummaryProps {
 export function DashboardSummary({ semesters }: DashboardSummaryProps) {
   // Calculate total earned credits (only completed courses)
   const totalEarnedCredits = semesters.reduce((sum, semester) => {
+    if (semester.planned === true) {
+      return sum;
+    }
     return (
       sum +
-      semester.courses
-        .filter((course) => course.gradeType === "completed")
-        .reduce((courseSum, course) => courseSum + course.credits, 0)
+      semester.courses.reduce((courseSum, course) => courseSum + course.credits, 0)
     );
   }, 0);
 
   // Calculate planned credits (only planned courses)
   const totalPlannedCredits = semesters.reduce((sum, semester) => {
+    if (semester.planned !== true) {
+      return sum;
+    }
     return (
       sum +
-      semester.courses
-        .filter((course) => course.gradeType === "planned")
-        .reduce((courseSum, course) => courseSum + course.credits, 0)
+      semester.courses.reduce((courseSum, course) => courseSum + course.credits, 0)
     );
   }, 0);
-
-  // Calculate total courses
-  const totalCourses = semesters.reduce(
-    (sum, semester) => sum + semester.courses.length,
-    0
-  );
-
-  const completedCourses = semesters.reduce(
-    (sum, semester) =>
-      sum + semester.courses.filter((c) => c.gradeType === "completed").length,
-    0
-  );
 
   return (
     <section className="px-12 max-lg:px-8 max-md:px-4 py-8">

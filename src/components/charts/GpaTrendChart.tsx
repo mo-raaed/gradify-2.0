@@ -35,8 +35,8 @@ export function GpaTrendChart({ semesters }: GpaTrendChartProps) {
 
   // Prepare data for chart - only completed semesters
   const chartData = semesters
-    .filter((s) => s.courses.some((c) => c.gradeType === "completed"))
-    .map((semester, index) => ({
+    .filter((s) => s.planned !== true)
+    .map((semester) => ({
       name: semester.name,
       semesterGPA: semester.semesterGPA,
       cumulativeGPA: semester.cumulativeGPA,
