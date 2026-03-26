@@ -37,8 +37,8 @@ interface LayoutContextState {
   setHighlightedSemesters: (semesters: Set<string>) => void;
 
   // Scroll refs for semester cards
-  semesterRefs: Map<string, React.RefObject<HTMLDivElement | null>>;
-  registerSemesterRef: (id: string, ref: React.RefObject<HTMLDivElement | null>) => void;
+  semesterRefs: Map<string, HTMLDivElement>;
+  registerSemesterRef: (id: string, element: HTMLDivElement | null) => void;
 
   // Active section tracking (for breadcrumbs)
   activeSection: string | null;
@@ -88,22 +88,26 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
   const [highlightedSemesters, setHighlightedSemesters] = useState<Set<string>>(new Set());
 
   // Semester refs
-  const semesterRefsRef = useRef<Map<string, React.RefObject<HTMLDivElement | null>>>(new Map());
+  const semesterRefsRef = useRef<Map<string, HTMLDivElement>>(new Map());
 
   // Active section
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
   // Register semester ref
-  const registerSemesterRef = useCallback((id: string, ref: React.RefObject<HTMLDivElement | null>) => {
-    semesterRefsRef.current.set(id, ref);
+  const registerSemesterRef = useCallback((id: string, element: HTMLDivElement | null) => {
+    if (element) {
+      semesterRefsRef.current.set(id, element);
+      return;
+    }
+    semesterRefsRef.current.delete(id);
   }, []);
 
   // Scroll to semester
   const scrollToSemester = useCallback((semesterId: string) => {
-    const ref = semesterRefsRef.current.get(semesterId);
-    if (ref?.current) {
+    const element = semesterRefsRef.current.get(semesterId);
+    if (element) {
       const headerOffset = 100; // Account for sticky header
-      const elementPosition = ref.current.getBoundingClientRect().top;
+      const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
       window.scrollTo({

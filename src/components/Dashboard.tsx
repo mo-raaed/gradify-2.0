@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import {
@@ -229,44 +229,35 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
 
       {/* Zone 3: Primary Feed - Semester Cards */}
       <section className="px-12 max-lg:px-8 max-md:px-4 pb-12 space-y-8">
-        {filteredSemesters.map((semester) => {
-          const ref = useRef<HTMLDivElement>(null);
-
-          // Register ref on mount
-          useEffect(() => {
-            registerSemesterRef(semester.id, ref);
-          }, [semester.id]);
-
-          return (
-            <SemesterCard
-              key={semester.id}
-              ref={ref}
-              semester={semester}
-              onUpdateCourse={(courseId, updates) =>
-                updateCourse({
-                  semesterId: semester.id,
-                  courseId,
-                  updates,
-                })
-              }
-              onAddCourse={(course) =>
-                addCourse({
-                  semesterId: semester.id,
-                  ...course,
-                })
-              }
-              onRemoveCourse={(courseId) =>
-                removeCourse({
-                  semesterId: semester.id,
-                  courseId,
-                })
-              }
-              onRemoveSemester={() => removeSemester({ semesterId: semester.id })}
-              highlighted={highlightedSemesters.has(semester.id)}
-              highlightedCourseIds={highlightedCourses}
-            />
-          );
-        })}
+        {filteredSemesters.map((semester) => (
+          <SemesterCard
+            key={semester.id}
+            ref={(element) => registerSemesterRef(semester.id, element)}
+            semester={semester}
+            onUpdateCourse={(courseId, updates) =>
+              updateCourse({
+                semesterId: semester.id,
+                courseId,
+                updates,
+              })
+            }
+            onAddCourse={(course) =>
+              addCourse({
+                semesterId: semester.id,
+                ...course,
+              })
+            }
+            onRemoveCourse={(courseId) =>
+              removeCourse({
+                semesterId: semester.id,
+                courseId,
+              })
+            }
+            onRemoveSemester={() => removeSemester({ semesterId: semester.id })}
+            highlighted={highlightedSemesters.has(semester.id)}
+            highlightedCourseIds={highlightedCourses}
+          />
+        ))}
 
         {filteredSemesters.length === 0 && (
           <div className="text-center py-12">
