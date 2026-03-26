@@ -58,92 +58,96 @@
   --radius-full: 9999px;
 }
 
-/* Dark mode - "Arctic Lens" */
+/* Dark mode - "Aura Midnight" */
 .dark {
-  --color-background: #0b1326;
-  --color-foreground: #e8f4fc;
+  --color-background: #0a0f15;
+  --color-foreground: #e1e5ee;
 
-  --color-card: #171f33;
-  --color-card-foreground: #e8f4fc;
+  --color-card: #141a21;
+  --color-card-foreground: #e1e5ee;
 
-  --color-popover: #171f33;
-  --color-popover-foreground: #e8f4fc;
+  --color-popover: #1a2028;
+  --color-popover-foreground: #e1e5ee;
 
-  /* Primary - Crystalline blue */
-  --color-primary: #9fcced;
-  --color-primary-foreground: #0b1326;
+  /* Primary - Bright electric blue */
+  --color-primary: #81aeff;
+  --color-primary-foreground: #000000;
 
   /* Primary container for gradients */
-  --color-primary-container: #6996b4;
+  --color-primary-container: #68a0ff;
 
-  /* Secondary - Surface bright */
-  --color-secondary: #31394d;
-  --color-secondary-foreground: #e8f4fc;
+  /* Secondary - Cyan accent */
+  --color-secondary: #1a2028;
+  --color-secondary-foreground: #e1e5ee;
 
   /* Muted */
-  --color-muted: #171f33;
-  --color-muted-foreground: #a3c4d9;
+  --color-muted: #0e141a;
+  --color-muted-foreground: #a7abb4;
 
-  /* Accent */
-  --color-accent: #6996b4;
-  --color-accent-foreground: #e8f4fc;
+  /* Accent - Cyan */
+  --color-accent: #8fd5f7;
+  --color-accent-foreground: #00394c;
 
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
+  --color-destructive: #ff716c;
+  --color-destructive-foreground: #490006;
 
-  /* Ghost border */
-  --color-border: rgba(159, 204, 237, 0.15);
-  --color-input: #060e20;
-  --color-ring: #9fcced;
+  /* Ghost border - subtle outline */
+  --color-border: rgba(67, 72, 79, 0.3);
+  --color-input: #0e141a;
+  --color-ring: #81aeff;
 
   /* Extended surface tokens */
-  --color-surface: #0b1326;
-  --color-surface-container: #171f33;
-  --color-surface-container-low: #171f33;
-  --color-surface-container-highest: #31394d;
-  --color-surface-container-lowest: #060e20;
-  --color-surface-bright: #31394d;
+  --color-surface: #0a0f15;
+  --color-surface-container: #141a21;
+  --color-surface-container-low: #0e141a;
+  --color-surface-container-highest: #1f262f;
+  --color-surface-container-lowest: #000000;
+  --color-surface-bright: #252d36;
+  --color-surface-variant: #1f262f;
+  --color-outline-variant: #43484f;
 }
 
 /* Also support system preference for dark mode */
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-background: #0b1326;
-    --color-foreground: #e8f4fc;
+    --color-background: #0a0f15;
+    --color-foreground: #e1e5ee;
 
-    --color-card: #171f33;
-    --color-card-foreground: #e8f4fc;
+    --color-card: #141a21;
+    --color-card-foreground: #e1e5ee;
 
-    --color-popover: #171f33;
-    --color-popover-foreground: #e8f4fc;
+    --color-popover: #1a2028;
+    --color-popover-foreground: #e1e5ee;
 
-    --color-primary: #9fcced;
-    --color-primary-foreground: #0b1326;
+    --color-primary: #81aeff;
+    --color-primary-foreground: #000000;
 
-    --color-primary-container: #6996b4;
+    --color-primary-container: #68a0ff;
 
-    --color-secondary: #31394d;
-    --color-secondary-foreground: #e8f4fc;
+    --color-secondary: #1a2028;
+    --color-secondary-foreground: #e1e5ee;
 
-    --color-muted: #171f33;
-    --color-muted-foreground: #a3c4d9;
+    --color-muted: #0e141a;
+    --color-muted-foreground: #a7abb4;
 
-    --color-accent: #6996b4;
-    --color-accent-foreground: #e8f4fc;
+    --color-accent: #8fd5f7;
+    --color-accent-foreground: #00394c;
 
-    --color-destructive: #ef4444;
-    --color-destructive-foreground: #ffffff;
+    --color-destructive: #ff716c;
+    --color-destructive-foreground: #490006;
 
-    --color-border: rgba(159, 204, 237, 0.15);
-    --color-input: #060e20;
-    --color-ring: #9fcced;
+    --color-border: rgba(67, 72, 79, 0.3);
+    --color-input: #0e141a;
+    --color-ring: #81aeff;
 
-    --color-surface: #0b1326;
-    --color-surface-container: #171f33;
-    --color-surface-container-low: #171f33;
-    --color-surface-container-highest: #31394d;
-    --color-surface-container-lowest: #060e20;
-    --color-surface-bright: #31394d;
+    --color-surface: #0a0f15;
+    --color-surface-container: #141a21;
+    --color-surface-container-low: #0e141a;
+    --color-surface-container-highest: #1f262f;
+    --color-surface-container-lowest: #000000;
+    --color-surface-bright: #252d36;
+    --color-surface-variant: #1f262f;
+    --color-outline-variant: #43484f;
   }
 }
 
@@ -223,14 +227,14 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Glassmorphism utility - Dark mode override */
 .dark .glass {
-  background: rgba(23, 31, 51, 0.7);
-  border: 1px solid rgba(159, 204, 237, 0.15);
+  background: rgba(31, 38, 47, 0.6);
+  border: 1px solid rgba(67, 72, 79, 0.2);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) .glass {
-    background: rgba(23, 31, 51, 0.7);
-    border: 1px solid rgba(159, 204, 237, 0.15);
+    background: rgba(31, 38, 47, 0.6);
+    border: 1px solid rgba(67, 72, 79, 0.2);
   }
 }
 
@@ -239,9 +243,9 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 20px 40px rgba(0, 51, 72, 0.06);
 }
 
-/* Ambient shadow - Dark mode */
+/* Ambient shadow - Dark mode (deeper, more dramatic) */
 @utility shadow-ambient {
-  box-shadow: 0px 24px 48px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Interactive hover lift effect */

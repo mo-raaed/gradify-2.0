@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gradify | Academic Clarity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-primary-fixed": "#003546",
+              "on-secondary-fixed": "#13464b",
+              "surface-variant": "#b8e3ff",
+              "secondary-fixed-dim": "#addde3",
+              "on-secondary": "#d2faff",
+              "tertiary-dim": "#3e5356",
+              "on-primary-fixed-variant": "#00546d",
+              "on-secondary-container": "#29595e",
+              "on-tertiary": "#e0f7fa",
+              "surface-container-low": "#e3f3ff",
+              "outline-variant": "#88b3ce",
+              "surface-dim": "#a3dcff",
+              "surface-container-high": "#c5e7ff",
+              "error-dim": "#9f0519",
+              "outline": "#527c95",
+              "tertiary-fixed": "#def5f8",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed": "#8fd5f7",
+              "inverse-primary": "#8fd5f7",
+              "surface-container": "#d1ecff",
+              "on-error": "#ffefee",
+              "on-background": "#003348",
+              "inverse-surface": "#00101a",
+              "secondary-fixed": "#bbebf1",
+              "on-primary": "#e5f5ff",
+              "on-tertiary-container": "#495e60",
+              "primary-dim": "#005671",
+              "secondary": "#346268",
+              "primary-container": "#8fd5f7",
+              "error-container": "#fb5151",
+              "surface-tint": "#056380",
+              "on-tertiary-fixed": "#374b4e",
+              "on-secondary-fixed-variant": "#346268",
+              "secondary-dim": "#27565c",
+              "error": "#b31b25",
+              "on-error-container": "#570008",
+              "surface": "#eff7ff",
+              "inverse-on-surface": "#78a2bd",
+              "secondary-container": "#bbebf1",
+              "tertiary": "#4a5f62",
+              "on-surface-variant": "#356079",
+              "primary-fixed-dim": "#81c7e8",
+              "tertiary-container": "#def5f8",
+              "tertiary-fixed-dim": "#d0e7ea",
+              "surface-bright": "#eff7ff",
+              "on-tertiary-fixed-variant": "#53686b",
+              "surface-container-highest": "#b8e3ff",
+              "primary": "#056380",
+              "on-primary-container": "#004a61",
+              "on-surface": "#003348",
+              "background": "#eff7ff"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Plus Jakarta Sans"],
+              "label": ["Plus Jakarta Sans"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #eff7ff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .flat-glass-effect { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .text-gradient { background: linear-gradient(135deg, #056380, #8fd5f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .primary-gradient { background: linear-gradient(135deg, #056380, #8fd5f7); }
+    </style>
+</head>
+<body class="text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-sky-50/70 dark:bg-sky-950/70 backdrop-blur-2xl shadow-[0_1px_15px_rgba(135,206,235,0.1)]">
+<div class="flex justify-between items-center max-w-7xl mx-auto px-8 py-4">
+<div class="text-2xl font-bold tracking-tighter text-sky-900 dark:text-sky-50">Gradify</div>
+<div class="hidden md:flex gap-8 items-center font-['Plus_Jakarta_Sans'] antialiased text-sm tracking-tight">
+<a class="text-sky-900 dark:text-sky-100 font-semibold after:content-[''] after:block after:h-0.5 after:bg-sky-400 after:rounded-full hover:text-sky-800 dark:hover:text-sky-200 transition-all duration-300 ease-out" href="#">Dashboard</a>
+<a class="text-sky-600 dark:text-sky-400 font-medium hover:text-sky-800 dark:hover:text-sky-200 transition-all duration-300 ease-out" href="#">Courses</a>
+<a class="text-sky-600 dark:text-sky-400 font-medium hover:text-sky-800 dark:hover:text-sky-200 transition-all duration-300 ease-out" href="#">Analytics</a>
+</div>
+<button class="primary-gradient text-on-primary px-6 py-2.5 rounded-full font-semibold text-sm hover:brightness-110 active:scale-95 transition-all duration-300">
+                Get Started
+            </button>
+</div>
+</nav>
+<main class="pt-24">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 py-24 flex flex-col md:flex-row items-center gap-16">
+<div class="flex-1 space-y-8 text-left">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-highest text-primary font-medium text-xs tracking-widest uppercase">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+                    Academic Clarity Reimagined
+                </div>
+<h1 class="text-6xl md:text-7xl font-extrabold text-on-surface leading-[1.1] tracking-tighter">
+                    Elevate Your <span class="text-gradient">Potential.</span>
+</h1>
+<p class="text-xl text-on-surface-variant max-w-lg leading-relaxed font-light">
+                    Gradify provides a weightless experience for students to track GPA, simulate grades, and manage transcripts with ethereal ease.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="primary-gradient text-on-primary px-8 py-4 rounded-full font-bold text-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 group">
+                        Start Your Journey
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="bg-surface-container-highest text-primary px-8 py-4 rounded-full font-bold text-lg hover:brightness-105 transition-all">
+                        Watch Demo
+                    </button>
+</div>
+</div>
+<div class="flex-1 w-full relative">
+<div class="absolute inset-0 primary-gradient opacity-10 blur-[120px] rounded-full"></div>
+<div class="relative rounded-xl overflow-hidden shadow-2xl shadow-sky-200/50">
+<img alt="Dashboard Preview" class="w-full h-auto object-cover" data-alt="clean minimalist dashboard interface showing academic progress charts with soft blue aesthetic and frosted glass elements" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtoVFsPFDZwxfVXtr8ZxpN8GPJnhlDhrDXZvXwrp35pvl8NT3SqgNZekTTxsKMtL-ksbARU4JnQvnojWTmTvo_-xfdRuCkGpP92wR31eYBxfjYnihKKsmN_dvfGFEU-n-zZJSssxhJH5uKiJJ1MsS0XIcQ1-hJO13M5SNooOMUaEcoEhFypcspbzSM-Cmh4ms1z208ARcyYZUht7_2lgrbRe1oO4VDIQ93Pn5Arq90SQDuzspphNLe2dmzTtL60ZpnCocogtQirg"/>
+</div>
+</div>
+</section>
+<!-- Feature Highlights (Bento Grid) -->
+<section class="max-w-7xl mx-auto px-8 py-32">
+<div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+<div class="max-w-2xl">
+<h2 class="text-4xl md:text-5xl font-bold text-on-surface tracking-tight leading-tight">Precision Tools for Modern Scholars</h2>
+<p class="mt-6 text-on-surface-variant text-lg">Every feature is designed to reduce cognitive load and maximize academic transparency.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Transcript Import -->
+<div class="md:col-span-8 group bg-surface-container-low p-10 rounded-xl relative overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-sky-100">
+<div class="absolute top-8 right-8 text-[120px] font-bold text-on-surface opacity-[0.03] select-none">01</div>
+<div class="relative z-10 flex flex-col h-full justify-between">
+<div class="space-y-4">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">upload_file</span>
+</div>
+<h3 class="text-3xl font-bold">Transcript Import</h3>
+<p class="text-on-surface-variant text-lg max-w-md">Seamlessly upload your official transcripts. Our AI intelligently parses grades and credits in seconds.</p>
+</div>
+<div class="mt-12 bg-surface-container-lowest p-6 rounded-lg shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="h-2 w-32 bg-surface-container-highest rounded-full"></div>
+<div class="h-2 w-16 bg-surface-container-highest rounded-full ml-auto"></div>
+</div>
+<div class="space-y-3">
+<div class="h-2.5 w-full bg-surface-container-high rounded-full opacity-40"></div>
+<div class="h-2.5 w-4/5 bg-surface-container-high rounded-full opacity-40"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- GPA Tracking -->
+<div class="md:col-span-4 bg-surface-variant/30 p-10 rounded-xl relative overflow-hidden transition-all duration-500 hover:bg-surface-variant/40">
+<div class="absolute top-8 right-8 text-[120px] font-bold text-on-surface opacity-[0.03] select-none">02</div>
+<div class="relative z-10 space-y-6">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">analytics</span>
+</div>
+<h3 class="text-3xl font-bold">GPA Tracking</h3>
+<p class="text-on-surface-variant">Real-time visualization of your academic standing with trend forecasting and major-specific benchmarks.</p>
+<div class="pt-8">
+<div class="text-5xl font-extrabold text-primary">3.92</div>
+<div class="text-sm font-medium text-primary-dim uppercase tracking-widest mt-2">Cumulative Average</div>
+</div>
+</div>
+</div>
+<!-- Grade Simulation -->
+<div class="md:col-span-12 bg-on-surface text-surface p-12 rounded-xl flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+<div class="absolute inset-0 primary-gradient opacity-10"></div>
+<div class="relative z-10 flex-1 space-y-6">
+<div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-surface/10 text-primary-fixed-dim text-xs font-bold uppercase tracking-widest">Experimental Feature</div>
+<h3 class="text-4xl font-bold">Grade Simulation</h3>
+<p class="text-surface-variant text-lg opacity-80 max-w-xl">Play with "What-if" scenarios. Predict exactly how that upcoming final will impact your semester goals before you even sit for it.</p>
+<button class="bg-surface text-on-surface px-8 py-3 rounded-full font-bold hover:bg-surface-container-high transition-colors">Launch Simulator</button>
+</div>
+<div class="relative z-10 flex-1 grid grid-cols-2 gap-4">
+<div class="bg-surface/5 backdrop-blur-md p-6 rounded-lg border border-surface/10">
+<div class="text-xs text-surface/60 mb-2 uppercase tracking-tighter">Current</div>
+<div class="text-3xl font-bold">88.5%</div>
+</div>
+<div class="bg-primary/20 backdrop-blur-md p-6 rounded-lg border border-primary/30">
+<div class="text-xs text-primary-fixed-dim mb-2 uppercase tracking-tighter">Target</div>
+<div class="text-3xl font-bold text-primary-fixed">92.0%</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial Section -->
+<section class="py-32 bg-surface-container-low relative overflow-hidden">
+<div class="max-w-7xl mx-auto px-8 text-center">
+<div class="inline-block mb-12">
+<span class="material-symbols-outlined text-5xl text-primary opacity-30">format_quote</span>
+</div>
+<blockquote class="text-4xl md:text-5xl font-medium text-on-surface max-w-5xl mx-auto leading-[1.2] tracking-tight">
+                    "Gradify replaced my messy spreadsheets and anxiety with a clear, weightless path to graduation. I can finally focus on learning, not just numbers."
+                </blockquote>
+<div class="mt-12 flex flex-col items-center">
+<div class="w-16 h-16 rounded-full overflow-hidden mb-4 ring-4 ring-surface-container-highest">
+<img alt="Student Avatar" class="w-full h-full object-cover" data-alt="portrait of a confident young university student with soft natural lighting and a blurred library background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDaCgAPwAvF1zjbSiBB-DkEQkJ41g8yVIajFWm-43TGPwmwfE-9FHImpnC8mSKtlYR6aQS7svkl5tT1A21Tu3Mw0IFow26AhdU91bOOVPW3CZ1znAL-_WNiAn6dC1yd5C4lMQC8HtGdMuEWf4VvPB4vOPJGbULmbe1p__y57frOIYryn5TaxNiffqF9pStUEnIUKknlPu6x6hjhhVwI-N_stnesE1KsuIv2cEthCBU6wQ_jB4bteCob8D5vgW4UznbQMlMLeDplg"/>
+</div>
+<div class="font-bold text-lg">Elena Rodriguez</div>
+<div class="text-on-surface-variant text-sm tracking-widest uppercase">Senior, Columbia University</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-7xl mx-auto px-8 py-32">
+<div class="bg-primary-container/30 rounded-xl p-16 md:p-24 text-center relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-full primary-gradient opacity-[0.02]"></div>
+<h2 class="text-5xl md:text-6xl font-extrabold tracking-tighter mb-8 relative z-10">Ready for <span class="text-primary">Academic Zen?</span></h2>
+<p class="text-xl text-on-surface-variant max-w-2xl mx-auto mb-12 relative z-10">Join 15,000+ students who are streamlining their degree paths today.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+<button class="primary-gradient text-on-primary px-10 py-5 rounded-full font-bold text-xl hover:brightness-110 active:scale-95 transition-all">Create Free Account</button>
+<button class="bg-surface-container-lowest text-on-surface px-10 py-5 rounded-full font-bold text-xl hover:bg-surface-container-low transition-all">Contact Academic Advisor</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-sky-50 dark:bg-sky-950 opacity-80">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center">
+<div class="flex flex-col items-center md:items-start mb-8 md:mb-0">
+<span class="text-lg font-bold text-sky-900 dark:text-sky-100 mb-2">Gradify</span>
+<p class="font-['Plus_Jakarta_Sans'] text-xs uppercase tracking-widest text-sky-800 dark:text-sky-200">
+                    © 2024 Gradify. Built for weightless academic clarity.
+                </p>
+</div>
+<div class="flex gap-8 font-['Plus_Jakarta_Sans'] text-xs uppercase tracking-widest">
+<a class="text-sky-500 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors" href="#">Privacy</a>
+<a class="text-sky-500 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors" href="#">Terms</a>
+<a class="text-sky-500 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors" href="#">Support</a>
+<a class="text-sky-500 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors" href="#">API</a>
+</div>
+</div>
+</footer>
+</body></html>
