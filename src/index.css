@@ -46,9 +46,13 @@
 
   /* Extended surface tokens */
   --color-surface: #eff7ff;
+  --color-surface-container: #e3f3ff;
   --color-surface-container-low: #e3f3ff;
+  --color-surface-container-high: #cceaff;
   --color-surface-container-highest: #b8e3ff;
   --color-surface-container-lowest: #ffffff;
+  --color-surface-variant: #deeef5;
+  --color-outline-variant: #88b3ce;
 
   /* Radius - Rounded system */
   --radius-sm: 0.5rem;
@@ -91,8 +95,14 @@
   --color-destructive: #ff716c;
   --color-destructive-foreground: #490006;
 
-  /* Ghost border - subtle outline */
-  --color-border: rgba(67, 72, 79, 0.3);
+  /* Ghost border - 15% opacity per spec */
+  --color-border: rgba(67, 72, 79, 0.15);
+
+  /* Tertiary - Cyan highlight */
+  --color-tertiary: #9dfaff;
+
+  /* Primary dim for glow effects */
+  --color-primary-dim: #0072e5;
   --color-input: #0e141a;
   --color-ring: #81aeff;
 
@@ -136,7 +146,13 @@
     --color-destructive: #ff716c;
     --color-destructive-foreground: #490006;
 
-    --color-border: rgba(67, 72, 79, 0.3);
+    --color-border: rgba(67, 72, 79, 0.15);
+
+    /* Tertiary - Cyan highlight */
+    --color-tertiary: #9dfaff;
+
+    /* Primary dim for glow effects */
+    --color-primary-dim: #0072e5;
     --color-input: #0e141a;
     --color-ring: #81aeff;
 
@@ -225,16 +241,20 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid rgba(136, 179, 206, 0.15);
 }
 
-/* Glassmorphism utility - Dark mode override */
+/* Glassmorphism utility - Dark mode override (24px blur per spec) */
 .dark .glass {
   background: rgba(31, 38, 47, 0.6);
-  border: 1px solid rgba(67, 72, 79, 0.2);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(67, 72, 79, 0.15);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) .glass {
     background: rgba(31, 38, 47, 0.6);
-    border: 1px solid rgba(67, 72, 79, 0.2);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(67, 72, 79, 0.15);
   }
 }
 
@@ -251,4 +271,26 @@ h1, h2, h3, h4, h5, h6 {
 /* Interactive hover lift effect */
 @utility hover-lift {
   transition: transform 0.2s ease-out;
+}
+
+/* Primary button glow effect for dark mode */
+.dark .btn-glow:hover {
+  box-shadow: 0 0 15px var(--color-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .btn-glow:hover {
+    box-shadow: 0 0 15px var(--color-primary);
+  }
+}
+
+/* Celestial chip glow effect */
+.dark .chip-glow {
+  text-shadow: 0 0 8px var(--color-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .chip-glow {
+    text-shadow: 0 0 8px var(--color-primary);
+  }
 }
