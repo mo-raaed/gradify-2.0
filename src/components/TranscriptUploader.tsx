@@ -91,7 +91,7 @@ export function TranscriptUploader({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-serif text-xl">Upload Transcript</DialogTitle>
+          <DialogTitle className="text-xl">Upload Transcript</DialogTitle>
           <DialogDescription>
             Upload your AUIS unofficial transcript PDF to automatically import your courses and grades.
           </DialogDescription>
@@ -105,11 +105,11 @@ export function TranscriptUploader({
             onDrop={handleDrop}
             onClick={() => document.getElementById("file-upload")?.click()}
             className={cn(
-              "relative cursor-pointer rounded-xl border-2 border-dashed p-8 text-center transition-all duration-200",
+              "relative cursor-pointer rounded-[2rem] p-8 text-center transition-all duration-200 hover:scale-[1.02]",
               isDragging
-                ? "border-primary bg-primary/5 scale-[1.02]"
-                : "border-border hover:border-primary/50 hover:bg-muted/50",
-              file && "border-green-500 bg-green-500/5"
+                ? "bg-primary/10"
+                : "bg-secondary hover:bg-muted",
+              file && "bg-green-500/10"
             )}
           >
             <input
@@ -171,4 +171,3 @@ export function TranscriptUploader({
     </Dialog>
   );
 }
-

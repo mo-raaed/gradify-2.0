@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { GpaDisplay } from "./GpaDisplay";
 import { CourseRow } from "./CourseRow";
 import { AddCourseDialog } from "./AddCourseDialog";
+import { cn } from "@/lib/utils";
 import type { Semester, Course } from "@/lib/gpaCalculator";
 
 interface SemesterCardProps {
@@ -38,17 +39,19 @@ export function SemesterCard({
 
   return (
     <div
-      className={`rounded-xl border shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md ${
+      className={cn(
+        "rounded-[2rem] overflow-hidden transition-all duration-300 hover:scale-[1.01]",
         isPlanned
-          ? "border-dashed border-primary/40 bg-primary/5"
-          : "border-border bg-card"
-      }`}
+          ? "bg-primary/5"
+          : "bg-card shadow-tonal dark:shadow-ambient"
+      )}
     >
       {/* Header */}
       <div
-        className={`flex items-center justify-between px-4 py-3 cursor-pointer select-none ${
-          isPlanned ? "bg-primary/10" : "bg-muted/30"
-        }`}
+        className={cn(
+          "flex items-center justify-between px-6 py-4 cursor-pointer select-none",
+          isPlanned ? "bg-primary/10" : "bg-secondary"
+        )}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-3">
@@ -59,7 +62,7 @@ export function SemesterCard({
           )}
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-serif font-semibold text-lg">{semester.name}</h3>
+              <h3 className="font-semibold text-lg">{semester.name}</h3>
               {isPlanned && (
                 <span className="px-2 py-0.5 rounded-full bg-primary/20 text-xs font-medium text-primary">
                   Planned
@@ -130,20 +133,20 @@ export function SemesterCard({
           {displayedCourses.length > 0 ? (
             <table className="w-full">
               <thead>
-                <tr className="border-b border-border bg-muted/20">
-                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                <tr className="bg-secondary/50">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Code
                   </th>
-                  <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Course Name
                   </th>
-                  <th className="px-3 py-2 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Credits
                   </th>
-                  <th className="px-3 py-2 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Grade
                   </th>
-                  <th className="px-3 py-2 w-[50px]"></th>
+                  <th className="px-4 py-3 w-[50px]"></th>
                 </tr>
               </thead>
               <tbody>
@@ -184,4 +187,3 @@ export function SemesterCard({
     </div>
   );
 }
-

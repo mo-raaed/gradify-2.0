@@ -6,9 +6,10 @@ import {
 import { useEffect } from "react";
 import { api } from "../convex/_generated/api";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, FileText, BarChart3, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dashboard } from "@/components/Dashboard";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function App() {
   return (
@@ -28,23 +29,26 @@ export default function App() {
 
 function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full bg-background/70 backdrop-blur-xl border-b border-border">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <GraduationCap className="h-7 w-7 text-primary" />
-          <span className="text-xl font-serif font-bold tracking-tight">
+          <span className="text-xl font-bold tracking-tight">
             Gradify
           </span>
         </div>
-        <Authenticated>
-          <UserButton
-            appearance={{
-              elements: {
-                avatarBox: "h-9 w-9",
-              },
-            }}
-          />
-        </Authenticated>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Authenticated>
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "h-9 w-9",
+                },
+              }}
+            />
+          </Authenticated>
+        </div>
       </div>
     </header>
   );
@@ -67,37 +71,43 @@ function LandingPage() {
       <div className="max-w-2xl mx-auto text-center">
         {/* Hero */}
         <div className="mb-12">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 mb-6 ring-1 ring-primary/20">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2rem] bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20 mb-6">
             <GraduationCap className="h-12 w-12 text-primary" />
           </div>
-          <h1 className="text-4xl sm:text-5xl font-serif font-bold tracking-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
             Track Your Academic Journey
           </h1>
           <p className="text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed">
-            Upload your AUIS transcript, track your GPA in real-time, and simulate 
+            Upload your AUIS transcript, track your GPA in real-time, and simulate
             future grades to plan your path to success.
           </p>
         </div>
 
         {/* Features */}
         <div className="grid sm:grid-cols-3 gap-6 mb-12">
-          <div className="p-4 rounded-xl bg-card border border-border">
-            <div className="text-3xl mb-2">📄</div>
-            <h3 className="font-semibold mb-1">PDF Import</h3>
+          <div className="p-6 rounded-[2rem] bg-secondary">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-4">
+              <FileText className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">PDF Import</h3>
             <p className="text-sm text-muted-foreground">
               Upload your unofficial transcript and we'll parse it automatically
             </p>
           </div>
-          <div className="p-4 rounded-xl bg-card border border-border">
-            <div className="text-3xl mb-2">📊</div>
-            <h3 className="font-semibold mb-1">GPA Tracking</h3>
+          <div className="p-6 rounded-[2rem] bg-secondary">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-4">
+              <BarChart3 className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">GPA Tracking</h3>
             <p className="text-sm text-muted-foreground">
               See your semester and cumulative GPA update in real-time
             </p>
           </div>
-          <div className="p-4 rounded-xl bg-card border border-border">
-            <div className="text-3xl mb-2">🎯</div>
-            <h3 className="font-semibold mb-1">Grade Simulation</h3>
+          <div className="p-6 rounded-[2rem] bg-secondary">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-4">
+              <Target className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="font-semibold mb-2">Grade Simulation</h3>
             <p className="text-sm text-muted-foreground">
               Predict your GPA by simulating grades for in-progress courses
             </p>

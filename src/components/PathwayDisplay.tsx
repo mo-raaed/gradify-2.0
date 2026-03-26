@@ -44,15 +44,15 @@ export function PathwayDisplay({
     <div className="space-y-4">
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="p-3 rounded-lg bg-muted/50 text-center">
+        <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">Semesters Needed</p>
           <p className="text-2xl font-bold">{pathway.semesters.length}</p>
         </div>
-        <div className="p-3 rounded-lg bg-muted/50 text-center">
+        <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">New Credits</p>
           <p className="text-2xl font-bold">{pathway.totalNewCredits}</p>
         </div>
-        <div className="p-3 rounded-lg bg-muted/50 text-center">
+        <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">Projected GPA</p>
           <p className="text-2xl font-bold text-primary">
             {pathway.finalProjectedGPA.toFixed(2)}
@@ -62,9 +62,9 @@ export function PathwayDisplay({
 
       {/* Winter/Summer Recommendation */}
       {pathway.winterSummerRecommended && (
-        <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900">
-          <Lightbulb className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
-          <p className="text-sm text-blue-800 dark:text-blue-200">
+        <div className="flex items-start gap-2 p-4 rounded-[2rem] bg-blue-500/10">
+          <Lightbulb className="h-4 w-4 text-blue-600 mt-0.5" />
+          <p className="text-sm text-blue-800">
             Consider taking winter or summer courses to reach your goal faster or
             reduce your semester load.
           </p>
@@ -76,10 +76,10 @@ export function PathwayDisplay({
         {pathway.semesters.map((semester) => (
           <div
             key={semester.id}
-            className={`p-4 rounded-lg border border-dashed ${
+            className={`p-4 rounded-[2rem] ${
               semester.isExisting
-                ? "border-amber-400/50 bg-amber-50/50 dark:bg-amber-950/20"
-                : "border-primary/30 bg-primary/5"
+                ? "bg-amber-500/10"
+                : "bg-secondary"
             }`}
           >
             <div className="flex items-center justify-between mb-3">
@@ -88,7 +88,7 @@ export function PathwayDisplay({
                 <span className="font-medium">{semester.name}</span>
                 <span className={`px-2 py-0.5 rounded-full text-xs ${
                   semester.isExisting
-                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                    ? "bg-amber-500/20 text-amber-700"
                     : "bg-primary/10 text-primary"
                 }`}>
                   {semester.isExisting ? "Current (IP)" : "Planned"}
@@ -115,7 +115,7 @@ export function PathwayDisplay({
               {semester.courses.map((course) => (
                 <div
                   key={course.id}
-                  className="flex items-center justify-between text-sm py-1 px-2 rounded bg-background/50"
+                  className="flex items-center justify-between text-sm py-2 px-3 rounded-lg bg-card/50"
                 >
                   <span className="text-muted-foreground">
                     {course.courseCode} - {course.courseName}
@@ -142,7 +142,7 @@ export function PathwayDisplay({
             <span className="text-muted-foreground">/ {targetGPA.toFixed(2)}</span>
           </span>
         </div>
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-2 bg-secondary rounded-full overflow-hidden">
           <div
             className="h-full bg-primary transition-all duration-500"
             style={{

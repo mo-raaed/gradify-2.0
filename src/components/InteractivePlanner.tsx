@@ -195,7 +195,7 @@ export function InteractivePlanner({
   return (
     <div className="space-y-4">
       {/* Effort Slider */}
-      <div className="p-4 rounded-lg bg-muted/30 space-y-3">
+      <div className="p-4 rounded-[2rem] bg-secondary space-y-3">
         <div className="flex items-center justify-between">
           <Label className="flex items-center gap-2">
             <Gauge className="h-4 w-4" />
@@ -219,21 +219,21 @@ export function InteractivePlanner({
 
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="p-3 rounded-lg bg-muted/50 text-center">
+        <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">Semesters</p>
           <p className="text-2xl font-bold">{semesters.length}</p>
         </div>
-        <div className="p-3 rounded-lg bg-muted/50 text-center">
+        <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">New Credits</p>
           <p className="text-2xl font-bold">{totals.totalNewCredits}</p>
         </div>
-        <div className="p-3 rounded-lg bg-muted/50 text-center">
+        <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">Projected GPA</p>
           <p
             className={`text-2xl font-bold ${
               totals.finalProjectedGPA >= targetGPA
-                ? "text-green-600 dark:text-green-400"
-                : "text-amber-600 dark:text-amber-400"
+                ? "text-green-600"
+                : "text-amber-600"
             }`}
           >
             {totals.finalProjectedGPA.toFixed(2)}
@@ -243,9 +243,9 @@ export function InteractivePlanner({
 
       {/* Goal Status */}
       {totals.finalProjectedGPA < targetGPA && (
-        <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
-          <Lightbulb className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5" />
-          <p className="text-sm text-amber-800 dark:text-amber-200">
+        <div className="flex items-start gap-2 p-4 rounded-[2rem] bg-amber-500/10">
+          <Lightbulb className="h-4 w-4 text-amber-600 mt-0.5" />
+          <p className="text-sm text-amber-800">
             Your current plan projects to{" "}
             <strong>{totals.finalProjectedGPA.toFixed(2)}</strong>, which is below
             your target of <strong>{targetGPA.toFixed(2)}</strong>. Try increasing
@@ -259,10 +259,10 @@ export function InteractivePlanner({
         {semesters.map((semester, semIndex) => (
           <div
             key={semester.id}
-            className={`p-4 rounded-lg border border-dashed ${
+            className={`p-4 rounded-[2rem] ${
               semester.isExisting
-                ? "border-amber-400/50 bg-amber-50/50 dark:bg-amber-950/20"
-                : "border-primary/30 bg-primary/5"
+                ? "bg-amber-500/10"
+                : "bg-secondary"
             }`}
           >
             <div className="flex items-center justify-between mb-3">
@@ -271,7 +271,7 @@ export function InteractivePlanner({
                 <span className="font-medium">{semester.name}</span>
                 <span className={`px-2 py-0.5 rounded-full text-xs ${
                   semester.isExisting
-                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                    ? "bg-amber-500/20 text-amber-700"
                     : "bg-primary/10 text-primary"
                 }`}>
                   {semester.isExisting ? "Current (IP)" : "Planned"}
@@ -298,7 +298,7 @@ export function InteractivePlanner({
               {semester.courses.map((course, courseIndex) => (
                 <div
                   key={course.id}
-                  className="flex items-center gap-2 py-2 px-2 rounded bg-background/50"
+                  className="flex items-center gap-2 py-2 px-3 rounded-lg bg-card/50"
                 >
                   <Input
                     value={course.courseCode}
@@ -363,7 +363,7 @@ export function InteractivePlanner({
               <Button
                 variant="ghost"
                 size="sm"
-                className="w-full h-8 border border-dashed"
+                className="w-full h-8 bg-card/30 hover:bg-card/50"
                 onClick={() => handleAddCourse(semIndex)}
               >
                 <Plus className="h-3 w-3 mr-1" />
@@ -383,7 +383,7 @@ export function InteractivePlanner({
             <span className="text-muted-foreground">/ {targetGPA.toFixed(2)}</span>
           </span>
         </div>
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
+        <div className="h-2 bg-secondary rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-500 ${
               totals.finalProjectedGPA >= targetGPA ? "bg-green-500" : "bg-primary"
