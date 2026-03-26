@@ -60,6 +60,21 @@
   --radius-lg: 2rem;
   --radius-xl: 2rem;
   --radius-full: 9999px;
+
+  /* Layout dimensions - Command Center architecture */
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 80px;
+  --content-header-height: 80px;
+  --mobile-header-height: 60px;
+
+  /* Spacing tokens (12px base unit) */
+  --space-1: 12px;
+  --space-2: 24px;
+  --space-3: 36px;
+  --space-4: 48px;
+  --space-5: 64px;
+  --section-gap: 32px;
+  --card-padding: 24px;
 }
 
 /* Dark mode - "Aura Midnight" */

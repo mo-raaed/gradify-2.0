@@ -16,6 +16,7 @@ interface CourseRowProps {
   course: Course;
   onUpdate: (updates: Partial<Course>) => void;
   onRemove: () => void;
+  highlighted?: boolean;
 }
 
 const grades = [
@@ -24,7 +25,7 @@ const grades = [
 
 const creditOptions = ["1", "2", "3", "4", "5"];
 
-export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
+export function CourseRow({ course, onUpdate, onRemove, highlighted = false }: CourseRowProps) {
   const [isEditingCode, setIsEditingCode] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [editCode, setEditCode] = useState(course.courseCode);
@@ -61,7 +62,8 @@ export function CourseRow({ course, onUpdate, onRemove }: CourseRowProps) {
       className={cn(
         "group transition-colors hover:bg-secondary/50",
         isSimulated && "bg-primary/5",
-        course.retaken && "opacity-50"
+        course.retaken && "opacity-50",
+        highlighted && "bg-primary/10 ring-1 ring-primary/30"
       )}
     >
       {/* Course Code */}

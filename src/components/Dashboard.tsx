@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import {
@@ -8,14 +8,16 @@ import {
   RotateCcw,
   GraduationCap,
   Loader2,
-  Target,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GpaDisplay } from "./GpaDisplay";
 import { SemesterCard } from "./SemesterCard";
 import { TranscriptUploader } from "./TranscriptUploader";
 import { AddSemesterDialog } from "./AddSemesterDialog";
 import { GpaGoalPlanner } from "./GpaGoalPlanner";
+import { ContentHeader } from "./layout/ContentHeader";
+import { DashboardSummary } from "./layout/DashboardSummary";
+import { useLayout } from "@/context/LayoutContext";
+import { useSearch } from "@/hooks/useSearch";
 import type { TranscriptData } from "@/lib/gpaCalculator";
 
 export function Dashboard() {
@@ -32,6 +34,17 @@ export function Dashboard() {
   const addCourse = useMutation(api.transcripts.addCourse);
   const removeCourse = useMutation(api.transcripts.removeCourse);
   const resetSimulatedGrades = useMutation(api.transcripts.resetSimulatedGrades);
+
+  // Layout context
+  const {
+    activeFilter,
+    highlightedCourses,
+    highlightedSemesters,
+    registerSemesterRef,
+  } = useLayout();
+
+  // Search hook - updates context with results
+  useSearch(transcript?.semesters || []);
 
   // Loading state
   if (transcript === undefined) {
@@ -136,36 +149,42 @@ export function Dashboard() {
     );
   }
 
+  // Filter semesters based on active filter
+  const filteredSemesters = transcript.semesters.filter((semester) => {
+    if (activeFilter === "completed") {
+      return semester.courses.some((c) => c.gradeType === "completed");
+    } else if (activeFilter === "planned") {
+      return semester.planned === true;
+    }
+    return true; // "all" filter
+  });
+
   // Main dashboard with transcript data
   return (
-    <div className="container mx-auto px-4 py-6 max-w-5xl">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold">Your Transcript</h1>
-          <p className="text-muted-foreground">
-            {transcript.semesters.length} semesters
-          </p>
-        </div>
+    <>
+      {/* Zone 1: Content Header */}
+      <ContentHeader cumulativeGPA={transcript.cumulativeGPA} />
 
-        <div className="flex items-center gap-3">
-          <GpaDisplay
-            gpa={transcript.cumulativeGPA}
-            label="Cumulative GPA"
-            size="md"
-            variant="primary"
-          />
+      {/* Zone 2: Dashboard Summary */}
+      <DashboardSummary semesters={transcript.semesters} />
 
-          <div className="flex gap-1">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setIsGoalPlannerOpen(true)}
-              title="GPA Goal Planner"
-              className="text-primary hover:text-primary"
-            >
-              <Target className="h-4 w-4" />
-            </Button>
+      {/* Zone 3: Primary Feed - Action Bar */}
+      <section className="px-12 max-lg:px-8 max-md:px-4 pb-4">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-bold">
+              {activeFilter === "completed"
+                ? "Completed Semesters"
+                : activeFilter === "planned"
+                ? "Planned Semesters"
+                : "Your Transcript"}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {filteredSemesters.length} semesters
+            </p>
+          </div>
+
+          <div className="flex gap-2">
             <Button
               variant="outline"
               size="icon"
@@ -201,47 +220,65 @@ export function Dashboard() {
             </Button>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Semesters */}
-      <div className="space-y-4">
-        {transcript.semesters.map((semester) => (
-          <SemesterCard
-            key={semester.id}
-            semester={semester}
-            onUpdateCourse={(courseId, updates) =>
-              updateCourse({
-                semesterId: semester.id,
-                courseId,
-                updates,
-              })
-            }
-            onAddCourse={(course) =>
-              addCourse({
-                semesterId: semester.id,
-                ...course,
-              })
-            }
-            onRemoveCourse={(courseId) =>
-              removeCourse({
-                semesterId: semester.id,
-                courseId,
-              })
-            }
-            onRemoveSemester={() => removeSemester({ semesterId: semester.id })}
-          />
-        ))}
+      {/* Zone 3: Primary Feed - Semester Cards */}
+      <section className="px-12 max-lg:px-8 max-md:px-4 pb-12 space-y-8">
+        {filteredSemesters.map((semester) => {
+          const ref = useRef<HTMLDivElement>(null);
 
-        {transcript.semesters.length === 0 && (
+          // Register ref on mount
+          useEffect(() => {
+            registerSemesterRef(semester.id, ref);
+          }, [semester.id]);
+
+          return (
+            <SemesterCard
+              key={semester.id}
+              ref={ref}
+              semester={semester}
+              onUpdateCourse={(courseId, updates) =>
+                updateCourse({
+                  semesterId: semester.id,
+                  courseId,
+                  updates,
+                })
+              }
+              onAddCourse={(course) =>
+                addCourse({
+                  semesterId: semester.id,
+                  ...course,
+                })
+              }
+              onRemoveCourse={(courseId) =>
+                removeCourse({
+                  semesterId: semester.id,
+                  courseId,
+                })
+              }
+              onRemoveSemester={() => removeSemester({ semesterId: semester.id })}
+              highlighted={highlightedSemesters.has(semester.id)}
+              highlightedCourseIds={highlightedCourses}
+            />
+          );
+        })}
+
+        {filteredSemesters.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">No semesters yet</p>
+            <p className="text-muted-foreground mb-4">
+              {activeFilter === "completed"
+                ? "No completed semesters yet"
+                : activeFilter === "planned"
+                ? "No planned semesters yet"
+                : "No semesters yet"}
+            </p>
             <Button onClick={() => setIsAddSemesterOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Add Semester
             </Button>
           </div>
         )}
-      </div>
+      </section>
 
       {/* Dialogs */}
       <TranscriptUploader
@@ -262,6 +299,6 @@ export function Dashboard() {
         onOpenChange={setIsGoalPlannerOpen}
         semesters={transcript.semesters}
       />
-    </div>
+    </>
   );
 }

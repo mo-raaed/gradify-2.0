@@ -5,52 +5,23 @@ import {
 } from "convex/react";
 import { useEffect } from "react";
 import { api } from "../convex/_generated/api";
-import { SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
+import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { GraduationCap, FileText, BarChart3, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dashboard } from "@/components/Dashboard";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { AppShell } from "@/components/layout/AppShell";
+import { LayoutProvider } from "@/context/LayoutContext";
 
 export default function App() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <main>
-        <Authenticated>
-          <AuthenticatedContent />
-        </Authenticated>
-        <Unauthenticated>
-          <LandingPage />
-        </Unauthenticated>
-      </main>
+      <Authenticated>
+        <AuthenticatedContent />
+      </Authenticated>
+      <Unauthenticated>
+        <LandingPage />
+      </Unauthenticated>
     </div>
-  );
-}
-
-function Header() {
-  return (
-    <header className="sticky top-0 z-50 w-full bg-background/70 backdrop-blur-xl border-b border-border">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <GraduationCap className="h-7 w-7 text-primary" />
-          <span className="text-xl font-bold tracking-tight">
-            Gradify
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Authenticated>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "h-9 w-9",
-                },
-              }}
-            />
-          </Authenticated>
-        </div>
-      </div>
-    </header>
   );
 }
 
@@ -62,7 +33,13 @@ function AuthenticatedContent() {
     upsertUser();
   }, [upsertUser]);
 
-  return <Dashboard />;
+  return (
+    <LayoutProvider>
+      <AppShell>
+        <Dashboard />
+      </AppShell>
+    </LayoutProvider>
+  );
 }
 
 function LandingPage() {
