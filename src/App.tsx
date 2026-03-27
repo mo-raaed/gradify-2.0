@@ -2,67 +2,83 @@ import {
   Authenticated,
   Unauthenticated,
   useMutation,
+  useQuery,
 } from "convex/react";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "../convex/_generated/api";
-import { SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
+import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { GraduationCap, FileText, BarChart3, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dashboard } from "@/components/Dashboard";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { AppShell } from "@/components/layout/AppShell";
+import { LayoutProvider } from "@/context/LayoutContext";
 
 export default function App() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <main>
-        <Authenticated>
-          <AuthenticatedContent />
-        </Authenticated>
-        <Unauthenticated>
-          <LandingPage />
-        </Unauthenticated>
-      </main>
+      <Authenticated>
+        <AuthenticatedContent />
+      </Authenticated>
+      <Unauthenticated>
+        <LandingPage />
+      </Unauthenticated>
     </div>
-  );
-}
-
-function Header() {
-  return (
-    <header className="sticky top-0 z-50 w-full bg-background/70 backdrop-blur-xl border-b border-border">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <GraduationCap className="h-7 w-7 text-primary" />
-          <span className="text-xl font-bold tracking-tight">
-            Gradify
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Authenticated>
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "h-9 w-9",
-                },
-              }}
-            />
-          </Authenticated>
-        </div>
-      </div>
-    </header>
   );
 }
 
 function AuthenticatedContent() {
   const upsertUser = useMutation(api.users.upsertUser);
+  const updateMajor = useMutation(api.transcripts.updateMajor);
+  const transcript = useQuery(api.transcripts.getMyTranscript);
+  const [isGoalPlannerOpen, setIsGoalPlannerOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
 
   // Ensure user exists in database on first load
   useEffect(() => {
     upsertUser();
   }, [upsertUser]);
 
-  return <Dashboard />;
+  // Handle major update
+  const handleMajorUpdate = async (major: string) => {
+    await updateMajor({ major });
+  };
+
+  // Handle export
+  const handleExport = useCallback(() => {
+    if (!transcript) return;
+
+    const jsonString = JSON.stringify(transcript, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "gradify-export.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [transcript]);
+
+  return (
+    <LayoutProvider>
+      <AppShell
+        major={transcript?.major}
+        cumulativeGPA={transcript?.cumulativeGPA}
+        onMajorUpdate={handleMajorUpdate}
+        onGpaGoalClick={() => setIsGoalPlannerOpen(true)}
+        onUploadClick={() => setIsUploadOpen(true)}
+        onExportClick={handleExport}
+      >
+        <Dashboard
+          isGoalPlannerOpen={isGoalPlannerOpen}
+          setIsGoalPlannerOpen={setIsGoalPlannerOpen}
+          isUploadOpen={isUploadOpen}
+          setIsUploadOpen={setIsUploadOpen}
+        />
+      </AppShell>
+    </LayoutProvider>
+  );
 }
 
 function LandingPage() {

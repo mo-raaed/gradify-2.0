@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { ChevronDown, ChevronUp, Plus, Trash2, BookOpen, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GpaDisplay } from "./GpaDisplay";
@@ -18,15 +18,23 @@ interface SemesterCardProps {
   }) => void;
   onRemoveCourse: (courseId: string) => void;
   onRemoveSemester: () => void;
+  highlighted?: boolean;
+  highlightedCourseIds?: Set<string>;
 }
 
-export function SemesterCard({
-  semester,
-  onUpdateCourse,
-  onAddCourse,
-  onRemoveCourse,
-  onRemoveSemester,
-}: SemesterCardProps) {
+export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
+  function SemesterCard(
+    {
+      semester,
+      onUpdateCourse,
+      onAddCourse,
+      onRemoveCourse,
+      onRemoveSemester,
+      highlighted = false,
+      highlightedCourseIds = new Set(),
+    },
+    ref
+  ) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
 
@@ -39,11 +47,14 @@ export function SemesterCard({
 
   return (
     <div
+      ref={ref}
+      id={`semester-${semester.id}`}
       className={cn(
         "rounded-[2rem] overflow-hidden transition-all duration-300 hover:scale-[1.01]",
         isPlanned
           ? "bg-primary/5"
-          : "bg-card shadow-tonal dark:shadow-ambient"
+          : "bg-card shadow-tonal dark:shadow-ambient",
+        highlighted && "ring-2 ring-primary ring-offset-4 ring-offset-background"
       )}
     >
       {/* Header */}
@@ -112,7 +123,7 @@ export function SemesterCard({
                 e.stopPropagation();
                 onRemoveSemester();
               }}
-              className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+              className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10 btn-glow-red"
             >
               <Trash2 className="h-4 w-4" />
               <span className="sr-only">Remove semester</span>
@@ -156,6 +167,7 @@ export function SemesterCard({
                     course={course}
                     onUpdate={(updates) => onUpdateCourse(course.id, updates)}
                     onRemove={() => onRemoveCourse(course.id)}
+                    highlighted={highlightedCourseIds.has(course.id)}
                   />
                 ))}
               </tbody>
@@ -186,4 +198,4 @@ export function SemesterCard({
       />
     </div>
   );
-}
+});

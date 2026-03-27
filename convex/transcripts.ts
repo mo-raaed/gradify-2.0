@@ -27,6 +27,7 @@ export const getMyTranscript = query({
       userId: v.id("users"),
       semesters: v.array(semesterValidator),
       cumulativeGPA: v.number(),
+      major: v.optional(v.string()),
       updatedAt: v.number(),
     }),
     v.null()
@@ -69,6 +70,7 @@ export const saveTranscript = mutation({
   args: {
     semesters: v.array(semesterValidator),
     cumulativeGPA: v.number(),
+    major: v.optional(v.string()),
   },
   returns: v.id("transcripts"),
   handler: async (ctx, args) => {
@@ -105,6 +107,7 @@ export const saveTranscript = mutation({
       await ctx.db.patch(existingTranscript._id, {
         semesters: actualSemesters,
         cumulativeGPA: args.cumulativeGPA,
+        major: args.major || existingTranscript.major, // Preserve existing major if not provided
         updatedAt: Date.now(),
       });
       return existingTranscript._id;
@@ -115,6 +118,7 @@ export const saveTranscript = mutation({
       userId: user._id,
       semesters: actualSemesters,
       cumulativeGPA: args.cumulativeGPA,
+      major: args.major,
       updatedAt: Date.now(),
     });
   },
@@ -616,6 +620,82 @@ export const clearPlannedSemesters = mutation({
       updatedAt: Date.now(),
     });
 
+    return null;
+  },
+});
+
+/**
+ * Update the student's major
+ */
+export const updateMajor = mutation({
+  args: {
+    major: v.string(),
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const transcript = await ctx.db
+      .query("transcripts")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .unique();
+
+    if (!transcript) {
+      throw new Error("Transcript not found");
+    }
+
+    await ctx.db.patch(transcript._id, {
+      major: args.major.trim() || undefined,
+      updatedAt: Date.now(),
+    });
+
+    return null;
+  },
+});
+
+/**
+ * Delete the entire transcript, returning the user to the empty/welcome state
+ */
+export const deleteTranscript = mutation({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const transcript = await ctx.db
+      .query("transcripts")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .unique();
+
+    if (!transcript) {
+      return null; // Already no transcript
+    }
+
+    await ctx.db.delete(transcript._id);
     return null;
   },
 });
