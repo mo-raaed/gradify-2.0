@@ -5,12 +5,20 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
-export function GlobalSearch() {
+interface GlobalSearchProps {
+  // Used by the mobile header to close results when the panel is hidden.
+  isOpen?: boolean;
+  // When true, focus the input (opens keyboard on mobile).
+  autoFocus?: boolean;
+}
+
+export function GlobalSearch({ isOpen = true, autoFocus = false }: GlobalSearchProps = {}) {
   const { searchQuery, setSearchQuery, searchResults, scrollToSemester } = useLayout();
   const [inputValue, setInputValue] = useState(searchQuery);
   const [showResults, setShowResults] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Debounce search query
   useEffect(() => {
@@ -34,6 +42,22 @@ export function GlobalSearch() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // When the mobile search panel is closed, hide results so they don't linger.
+  useEffect(() => {
+    if (!isOpen) setShowResults(false);
+  }, [isOpen]);
+
+  // Focus the input when the panel is opened, so the keyboard prompts the user.
+  useEffect(() => {
+    if (!autoFocus || !isOpen) return;
+
+    const raf = window.requestAnimationFrame(() => {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    });
+    return () => window.cancelAnimationFrame(raf);
+  }, [autoFocus, isOpen]);
 
   const handleClear = () => {
     setInputValue("");
@@ -96,6 +120,7 @@ export function GlobalSearch() {
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
+          ref={inputRef}
           type="text"
           placeholder="Search courses, semesters, or grades..."
           value={inputValue}

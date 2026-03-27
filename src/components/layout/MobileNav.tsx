@@ -56,10 +56,15 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
       {/* Drawer with secondary navigation (primary actions moved to bottom tabs) */}
       <Dialog open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
         <DialogContent
-          className="fixed left-0 top-0 h-screen w-[280px] rounded-none rounded-r-[2rem] p-0 border-r border-border/5 data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left"
+          className="fixed left-2 top-0 translate-x-0 translate-y-0 h-screen w-[280px] max-w-none rounded-none rounded-r-[2rem] p-0 border-r border-border/5 z-50
+          transition-transform duration-200 ease-out
+          data-[state=open]:animate-none data-[state=closed]:animate-none
+          data-[state=closed]:-translate-x-full data-[state=open]:translate-x-0
+          data-[state=closed]:translate-y-0 data-[state=open]:translate-y-0
+          overflow-x-hidden"
           hideClose
         >
-          <div className="h-full flex flex-col">
+          <div className="h-full flex flex-col overflow-x-hidden">
             {/* Header */}
             <div className="h-16 px-6 flex items-center justify-between shrink-0 border-b border-border/5">
               <div className="flex items-center gap-3">
@@ -76,7 +81,7 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
             </div>
 
             {/* Secondary Navigation Items */}
-            <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-2">
+            <nav className="flex-1 overflow-y-auto overflow-x-hidden py-4 px-3 space-y-2">
               {/* Transcript / Home */}
               <button
                 onClick={() => {

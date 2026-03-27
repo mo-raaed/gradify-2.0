@@ -1,5 +1,6 @@
 import { GlobalSearch } from "../search/GlobalSearch";
 import { useLayout } from "@/context/LayoutContext";
+import { cn } from "@/lib/utils";
 
 export function ContentHeader() {
   const { mobileSearchOpen } = useLayout();
@@ -25,11 +26,16 @@ export function ContentHeader() {
       </header>
 
       {/* Mobile search bar - slides in when toggled from bottom tab */}
-      {mobileSearchOpen && (
-        <div className="sticky top-[60px] z-30 bg-background/70 backdrop-blur-xl border-b border-border/5 px-4 py-3 md:hidden">
-          <GlobalSearch />
-        </div>
-      )}
+      <div
+        className={cn(
+          "fixed left-0 right-0 top-[60px] z-30 bg-background/70 backdrop-blur-xl border-b border-border/5 px-4 py-3 md:hidden",
+          "transition-[transform,opacity] duration-200 ease-out",
+          mobileSearchOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"
+        )}
+        aria-hidden={!mobileSearchOpen}
+      >
+        <GlobalSearch isOpen={mobileSearchOpen} autoFocus={mobileSearchOpen} />
+      </div>
     </>
   );
 }
