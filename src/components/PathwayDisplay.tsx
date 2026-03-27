@@ -82,7 +82,7 @@ export function PathwayDisplay({
                 : "bg-secondary"
             }`}
           >
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
                 <BookOpen className={`h-4 w-4 ${semester.isExisting ? "text-amber-600" : "text-primary"}`} />
                 <span className="font-medium">{semester.name}</span>
