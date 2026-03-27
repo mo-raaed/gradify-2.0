@@ -29,8 +29,8 @@ export function ContentHeader() {
       <div
         className={cn(
           "fixed left-0 right-0 top-[60px] z-30 bg-background/70 backdrop-blur-xl border-b border-border/5 px-4 py-3 md:hidden",
-          "transition-transform duration-200 ease-out",
-          mobileSearchOpen ? "translate-y-0" : "-translate-y-4 opacity-0 pointer-events-none"
+          "transition-[transform,opacity] duration-200 ease-out",
+          mobileSearchOpen ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"
         )}
         aria-hidden={!mobileSearchOpen}
       >

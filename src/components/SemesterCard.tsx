@@ -362,7 +362,7 @@ function MobileCourseCard({ course, onUpdate, onRemove, highlighted = false }: M
           value={course.credits.toString()}
           onValueChange={(v) => onUpdate({ credits: parseInt(v) })}
         >
-          <SelectTrigger className="h-8 flex-1 min-w-[7.5rem] text-xs whitespace-nowrap">
+          <SelectTrigger className="h-8 w-[6.75rem] shrink-0 text-xs whitespace-nowrap">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -380,7 +380,7 @@ function MobileCourseCard({ course, onUpdate, onRemove, highlighted = false }: M
         >
           <SelectTrigger
             className={cn(
-              "h-8 w-[5.25rem] shrink-0 text-xs font-medium",
+              "h-8 w-[5rem] shrink-0 text-xs font-medium",
               isSimulated && "ring-2 ring-primary/50 ring-offset-1"
             )}
           >
