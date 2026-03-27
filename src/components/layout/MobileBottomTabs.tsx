@@ -53,9 +53,15 @@ export function MobileBottomTabs({ onUploadClick, onGpaGoalClick }: MobileBottom
             className={cn(
               "flex flex-col items-center justify-center gap-1 flex-1 h-full",
               "transition-colors duration-200",
+              tab.label === "GPA Goal" &&
+                "text-amber-400 bg-gradient-to-r from-amber-500/10 to-orange-500/10",
+              tab.label === "GPA Goal" &&
+                "active:from-amber-500/20 active:to-orange-500/20 active:shadow-[0_0_15px_rgba(245,158,11,0.22)]",
               tab.active
                 ? "text-primary"
-                : "text-muted-foreground active:text-primary"
+                : tab.label === "GPA Goal"
+                  ? "active:text-amber-300"
+                  : "text-muted-foreground active:text-primary"
             )}
           >
             <tab.icon className="h-5 w-5" />
