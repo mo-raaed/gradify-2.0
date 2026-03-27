@@ -357,12 +357,12 @@ function MobileCourseCard({ course, onUpdate, onRemove, highlighted = false }: M
       </div>
 
       {/* Bottom row: credits + grade selects */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         <Select
           value={course.credits.toString()}
           onValueChange={(v) => onUpdate({ credits: parseInt(v) })}
         >
-          <SelectTrigger className="h-8 w-20 text-xs">
+          <SelectTrigger className="h-8 flex-1 min-w-[7.5rem] text-xs whitespace-nowrap">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -380,7 +380,7 @@ function MobileCourseCard({ course, onUpdate, onRemove, highlighted = false }: M
         >
           <SelectTrigger
             className={cn(
-              "h-8 w-20 text-xs font-medium",
+              "h-8 w-[5.25rem] shrink-0 text-xs font-medium",
               isSimulated && "ring-2 ring-primary/50 ring-offset-1"
             )}
           >
