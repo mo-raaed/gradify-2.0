@@ -17,7 +17,10 @@ import { ContentHeader } from "./layout/ContentHeader";
 import { DashboardSummary } from "./layout/DashboardSummary";
 import { useLayout } from "@/context/LayoutContext";
 import { useSearch } from "@/hooks/useSearch";
-import type { TranscriptData } from "@/lib/gpaCalculator";
+import type { TranscriptData, Semester } from "@/lib/gpaCalculator";
+
+// Stable empty array to avoid new reference on every render
+const EMPTY_SEMESTERS: Semester[] = [];
 
 interface DashboardProps {
   isGoalPlannerOpen: boolean;
@@ -42,7 +45,7 @@ export function Dashboard({
   const removeSemester = useMutation(api.transcripts.removeSemester);
   const addCourse = useMutation(api.transcripts.addCourse);
   const removeCourse = useMutation(api.transcripts.removeCourse);
-  const resetSimulatedGrades = useMutation(api.transcripts.resetSimulatedGrades);
+  const deleteTranscript = useMutation(api.transcripts.deleteTranscript);
 
   // Layout context
   const {
@@ -52,7 +55,7 @@ export function Dashboard({
   } = useLayout();
 
   // Search hook - updates context with results
-  useSearch(transcript?.semesters || []);
+  useSearch(transcript?.semesters ?? EMPTY_SEMESTERS);
 
   // Loading state
   if (transcript === undefined) {
@@ -80,10 +83,14 @@ export function Dashboard({
     await addSemester({ name });
   };
 
-  // Handle reset
+  // Handle reset - deletes entire transcript and returns to welcome screen
   const handleReset = async () => {
     if (!transcript) return;
-    await resetSimulatedGrades();
+    const confirmed = window.confirm(
+      "Are you sure you want to reset? This will delete all your transcript data and return to the welcome screen."
+    );
+    if (!confirmed) return;
+    await deleteTranscript();
   };
 
   // Empty state - no transcript yet

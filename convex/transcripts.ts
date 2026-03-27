@@ -664,3 +664,38 @@ export const updateMajor = mutation({
     return null;
   },
 });
+
+/**
+ * Delete the entire transcript, returning the user to the empty/welcome state
+ */
+export const deleteTranscript = mutation({
+  args: {},
+  returns: v.null(),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const transcript = await ctx.db
+      .query("transcripts")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .unique();
+
+    if (!transcript) {
+      return null; // Already no transcript
+    }
+
+    await ctx.db.delete(transcript._id);
+    return null;
+  },
+});

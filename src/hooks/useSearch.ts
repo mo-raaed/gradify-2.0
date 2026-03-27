@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useLayout, type SearchResult } from "@/context/LayoutContext";
 import type { Semester } from "@/lib/gpaCalculator";
 import { GRADE_POINTS } from "@/lib/gpaCalculator";
@@ -14,6 +14,9 @@ const VALID_GRADES = new Set(
   Object.keys(GRADE_POINTS).map((g) => g.toUpperCase())
 );
 
+// Stable empty array to avoid new reference on every render
+const EMPTY_SEMESTERS: Semester[] = [];
+
 /**
  * Custom hook for searching and filtering transcript data
  * Searches courses by code/name, semesters by name, and filters by grade.
@@ -26,6 +29,14 @@ export function useSearch(semesters: Semester[]) {
     setHighlightedCourses,
     setHighlightedSemesters,
   } = useLayout();
+
+  // Use a stable reference for semesters to avoid infinite loops
+  // when the parent re-renders from context updates
+  const semestersRef = useRef(semesters);
+  semestersRef.current = semesters;
+
+  // Also stabilize the semesters identity for useMemo
+  const stableSemesters = semesters.length === 0 ? EMPTY_SEMESTERS : semesters;
 
   // Perform search
   const results = useMemo<SearchState>(() => {
@@ -46,7 +57,7 @@ export function useSearch(semesters: Semester[]) {
     const highlightedCourseIds = new Set<string>();
     const highlightedSemesterIds = new Set<string>();
 
-    semesters.forEach((semester) => {
+    stableSemesters.forEach((semester) => {
       // Check if semester name matches (only for non-grade queries)
       if (!isGradeQuery && semester.name.toLowerCase().includes(queryLower)) {
         searchResults.push({
@@ -100,18 +111,24 @@ export function useSearch(semesters: Semester[]) {
       highlightedCourses: highlightedCourseIds,
       highlightedSemesters: highlightedSemesterIds,
     };
-  }, [searchQuery, semesters]);
+  }, [searchQuery, stableSemesters]);
 
-  // Update context with results
+  // Update context with results - use refs for setters to avoid dependency cycles
+  const setSearchResultsRef = useRef(setSearchResults);
+  const setHighlightedCoursesRef = useRef(setHighlightedCourses);
+  const setHighlightedSemestersRef = useRef(setHighlightedSemesters);
+  setSearchResultsRef.current = setSearchResults;
+  setHighlightedCoursesRef.current = setHighlightedCourses;
+  setHighlightedSemestersRef.current = setHighlightedSemesters;
+
   useEffect(() => {
-    setSearchResults(results.results);
-    setHighlightedCourses(results.highlightedCourses);
-    setHighlightedSemesters(results.highlightedSemesters);
-  }, [results, setSearchResults, setHighlightedCourses, setHighlightedSemesters]);
+    setSearchResultsRef.current(results.results);
+    setHighlightedCoursesRef.current(results.highlightedCourses);
+    setHighlightedSemestersRef.current(results.highlightedSemesters);
+  }, [results]);
 
   return {
     results: results.results,
     hasResults: results.results.length > 0,
   };
 }
-

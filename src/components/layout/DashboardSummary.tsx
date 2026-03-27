@@ -75,7 +75,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
             <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
               Last Update
             </p>
-            <p className="text-2xl font-bold text-muted-foreground text-sm mt-1">
+            <p className="text-sm font-semibold text-muted-foreground mt-1">
               {getUpdatedAgoText()}
             </p>
           </div>
