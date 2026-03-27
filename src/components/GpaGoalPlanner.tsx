@@ -180,7 +180,7 @@ export function GpaGoalPlanner({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto max-md:max-w-[calc(100vw-2rem)]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Target className="h-5 w-5 text-primary" />
@@ -200,7 +200,7 @@ export function GpaGoalPlanner({
                 <Info className="h-4 w-4" />
                 Current Status
               </h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-2 max-md:grid-cols-1 gap-4 text-sm">
                 <div>
                   <span className="text-muted-foreground">Current GPA:</span>{" "}
                   <span className="font-semibold">{currentStats.currentGPA.toFixed(2)}</span>
@@ -277,7 +277,7 @@ export function GpaGoalPlanner({
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 max-md:grid-cols-1 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="coursesPerSemester">Courses per Semester</Label>
                     <Input
@@ -421,7 +421,7 @@ export function GpaGoalPlanner({
               {/* Planning Mode */}
               <div className="space-y-2">
                 <Label>Planning Mode</Label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 max-md:grid-cols-1 gap-3">
                   <button
                     type="button"
                     onClick={() => setPlanningMode("breakdown")}

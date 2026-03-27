@@ -36,7 +36,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-6 bg-[var(--color-surface-container-lowest)] dark:bg-[var(--color-surface-variant)]/60 dark:backdrop-blur-[24px] border-[1.5px] border-[var(--color-outline-variant)]/15 p-8 shadow-tonal dark:shadow-ambient duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-[2rem]",
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-6 bg-[var(--color-surface-container-lowest)] dark:bg-[var(--color-surface-variant)]/60 dark:backdrop-blur-[24px] border-[1.5px] border-[var(--color-outline-variant)]/15 p-8 shadow-tonal dark:shadow-ambient duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-[2rem] max-md:max-w-[calc(100vw-2rem)] max-md:max-h-[85vh] max-md:overflow-y-auto max-md:p-6 max-md:gap-4",
         className
       )}
       {...props}

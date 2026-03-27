@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import { MobileNav } from "./MobileNav";
+import { MobileBottomTabs } from "./MobileBottomTabs";
 import { cn } from "@/lib/utils";
 
 interface AppShellProps {
@@ -33,7 +34,7 @@ export function AppShell({
         onExportClick={onExportClick}
       />
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Header + Drawer */}
       <MobileNav
         cumulativeGPA={cumulativeGPA}
         major={major}
@@ -41,6 +42,12 @@ export function AppShell({
         onMajorUpdate={onMajorUpdate}
         onUploadClick={onUploadClick}
         onExportClick={onExportClick}
+      />
+
+      {/* Mobile Bottom Tab Bar */}
+      <MobileBottomTabs
+        onUploadClick={onUploadClick}
+        onGpaGoalClick={onGpaGoalClick}
       />
 
       {/* Main Content Area */}
@@ -51,8 +58,9 @@ export function AppShell({
           "lg:ml-[280px]",
           // Tablet: collapsed sidebar (80px)
           "md:ml-[80px]",
-          // Mobile: no margin (sidebar hidden)
-          "ml-0"
+          // Mobile: no margin (sidebar hidden), but add bottom padding for tab bar
+          "ml-0",
+          "pb-20 md:pb-0"
         )}
       >
         {children}

@@ -53,7 +53,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
     <section className="px-12 max-lg:px-8 max-md:px-4 py-6 space-y-6">
       {/* Stats Bar */}
       <div className="rounded-[2rem] bg-card p-6 shadow-tonal dark:shadow-ambient">
-        <div className="grid grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-6">
+        <div className="grid grid-cols-4 max-lg:grid-cols-2 gap-6">
           {/* Earned Credits */}
           <div className="space-y-1">
             <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
