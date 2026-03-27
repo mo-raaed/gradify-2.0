@@ -25,6 +25,7 @@ function isValidSemester(line: string): boolean {
 
 /**
  * Known AUIS major/program names for direct matching
+ * Only multi-word names to avoid false positives from course names
  */
 const KNOWN_MAJORS = [
   "Computer Science",
@@ -35,58 +36,68 @@ const KNOWN_MAJORS = [
   "Business Administration",
   "Information Technology",
   "International Studies",
-  "English",
-  "Biology",
-  "Mathematics",
-  "Chemistry",
-  "Physics",
-  "Accounting",
-  "Finance",
-  "Economics",
+  "Artificial Intelligence",
   "Political Science",
-  "Psychology",
+  "Computer Engineering",
+  "Data Science",
 ];
 
 /**
  * Extract major from transcript text
  * Looks for common patterns in AUIS transcripts
+ * Uses a two-pass approach: first looks for explicit "Major" labels,
+ * then falls back to known major name matching.
  */
 function extractMajor(textLines: string[]): string | undefined {
   // Log first 30 lines for debugging major extraction issues
-  console.log("[Gradify] Searching for major in transcript lines:", textLines.slice(0, 30));
+  console.log("[Gradify] Searching for major in", textLines.length, "transcript lines");
+  console.log("[Gradify] First 20 lines:", textLines.slice(0, 20));
 
+  // === PASS 1: Look for explicit "Major" or "Program" labels (highest confidence) ===
   for (let i = 0; i < textLines.length; i++) {
     const line = textLines[i];
     const lowerLine = line.toLowerCase().trim();
 
-    // Skip empty or very short lines
+    // Skip very short lines
     if (lowerLine.length < 3) continue;
 
-    // Pattern 1: "Major: Computer Science" or "Program: ..."
+    // Pattern 1a: "Major: Computer Science" or "Program: ..."
     if (lowerLine.includes("major:") || lowerLine.includes("program:")) {
       const match = line.match(/(?:major|program)\s*:\s*(.+)$/i);
       if (match && match[1]) {
         const value = match[1].trim();
         if (value.length > 0) {
-          console.log(`[Gradify] Found major via label pattern on line ${i}: "${value}"`);
+          console.log(`[Gradify] Found major via label:colon on line ${i}: "${value}"`);
           return value;
         }
       }
     }
 
-    // Pattern 2: "Major  Computer Science" (label followed by 2+ spaces then value)
-    if (/^major\b/i.test(lowerLine) && !lowerLine.includes("course")) {
-      const match = line.match(/^major\s{2,}(.+)$/i);
+    // Pattern 1b: "Major Artificial Intelligence..." (label + 1+ spaces + value)
+    // OR "MajorArtificial Intelligence..." (pdfjs sometimes strips spaces)
+    if (/^major/i.test(lowerLine) && !lowerLine.includes("course") && lowerLine.length > 8) {
+      // Try to extract everything after "Major" (with or without space)
+      const match = line.match(/^major\s*(.{3,})$/i);
       if (match && match[1]) {
         const value = match[1].trim();
-        if (value.length > 0) {
-          console.log(`[Gradify] Found major via spaced label on line ${i}: "${value}"`);
+        if (value.length > 2) {
+          console.log(`[Gradify] Found major via Major label on line ${i}: "${value}"`);
           return value;
         }
       }
     }
 
-    // Pattern 3: "Degree: Bachelor of Science in Computer Science"
+    // Pattern 1c: "Major" alone on a line — the next line is the actual major value
+    if (/^major$/i.test(lowerLine) && i + 1 < textLines.length) {
+      const nextLine = textLines[i + 1].trim();
+      // Next line should be a major name, not a course code or other metadata
+      if (nextLine.length > 2 && !/^[A-Z]{2,5}\s*\d/.test(nextLine) && !/^(course|credits|semester|gpa)/i.test(nextLine)) {
+        console.log(`[Gradify] Found major via next-line pattern on lines ${i}/${i + 1}: "${nextLine}"`);
+        return nextLine;
+      }
+    }
+
+    // Pattern 1d: "Degree: Bachelor of Science in X"
     if (lowerLine.includes("degree")) {
       const match = line.match(/degree\s*:\s*.*?(?:in|of)\s+(.+)$/i);
       if (match && match[1]) {
@@ -98,7 +109,7 @@ function extractMajor(textLines: string[]): string | undefined {
       }
     }
 
-    // Pattern 4: "Bachelor of Science in X" or "B.S. in X"
+    // Pattern 1e: "Bachelor of Science in X" or "B.S. in X"
     const degreeMatch = line.match(/(?:Bachelor|Master|B\.?\s?[AS]\.?|M\.?\s?[AS]\.?)\s+(?:of\s+\w+\s+)?(?:in|of)\s+(.+?)(?:\s{2,}|\n|$)/i);
     if (degreeMatch && degreeMatch[1]) {
       const value = degreeMatch[1].trim();
@@ -107,14 +118,21 @@ function extractMajor(textLines: string[]): string | undefined {
         return value;
       }
     }
+  }
 
-    // Pattern 5: Direct match against known major names (only in non-course lines)
-    if (!lowerLine.includes("course") && !lowerLine.match(/^[A-Z]{2,4}\s?\d/)) {
-      for (const majorName of KNOWN_MAJORS) {
-        if (lowerLine.includes(majorName.toLowerCase())) {
-          console.log(`[Gradify] Found major via known name on line ${i}: "${majorName}"`);
-          return majorName;
-        }
+  // === PASS 2: Look for known multi-word major names in non-course lines ===
+  for (let i = 0; i < Math.min(textLines.length, 30); i++) {
+    const line = textLines[i];
+    const lowerLine = line.toLowerCase().trim();
+
+    // Skip course-like lines (start with course codes like "CHEM 232")
+    if (/^[A-Z]{2,5}\s*\d/.test(line.trim())) continue;
+    if (lowerLine.includes("course") || lowerLine.includes("credits")) continue;
+
+    for (const majorName of KNOWN_MAJORS) {
+      if (lowerLine.includes(majorName.toLowerCase())) {
+        console.log(`[Gradify] Found major via known name on line ${i}: "${majorName}"`);
+        return majorName;
       }
     }
   }
@@ -122,6 +140,7 @@ function extractMajor(textLines: string[]): string | undefined {
   console.log("[Gradify] No major found in transcript");
   return undefined;
 }
+
 
 
 /**
