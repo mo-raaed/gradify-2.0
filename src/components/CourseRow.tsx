@@ -119,7 +119,7 @@ export function CourseRow({ course, onUpdate, onRemove, highlighted = false }: C
               setEditName(course.courseName);
               setIsEditingName(true);
             }}
-            className="text-left text-sm truncate max-w-[200px] hover:text-primary transition-colors"
+            className="text-left text-sm whitespace-normal break-words hover:text-primary transition-colors"
           >
             {course.courseName}
           </button>

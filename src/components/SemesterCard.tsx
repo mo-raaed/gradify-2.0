@@ -344,7 +344,9 @@ function MobileCourseCard({ course, onUpdate, onRemove, highlighted = false }: M
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="min-w-0 flex-1">
           <p className="text-xs text-muted-foreground font-medium">{course.courseCode}</p>
-          <p className="text-sm font-medium truncate">{course.courseName}</p>
+          <p className="text-sm font-medium whitespace-normal break-words leading-snug">
+            {course.courseName}
+          </p>
         </div>
         <Button
           variant="ghost"
