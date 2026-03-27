@@ -172,7 +172,7 @@ export function CourseRow({ course, onUpdate, onRemove, highlighted = false }: C
           variant="ghost"
           size="icon"
           onClick={onRemove}
-          className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+          className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10 btn-glow-red"
         >
           <Trash2 className="h-4 w-4" />
           <span className="sr-only">Remove course</span>

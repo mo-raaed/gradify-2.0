@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Edit2, Check, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,13 @@ interface MajorEditorProps {
 export function MajorEditor({ major, onUpdate, className }: MajorEditorProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(major || "");
+
+  // Sync editValue when major prop changes (e.g., after transcript parsing)
+  useEffect(() => {
+    if (!isEditing) {
+      setEditValue(major || "");
+    }
+  }, [major, isEditing]);
 
   const handleSave = () => {
     if (editValue.trim() !== major) {

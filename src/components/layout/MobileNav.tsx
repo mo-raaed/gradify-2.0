@@ -11,9 +11,11 @@ interface MobileNavProps {
   major?: string;
   onGpaGoalClick: () => void;
   onMajorUpdate: (major: string) => void;
+  onUploadClick: () => void;
+  onExportClick: () => void;
 }
 
-export function MobileNav({ cumulativeGPA, major, onGpaGoalClick, onMajorUpdate }: MobileNavProps) {
+export function MobileNav({ cumulativeGPA, major, onGpaGoalClick, onMajorUpdate, onUploadClick, onExportClick }: MobileNavProps) {
   const { mobileNavOpen, setMobileNavOpen } = useLayout();
 
   return (
@@ -70,7 +72,11 @@ export function MobileNav({ cumulativeGPA, major, onGpaGoalClick, onMajorUpdate 
 
             {/* Navigation */}
             <nav className="flex-1 overflow-y-auto py-4 px-3">
-              <SidebarNav onGpaGoalClick={onGpaGoalClick} />
+              <SidebarNav
+                onGpaGoalClick={onGpaGoalClick}
+                onUploadClick={onUploadClick}
+                onExportClick={onExportClick}
+              />
             </nav>
 
             {/* Footer */}

@@ -9,13 +9,29 @@ interface AppShellProps {
   cumulativeGPA?: number;
   onMajorUpdate: (major: string) => void;
   onGpaGoalClick: () => void;
+  onUploadClick: () => void;
+  onExportClick: () => void;
 }
 
-export function AppShell({ children, major, cumulativeGPA, onMajorUpdate, onGpaGoalClick }: AppShellProps) {
+export function AppShell({
+  children,
+  major,
+  cumulativeGPA,
+  onMajorUpdate,
+  onGpaGoalClick,
+  onUploadClick,
+  onExportClick,
+}: AppShellProps) {
   return (
     <div className="min-h-screen bg-background">
       {/* Desktop/Tablet Sidebar */}
-      <Sidebar major={major} onMajorUpdate={onMajorUpdate} onGpaGoalClick={onGpaGoalClick} />
+      <Sidebar
+        major={major}
+        onMajorUpdate={onMajorUpdate}
+        onGpaGoalClick={onGpaGoalClick}
+        onUploadClick={onUploadClick}
+        onExportClick={onExportClick}
+      />
 
       {/* Mobile Navigation */}
       <MobileNav
@@ -23,6 +39,8 @@ export function AppShell({ children, major, cumulativeGPA, onMajorUpdate, onGpaG
         major={major}
         onGpaGoalClick={onGpaGoalClick}
         onMajorUpdate={onMajorUpdate}
+        onUploadClick={onUploadClick}
+        onExportClick={onExportClick}
       />
 
       {/* Main Content Area */}

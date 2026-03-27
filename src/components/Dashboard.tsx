@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import {
-  Upload,
   Plus,
-  Download,
   RotateCcw,
   GraduationCap,
   Loader2,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SemesterCard } from "./SemesterCard";
@@ -23,10 +22,16 @@ import type { TranscriptData } from "@/lib/gpaCalculator";
 interface DashboardProps {
   isGoalPlannerOpen: boolean;
   setIsGoalPlannerOpen: (open: boolean) => void;
+  isUploadOpen: boolean;
+  setIsUploadOpen: (open: boolean) => void;
 }
 
-export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: DashboardProps) {
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
+export function Dashboard({
+  isGoalPlannerOpen,
+  setIsGoalPlannerOpen,
+  isUploadOpen,
+  setIsUploadOpen,
+}: DashboardProps) {
   const [isAddSemesterOpen, setIsAddSemesterOpen] = useState(false);
 
   // Convex queries and mutations
@@ -41,7 +46,6 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
 
   // Layout context
   const {
-    activeFilter,
     highlightedCourses,
     highlightedSemesters,
     registerSemesterRef,
@@ -74,23 +78,6 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
   // Handle add semester
   const handleAddSemester = async (name: string) => {
     await addSemester({ name });
-  };
-
-  // Handle export
-  const handleExport = () => {
-    if (!transcript) return;
-
-    const jsonString = JSON.stringify(transcript, null, 2);
-    const blob = new Blob([jsonString], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "gradify-export.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   // Handle reset
@@ -154,15 +141,8 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
     );
   }
 
-  // Filter semesters based on active filter
-  const filteredSemesters = transcript.semesters.filter((semester) => {
-    if (activeFilter === "completed") {
-      return semester.planned !== true;
-    } else if (activeFilter === "planned") {
-      return semester.planned === true;
-    }
-    return true; // "all" filter
-  });
+  // Show all semesters (no more completed/planned filter)
+  const allSemesters = transcript.semesters;
 
   // Main dashboard with transcript data
   return (
@@ -171,57 +151,38 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
       <ContentHeader cumulativeGPA={transcript.cumulativeGPA} />
 
       {/* Zone 2: Dashboard Summary */}
-      <DashboardSummary semesters={transcript.semesters} />
+      <DashboardSummary
+        semesters={transcript.semesters}
+        cumulativeGPA={transcript.cumulativeGPA}
+        updatedAt={transcript.updatedAt}
+      />
 
       {/* Zone 3: Primary Feed - Action Bar */}
       <section className="px-12 max-lg:px-8 max-md:px-4 pb-4">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold">
-              {activeFilter === "completed"
-                ? "Completed Semesters"
-                : activeFilter === "planned"
-                ? "Planned Semesters"
-                : "Your Transcript"}
-            </h2>
+            <h2 className="text-xl font-bold">Your Transcript</h2>
             <p className="text-sm text-muted-foreground">
-              {filteredSemesters.length} semesters
+              {allSemesters.length} semesters
             </p>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Button
               variant="outline"
-              size="icon"
-              onClick={() => setIsUploadOpen(true)}
-              title="Upload new transcript"
-            >
-              <Upload className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
               onClick={() => setIsAddSemesterOpen(true)}
-              title="Add semester"
+              className="h-10 px-4 rounded-full"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4 mr-2" />
+              <span className="text-sm font-medium">Add Semester</span>
             </Button>
             <Button
               variant="outline"
-              size="icon"
-              onClick={handleExport}
-              title="Export data"
-            >
-              <Download className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
               onClick={handleReset}
-              title="Reset simulated grades"
-              className="text-destructive hover:text-destructive"
+              className="h-10 px-4 rounded-full text-destructive hover:text-destructive btn-glow-red"
             >
-              <RotateCcw className="h-4 w-4" />
+              <RotateCcw className="h-4 w-4 mr-2" />
+              <span className="text-sm font-medium">Reset</span>
             </Button>
           </div>
         </div>
@@ -229,7 +190,7 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
 
       {/* Zone 3: Primary Feed - Semester Cards */}
       <section className="px-12 max-lg:px-8 max-md:px-4 pb-12 space-y-8">
-        {filteredSemesters.map((semester) => (
+        {allSemesters.map((semester) => (
           <SemesterCard
             key={semester.id}
             ref={(element) => registerSemesterRef(semester.id, element)}
@@ -259,15 +220,9 @@ export function Dashboard({ isGoalPlannerOpen, setIsGoalPlannerOpen }: Dashboard
           />
         ))}
 
-        {filteredSemesters.length === 0 && (
+        {allSemesters.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-muted-foreground mb-4">
-              {activeFilter === "completed"
-                ? "No completed semesters yet"
-                : activeFilter === "planned"
-                ? "No planned semesters yet"
-                : "No semesters yet"}
-            </p>
+            <p className="text-muted-foreground mb-4">No semesters yet</p>
             <Button onClick={() => setIsAddSemesterOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
               Add Semester

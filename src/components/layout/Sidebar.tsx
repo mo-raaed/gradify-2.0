@@ -7,9 +7,11 @@ interface SidebarProps {
   major?: string;
   onMajorUpdate: (major: string) => void;
   onGpaGoalClick: () => void;
+  onUploadClick: () => void;
+  onExportClick: () => void;
 }
 
-export function Sidebar({ major, onMajorUpdate, onGpaGoalClick }: SidebarProps) {
+export function Sidebar({ major, onMajorUpdate, onGpaGoalClick, onUploadClick, onExportClick }: SidebarProps) {
   return (
     <aside
       className={cn(
@@ -35,7 +37,11 @@ export function Sidebar({ major, onMajorUpdate, onGpaGoalClick }: SidebarProps) 
 
       {/* Middle: Navigation (flex-grow) */}
       <nav className="flex-1 overflow-y-auto py-4 px-3">
-        <SidebarNav onGpaGoalClick={onGpaGoalClick} />
+        <SidebarNav
+          onGpaGoalClick={onGpaGoalClick}
+          onUploadClick={onUploadClick}
+          onExportClick={onExportClick}
+        />
       </nav>
 
       {/* Bottom: Footer */}

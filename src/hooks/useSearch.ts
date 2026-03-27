@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useLayout, type SearchResult } from "@/context/LayoutContext";
 import type { Semester } from "@/lib/gpaCalculator";
+import { GRADE_POINTS } from "@/lib/gpaCalculator";
 
 type SearchState = {
   results: SearchResult[];
@@ -8,9 +9,15 @@ type SearchState = {
   highlightedSemesters: Set<string>;
 };
 
+// Build a set of valid grades for quick lookup (case-insensitive)
+const VALID_GRADES = new Set(
+  Object.keys(GRADE_POINTS).map((g) => g.toUpperCase())
+);
+
 /**
  * Custom hook for searching and filtering transcript data
- * Searches courses by code/name, semesters by name, and filters by grade
+ * Searches courses by code/name, semesters by name, and filters by grade.
+ * When the query exactly matches a known grade, only grade matches are returned.
  */
 export function useSearch(semesters: Semester[]) {
   const {
@@ -30,14 +37,18 @@ export function useSearch(semesters: Semester[]) {
       };
     }
 
-    const query = searchQuery.toLowerCase();
+    const query = searchQuery.trim();
+    const queryUpper = query.toUpperCase();
+    const queryLower = query.toLowerCase();
+    const isGradeQuery = VALID_GRADES.has(queryUpper);
+
     const searchResults: SearchResult[] = [];
     const highlightedCourseIds = new Set<string>();
     const highlightedSemesterIds = new Set<string>();
 
     semesters.forEach((semester) => {
-      // Check if semester name matches
-      if (semester.name.toLowerCase().includes(query)) {
+      // Check if semester name matches (only for non-grade queries)
+      if (!isGradeQuery && semester.name.toLowerCase().includes(queryLower)) {
         searchResults.push({
           type: "semester",
           semesterId: semester.id,
@@ -48,23 +59,38 @@ export function useSearch(semesters: Semester[]) {
 
       // Check courses in this semester
       semester.courses.forEach((course) => {
-        const codeMatch = course.courseCode.toLowerCase().includes(query);
-        const nameMatch = course.courseName.toLowerCase().includes(query);
-        const gradeMatch = course.grade.toLowerCase() === query.toLowerCase();
+        if (isGradeQuery) {
+          // Grade-only matching: exact match against course grade
+          if (course.grade.toUpperCase() === queryUpper) {
+            searchResults.push({
+              type: "course",
+              semesterId: semester.id,
+              courseId: course.id,
+              match: `Grade: ${course.grade}`,
+            });
+            highlightedCourseIds.add(course.id);
+            highlightedSemesterIds.add(semester.id);
+          }
+        } else {
+          // General matching: code, name, or exact grade
+          const codeMatch = course.courseCode.toLowerCase().includes(queryLower);
+          const nameMatch = course.courseName.toLowerCase().includes(queryLower);
+          const gradeMatch = course.grade.toUpperCase() === queryUpper;
 
-        if (codeMatch || nameMatch || gradeMatch) {
-          searchResults.push({
-            type: "course",
-            semesterId: semester.id,
-            courseId: course.id,
-            match: codeMatch
-              ? course.courseCode
-              : nameMatch
-              ? course.courseName
-              : `Grade: ${course.grade}`,
-          });
-          highlightedCourseIds.add(course.id);
-          highlightedSemesterIds.add(semester.id);
+          if (codeMatch || nameMatch || gradeMatch) {
+            searchResults.push({
+              type: "course",
+              semesterId: semester.id,
+              courseId: course.id,
+              match: codeMatch
+                ? course.courseCode
+                : nameMatch
+                ? course.courseName
+                : `Grade: ${course.grade}`,
+            });
+            highlightedCourseIds.add(course.id);
+            highlightedSemesterIds.add(semester.id);
+          }
         }
       });
     });
@@ -88,3 +114,4 @@ export function useSearch(semesters: Semester[]) {
     hasResults: results.results.length > 0,
   };
 }
+

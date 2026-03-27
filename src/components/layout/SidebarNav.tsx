@@ -1,4 +1,4 @@
-import { FileText, CheckCircle2, Calendar, Target } from "lucide-react";
+import { FileText, Target, Upload, Download } from "lucide-react";
 import { useLayout } from "@/context/LayoutContext";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -7,8 +7,7 @@ interface NavItem {
   id: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
-  action: "scroll" | "filter" | "dialog";
-  filter?: "all" | "completed" | "planned";
+  action: "scroll" | "dialog" | "upload" | "export";
 }
 
 const navItems: NavItem[] = [
@@ -17,20 +16,6 @@ const navItems: NavItem[] = [
     label: "Transcript",
     icon: FileText,
     action: "scroll",
-  },
-  {
-    id: "completed",
-    label: "Completed",
-    icon: CheckCircle2,
-    action: "filter",
-    filter: "completed",
-  },
-  {
-    id: "planned",
-    label: "Planned",
-    icon: Calendar,
-    action: "filter",
-    filter: "planned",
   },
   {
     id: "gpa-goal",
@@ -42,10 +27,12 @@ const navItems: NavItem[] = [
 
 interface SidebarNavProps {
   onGpaGoalClick?: () => void;
+  onUploadClick?: () => void;
+  onExportClick?: () => void;
 }
 
-export function SidebarNav({ onGpaGoalClick }: SidebarNavProps) {
-  const { activeFilter, setActiveFilter, setMobileNavOpen } = useLayout();
+export function SidebarNav({ onGpaGoalClick, onUploadClick, onExportClick }: SidebarNavProps) {
+  const { setActiveFilter, setMobileNavOpen } = useLayout();
   const [activeNav, setActiveNav] = useState("transcript");
 
   const handleNavClick = (item: NavItem) => {
@@ -55,10 +42,6 @@ export function SidebarNav({ onGpaGoalClick }: SidebarNavProps) {
       // Scroll to top for "Transcript"
       window.scrollTo({ top: 0, behavior: "smooth" });
       setActiveFilter("all");
-    } else if (item.action === "filter" && item.filter) {
-      // Set filter for "Completed" or "Planned"
-      setActiveFilter(item.filter);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     } else if (item.action === "dialog") {
       // Open GPA Goal dialog
       if (onGpaGoalClick) {
@@ -71,13 +54,11 @@ export function SidebarNav({ onGpaGoalClick }: SidebarNavProps) {
   };
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-2">
+      {/* Navigation Items */}
       {navItems.map((item) => {
         const Icon = item.icon;
-        const isActive =
-          item.action === "filter"
-            ? activeFilter === item.filter
-            : activeNav === item.id;
+        const isActive = activeNav === item.id;
 
         return (
           <button
@@ -109,6 +90,46 @@ export function SidebarNav({ onGpaGoalClick }: SidebarNavProps) {
           </button>
         );
       })}
+
+      {/* Divider */}
+      <div className="my-3 border-t border-border/5" />
+
+      {/* Upload Transcript Button - Prominent with glow */}
+      <button
+        onClick={() => {
+          onUploadClick?.();
+          setMobileNavOpen(false);
+        }}
+        className={cn(
+          "w-full flex items-center gap-3 px-3 py-3 rounded-full",
+          "bg-gradient-to-r from-primary to-[var(--color-primary-container)]",
+          "text-primary-foreground font-semibold",
+          "transition-all duration-300",
+          "hover:shadow-[0_0_20px_rgba(129,174,255,0.4)]",
+          "btn-glow"
+        )}
+      >
+        <Upload className="h-5 w-5 shrink-0" />
+        <span className="text-sm md:max-lg:hidden">Upload Transcript</span>
+      </button>
+
+      {/* Export Button - Outline style */}
+      <button
+        onClick={() => {
+          onExportClick?.();
+          setMobileNavOpen(false);
+        }}
+        className={cn(
+          "w-full flex items-center gap-3 px-3 py-2.5 rounded-full",
+          "border border-border/15",
+          "text-muted-foreground hover:text-foreground",
+          "transition-all duration-200",
+          "hover:bg-secondary"
+        )}
+      >
+        <Download className="h-5 w-5 shrink-0" />
+        <span className="text-sm font-medium md:max-lg:hidden">Export Data</span>
+      </button>
     </div>
   );
 }

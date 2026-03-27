@@ -309,3 +309,18 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 0 0 8px var(--color-primary);
   }
 }
+
+/* Destructive button red glow effect */
+.btn-glow-red:hover {
+  box-shadow: 0 0 15px var(--color-destructive);
+}
+
+.dark .btn-glow-red:hover {
+  box-shadow: 0 0 20px var(--color-destructive);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .btn-glow-red:hover {
+    box-shadow: 0 0 20px var(--color-destructive);
+  }
+}

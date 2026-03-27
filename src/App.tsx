@@ -4,7 +4,7 @@ import {
   useMutation,
   useQuery,
 } from "convex/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { api } from "../convex/_generated/api";
 import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { GraduationCap, FileText, BarChart3, Target } from "lucide-react";
@@ -31,6 +31,7 @@ function AuthenticatedContent() {
   const updateMajor = useMutation(api.transcripts.updateMajor);
   const transcript = useQuery(api.transcripts.getMyTranscript);
   const [isGoalPlannerOpen, setIsGoalPlannerOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
 
   // Ensure user exists in database on first load
   useEffect(() => {
@@ -42,6 +43,23 @@ function AuthenticatedContent() {
     await updateMajor({ major });
   };
 
+  // Handle export
+  const handleExport = useCallback(() => {
+    if (!transcript) return;
+
+    const jsonString = JSON.stringify(transcript, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "gradify-export.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [transcript]);
+
   return (
     <LayoutProvider>
       <AppShell
@@ -49,10 +67,14 @@ function AuthenticatedContent() {
         cumulativeGPA={transcript?.cumulativeGPA}
         onMajorUpdate={handleMajorUpdate}
         onGpaGoalClick={() => setIsGoalPlannerOpen(true)}
+        onUploadClick={() => setIsUploadOpen(true)}
+        onExportClick={handleExport}
       >
         <Dashboard
           isGoalPlannerOpen={isGoalPlannerOpen}
           setIsGoalPlannerOpen={setIsGoalPlannerOpen}
+          isUploadOpen={isUploadOpen}
+          setIsUploadOpen={setIsUploadOpen}
         />
       </AppShell>
     </LayoutProvider>
