@@ -1,4 +1,4 @@
-import { UserButton } from "@clerk/clerk-react";
+import { UserButton, useUser } from "@clerk/clerk-react";
 import { ThemeToggle } from "../ThemeToggle";
 import { MajorEditor } from "../MajorEditor";
 
@@ -8,6 +8,9 @@ interface SidebarFooterProps {
 }
 
 export function SidebarFooter({ major, onMajorUpdate }: SidebarFooterProps) {
+  const { user } = useUser();
+  const displayName = user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "";
+
   return (
     <div className="space-y-3">
       {/* Major Editor - only show on desktop */}
@@ -15,9 +18,14 @@ export function SidebarFooter({ major, onMajorUpdate }: SidebarFooterProps) {
         <MajorEditor major={major} onUpdate={onMajorUpdate} />
       </div>
 
-      {/* Theme Toggle + User Button Row */}
+      {/* Theme Toggle + User Info + Avatar Row */}
       <div className="flex items-center justify-between gap-2">
         <ThemeToggle />
+        <div className="flex items-center gap-2 min-w-0 md:max-lg:hidden">
+          <span className="text-xs font-medium text-muted-foreground truncate max-w-[120px]">
+            {displayName}
+          </span>
+        </div>
         <UserButton
           appearance={{
             elements: {
