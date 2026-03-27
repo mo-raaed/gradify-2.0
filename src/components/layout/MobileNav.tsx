@@ -56,7 +56,11 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
       {/* Drawer with secondary navigation (primary actions moved to bottom tabs) */}
       <Dialog open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
         <DialogContent
-          className="fixed left-0 top-0 translate-x-0 translate-y-0 h-screen w-[280px] max-w-none rounded-none rounded-r-[2rem] p-0 border-r border-border/5 data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left"
+          className="fixed left-2 top-0 translate-x-0 translate-y-0 h-screen w-[280px] max-w-none rounded-none rounded-r-[2rem] p-0 border-r border-border/5 z-50
+          transition-transform duration-200 ease-out
+          data-[state=open]:animate-none data-[state=closed]:animate-none
+          data-[state=closed]:-translate-x-full data-[state=open]:translate-x-0
+          data-[state=closed]:translate-y-0 data-[state=open]:translate-y-0"
           hideClose
         >
           <div className="h-full flex flex-col">
