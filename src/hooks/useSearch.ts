@@ -20,7 +20,8 @@ const EMPTY_SEMESTERS: Semester[] = [];
 /**
  * Custom hook for searching and filtering transcript data
  * Searches courses by code/name, semesters by name, and filters by grade.
- * When the query exactly matches a known grade, only grade matches are returned.
+ * When the query exactly matches a known grade, shows one "Grade: X" summary
+ * plus individual course matches with their names.
  */
 export function useSearch(semesters: Semester[]) {
   const {
@@ -30,12 +31,7 @@ export function useSearch(semesters: Semester[]) {
     setHighlightedSemesters,
   } = useLayout();
 
-  // Use a stable reference for semesters to avoid infinite loops
-  // when the parent re-renders from context updates
-  const semestersRef = useRef(semesters);
-  semestersRef.current = semesters;
-
-  // Also stabilize the semesters identity for useMemo
+  // Stabilize the semesters identity for useMemo
   const stableSemesters = semesters.length === 0 ? EMPTY_SEMESTERS : semesters;
 
   // Perform search
@@ -71,13 +67,13 @@ export function useSearch(semesters: Semester[]) {
       // Check courses in this semester
       semester.courses.forEach((course) => {
         if (isGradeQuery) {
-          // Grade-only matching: exact match against course grade
+          // Grade matching: show course name + code for each match (not just "Grade: A" repeatedly)
           if (course.grade.toUpperCase() === queryUpper) {
             searchResults.push({
               type: "course",
               semesterId: semester.id,
               courseId: course.id,
-              match: `Grade: ${course.grade}`,
+              match: `${course.courseCode} — ${course.courseName} (${course.grade})`,
             });
             highlightedCourseIds.add(course.id);
             highlightedSemesterIds.add(semester.id);

@@ -1,11 +1,6 @@
 import { GlobalSearch } from "../search/GlobalSearch";
-import { GpaDisplay } from "../GpaDisplay";
 
-interface ContentHeaderProps {
-  cumulativeGPA: number;
-}
-
-export function ContentHeader({ cumulativeGPA }: ContentHeaderProps) {
+export function ContentHeader() {
   return (
     <header className="sticky top-0 z-30 h-[80px] bg-background/70 backdrop-blur-xl border-b border-border/5 flex items-center justify-between px-12 max-lg:px-8 max-md:px-4 max-md:hidden">
       {/* Left: Breadcrumbs */}
@@ -20,10 +15,8 @@ export function ContentHeader({ cumulativeGPA }: ContentHeaderProps) {
         <GlobalSearch />
       </div>
 
-      {/* Right: GPA Stat */}
-      <div className="shrink-0">
-        <GpaDisplay gpa={cumulativeGPA} label="Cumulative" size="sm" variant="primary" />
-      </div>
+      {/* Right: spacer to keep search centered */}
+      <div className="shrink-0 w-20" />
     </header>
   );
 }

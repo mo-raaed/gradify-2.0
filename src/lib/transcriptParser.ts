@@ -33,10 +33,20 @@ function extractMajor(textLines: string[]): string | undefined {
 
     // Common patterns for major/program information
     if (lowerLine.includes("major:") || lowerLine.includes("program:")) {
-      // Extract text after "major:" or "program:"
-      const match = line.match(/(?:major|program):\s*(.+?)(?:\s|$)/i);
+      // Extract everything after "major:" or "program:" to end of line
+      const match = line.match(/(?:major|program):\s*(.+)$/i);
       if (match && match[1]) {
-        return match[1].trim();
+        const value = match[1].trim();
+        if (value.length > 0) return value;
+      }
+    }
+
+    // Pattern: "Major  Computer Science" (label followed by whitespace then value)
+    if (lowerLine.startsWith("major") && !lowerLine.includes("course")) {
+      const match = line.match(/^major\s{2,}(.+)$/i);
+      if (match && match[1]) {
+        const value = match[1].trim();
+        if (value.length > 0) return value;
       }
     }
 
@@ -59,10 +69,17 @@ function extractMajor(textLines: string[]): string | undefined {
     if (lowerLine.includes("business administration") && !lowerLine.includes("course")) {
       return "Business Administration";
     }
+    if (lowerLine.includes("information technology") && !lowerLine.includes("course")) {
+      return "Information Technology";
+    }
+    if (lowerLine.includes("international studies") && !lowerLine.includes("course")) {
+      return "International Studies";
+    }
   }
 
   return undefined;
 }
+
 
 /**
  * Parse raw transcript text into structured data

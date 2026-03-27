@@ -155,7 +155,7 @@ export function Dashboard({
   return (
     <>
       {/* Zone 1: Content Header */}
-      <ContentHeader cumulativeGPA={transcript.cumulativeGPA} />
+      <ContentHeader />
 
       {/* Zone 2: Dashboard Summary */}
       <DashboardSummary
