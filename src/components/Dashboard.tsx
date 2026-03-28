@@ -4,10 +4,10 @@ import { api } from "../../convex/_generated/api";
 import {
   Plus,
   RotateCcw,
-  GraduationCap,
   Loader2,
   Upload,
 } from "lucide-react";
+import { GradifyLogo } from "@/components/branding/GradifyLogo";
 import { Button } from "@/components/ui/button";
 import { SemesterCard } from "./SemesterCard";
 import { TranscriptUploader } from "./TranscriptUploader";
@@ -99,8 +99,8 @@ export function Dashboard({
       <div className="min-h-[calc(100vh-80px)] flex items-center justify-center p-4">
         <div className="w-full max-w-lg">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20 mb-4">
-              <GraduationCap className="h-10 w-10 text-primary" />
+            <div className="flex justify-center mb-4">
+              <GradifyLogo size="lg" className="justify-center" />
             </div>
             <h1 className="text-3xl font-bold mb-2">
               Welcome to Gradify
