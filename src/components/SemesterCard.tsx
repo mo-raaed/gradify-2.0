@@ -51,6 +51,8 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
 
+  const actionBtnClass = "rounded-full bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20 hover:bg-[#4993FA] hover:text-[#131a26] transition-colors cursor-pointer flex items-center justify-center";
+
   // Check if this is a planned semester
   const isPlanned = semester.planned === true;
 
@@ -118,18 +120,16 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
             </div>
 
             <div className="flex items-center gap-1">
-              <Button
-                variant="ghost"
-                size="icon"
+              <div
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsAddCourseOpen(true);
                 }}
-                className="h-8 w-8"
+                className={cn(actionBtnClass, "h-8 w-8")}
               >
                 <Plus className="h-4 w-4" />
                 <span className="sr-only">Add course</span>
-              </Button>
+              </div>
 
               <Button
                 variant="ghost"
@@ -144,11 +144,13 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
                 <span className="sr-only">Remove semester</span>
               </Button>
 
-              {isExpanded ? (
-                <ChevronUp className="h-5 w-5 text-muted-foreground" />
-              ) : (
-                <ChevronDown className="h-5 w-5 text-muted-foreground" />
-              )}
+              <div className={cn(actionBtnClass, "h-8 w-8")}>
+                {isExpanded ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" />
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -171,17 +173,15 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
               )}
             </div>
             <div className="flex items-center gap-1 shrink-0">
-              <Button
-                variant="ghost"
-                size="icon"
+              <div
                 onClick={(e) => {
                   e.stopPropagation();
                   setIsAddCourseOpen(true);
                 }}
-                className="h-7 w-7"
+                className={cn(actionBtnClass, "h-7 w-7")}
               >
                 <Plus className="h-3.5 w-3.5" />
-              </Button>
+              </div>
               <Button
                 variant="ghost"
                 size="icon"
@@ -193,11 +193,13 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
               >
                 <Trash2 className="h-3.5 w-3.5" />
               </Button>
-              {isExpanded ? (
-                <ChevronUp className="h-4 w-4 text-muted-foreground" />
-              ) : (
-                <ChevronDown className="h-4 w-4 text-muted-foreground" />
-              )}
+              <div className={cn(actionBtnClass, "h-7 w-7")}>
+                {isExpanded ? (
+                  <ChevronUp className="h-3.5 w-3.5" />
+                ) : (
+                  <ChevronDown className="h-3.5 w-3.5" />
+                )}
+              </div>
             </div>
           </div>
 

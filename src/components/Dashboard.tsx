@@ -169,7 +169,7 @@ export function Dashboard({
       <section className="px-12 max-lg:px-8 max-md:px-4 pb-4">
         <div className="flex items-center justify-between gap-4 max-md:flex-col max-md:items-stretch">
           <div>
-            <h2 className="text-xl font-bold">Your Transcript</h2>
+            <h2 className="text-xl font-bold">Academic History</h2>
             <p className="text-sm text-muted-foreground">
               {allSemesters.length} semesters
             </p>
@@ -177,9 +177,8 @@ export function Dashboard({
 
           <div className="flex gap-3 max-md:flex-col">
             <Button
-              variant="outline"
               onClick={() => setIsAddSemesterOpen(true)}
-              className="h-10 px-4 rounded-full max-md:w-full"
+              className="h-10 px-4 max-md:w-full rounded-full bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20 hover:bg-[#4993FA] hover:text-[#131a26] transition-colors cursor-pointer"
             >
               <Plus className="h-4 w-4 mr-2" />
               <span className="text-sm font-medium">Add Semester</span>
@@ -231,7 +230,10 @@ export function Dashboard({
         {allSemesters.length === 0 && (
           <div className="text-center py-12">
             <p className="text-muted-foreground mb-4">No semesters yet</p>
-            <Button onClick={() => setIsAddSemesterOpen(true)}>
+            <Button 
+              onClick={() => setIsAddSemesterOpen(true)}
+              className="rounded-full bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20 hover:bg-[#4993FA] hover:text-[#131a26] transition-colors cursor-pointer"
+            >
               <Plus className="mr-2 h-4 w-4" />
               Add Semester
             </Button>

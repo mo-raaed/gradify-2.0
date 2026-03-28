@@ -1,9 +1,12 @@
 import { GlobalSearch } from "../search/GlobalSearch";
 import { useLayout } from "@/context/LayoutContext";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/clerk-react";
 
 export function ContentHeader() {
   const { mobileSearchOpen } = useLayout();
+  const { user } = useUser();
+  const displayName = user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Student";
 
   return (
     <>
@@ -12,7 +15,7 @@ export function ContentHeader() {
         {/* Left: Breadcrumbs */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-0">
           <span className="text-[#4993FA] font-bold text-xl truncate">
-            Transcript
+            {displayName}&apos;s Transcript
           </span>
         </div>
 
