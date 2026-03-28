@@ -46,6 +46,10 @@ interface LayoutContextState {
 
   // Scroll to semester
   scrollToSemester: (semesterId: string) => void;
+
+  // Mobile search toggle (from bottom tab bar)
+  mobileSearchOpen: boolean;
+  setMobileSearchOpen: (open: boolean) => void;
 }
 
 const LayoutContext = createContext<LayoutContextState | undefined>(undefined);
@@ -92,6 +96,9 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
 
   // Active section
   const [activeSection, setActiveSection] = useState<string | null>(null);
+
+  // Mobile search toggle (from bottom tab bar)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   // Register semester ref
   const registerSemesterRef = useCallback((id: string, element: HTMLDivElement | null) => {
@@ -153,6 +160,8 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
     activeSection,
     setActiveSection,
     scrollToSemester,
+    mobileSearchOpen,
+    setMobileSearchOpen,
   };
 
   return (

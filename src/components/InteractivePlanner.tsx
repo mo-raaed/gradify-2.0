@@ -265,7 +265,7 @@ export function InteractivePlanner({
                 : "bg-secondary"
             }`}
           >
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
                 <BookOpen className={`h-4 w-4 ${semester.isExisting ? "text-amber-600" : "text-primary"}`} />
                 <span className="font-medium">{semester.name}</span>
@@ -298,64 +298,71 @@ export function InteractivePlanner({
               {semester.courses.map((course, courseIndex) => (
                 <div
                   key={course.id}
-                  className="flex items-center gap-2 py-2 px-3 rounded-lg bg-card/50"
+                  className="py-2 px-3 rounded-lg bg-card/50 space-y-2"
                 >
-                  <Input
-                    value={course.courseCode}
-                    onChange={(e) =>
-                      handleCourseUpdate(semIndex, courseIndex, "courseCode", e.target.value)
-                    }
-                    className="w-24 h-8 text-xs"
-                    placeholder="Code"
-                  />
-                  <Input
-                    value={course.courseName}
-                    onChange={(e) =>
-                      handleCourseUpdate(semIndex, courseIndex, "courseName", e.target.value)
-                    }
-                    className="flex-1 h-8 text-xs"
-                    placeholder="Course Name"
-                  />
-                  <Select
-                    value={course.credits.toString()}
-                    onValueChange={(v) =>
-                      handleCourseUpdate(semIndex, courseIndex, "credits", parseInt(v))
-                    }
-                  >
-                    <SelectTrigger className="w-16 h-8 text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {[1, 2, 3, 4, 5].map((cr) => (
-                        <SelectItem key={cr} value={cr.toString()}>
-                          {cr} cr
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select
-                    value={course.grade}
-                    onValueChange={(v) => handleGradeChange(semIndex, courseIndex, v)}
-                  >
-                    <SelectTrigger className="w-16 h-8 text-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {GRADES_ORDERED.map((grade) => (
-                        <SelectItem key={grade} value={grade}>
-                          {grade}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                    onClick={() => handleRemoveCourse(semIndex, courseIndex)}
-                  >
-                    <Trash2 className="h-3 w-3" />
-                  </Button>
+                  {/* Row 1: Code + Name */}
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={course.courseCode}
+                      onChange={(e) =>
+                        handleCourseUpdate(semIndex, courseIndex, "courseCode", e.target.value)
+                      }
+                      className="w-20 max-md:w-16 h-8 text-xs shrink-0"
+                      placeholder="Code"
+                    />
+                    <Input
+                      value={course.courseName}
+                      onChange={(e) =>
+                        handleCourseUpdate(semIndex, courseIndex, "courseName", e.target.value)
+                      }
+                      className="flex-1 h-8 text-xs"
+                      placeholder="Course Name"
+                    />
+                  </div>
+                  {/* Row 2: Credits + Grade + Delete */}
+                  <div className="flex items-center gap-2">
+                    <Select
+                      value={course.credits.toString()}
+                      onValueChange={(v) =>
+                        handleCourseUpdate(semIndex, courseIndex, "credits", parseInt(v))
+                      }
+                    >
+                      <SelectTrigger className="w-16 h-8 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {[1, 2, 3, 4, 5].map((cr) => (
+                          <SelectItem key={cr} value={cr.toString()}>
+                            {cr} cr
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <Select
+                      value={course.grade}
+                      onValueChange={(v) => handleGradeChange(semIndex, courseIndex, v)}
+                    >
+                      <SelectTrigger className="w-16 h-8 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {GRADES_ORDERED.map((grade) => (
+                          <SelectItem key={grade} value={grade}>
+                            {grade}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <div className="flex-1" />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => handleRemoveCourse(semIndex, courseIndex)}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
                 </div>
               ))}
 

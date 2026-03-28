@@ -166,7 +166,7 @@ export function Dashboard({
 
       {/* Zone 3: Primary Feed - Action Bar */}
       <section className="px-12 max-lg:px-8 max-md:px-4 pb-4">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4 max-md:flex-col max-md:items-stretch">
           <div>
             <h2 className="text-xl font-bold">Your Transcript</h2>
             <p className="text-sm text-muted-foreground">
@@ -174,11 +174,11 @@ export function Dashboard({
             </p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 max-md:flex-col">
             <Button
               variant="outline"
               onClick={() => setIsAddSemesterOpen(true)}
-              className="h-10 px-4 rounded-full"
+              className="h-10 px-4 rounded-full max-md:w-full"
             >
               <Plus className="h-4 w-4 mr-2" />
               <span className="text-sm font-medium">Add Semester</span>
@@ -186,7 +186,7 @@ export function Dashboard({
             <Button
               variant="outline"
               onClick={handleReset}
-              className="h-10 px-4 rounded-full text-destructive hover:text-destructive btn-glow-red"
+              className="h-10 px-4 rounded-full text-destructive hover:text-destructive btn-glow-red max-md:w-full"
             >
               <RotateCcw className="h-4 w-4 mr-2" />
               <span className="text-sm font-medium">Reset</span>

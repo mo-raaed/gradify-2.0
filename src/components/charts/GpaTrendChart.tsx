@@ -60,6 +60,18 @@ export function GpaTrendChart({ semesters }: GpaTrendChartProps) {
     text: isDark ? "#a7abb4" : "#356079",
   };
 
+  // Abbreviate semester names for chart (e.g., "2024/25 Fall" → "F24")
+  const abbreviateName = (name: string) => {
+    const parts = name.split(" ");
+    if (parts.length >= 2) {
+      const term = parts[parts.length - 1]; // "Fall", "Spring", etc.
+      const year = parts[0]; // "2024/25"
+      const shortYear = year.includes("/") ? year.split("/")[0].slice(-2) : year.slice(-2);
+      return `${term.charAt(0)}${shortYear}`;
+    }
+    return name.length > 6 ? name.slice(0, 6) : name;
+  };
+
   return (
     <div className="w-full h-full min-h-[200px]">
       <div className="flex items-center justify-between mb-2">
@@ -73,6 +85,7 @@ export function GpaTrendChart({ semesters }: GpaTrendChartProps) {
             tick={{ fill: colors.text, fontSize: 11 }}
             tickLine={{ stroke: colors.grid }}
             axisLine={{ stroke: colors.grid }}
+            tickFormatter={abbreviateName}
           />
           <YAxis
             domain={[0, 4]}

@@ -75,6 +75,9 @@
   --space-5: 64px;
   --section-gap: 32px;
   --card-padding: 24px;
+
+  /* Bottom tab bar height */
+  --bottom-tabs-height: 64px;
 }
 
 /* Dark mode - "Aura Midnight" */
