@@ -56,8 +56,9 @@ export function ThemeToggle() {
     <button
       onClick={toggleTheme}
       className={cn(
-        "inline-flex items-center justify-center w-9 h-9 rounded-full",
-        "bg-secondary/50 hover:bg-secondary",
+        "inline-flex items-center justify-center w-9 h-9 rounded-full cursor-pointer",
+        "bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20",
+        "hover:bg-[#4993FA] hover:text-[#131a26]",
         "transition-all duration-200 hover:scale-105 active:scale-95",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
       )}

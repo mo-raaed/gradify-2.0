@@ -21,7 +21,7 @@ export function SidebarNav({ onGpaGoalClick, onUploadClick, onExportClick }: Sid
           setMobileNavOpen(false);
         }}
         className={cn(
-          "w-full flex items-center gap-3 px-3 py-2.5 rounded-[1rem]",
+          "w-full flex items-center gap-3 px-3 py-2.5 rounded-[1rem] cursor-pointer",
           "transition-all duration-200",
           "group relative",
           "bg-primary/10 text-primary"
@@ -82,7 +82,7 @@ export function SidebarNav({ onGpaGoalClick, onUploadClick, onExportClick }: Sid
           setMobileNavOpen(false);
         }}
         className={cn(
-          "w-full flex items-center gap-3 px-3 py-2.5 rounded-full",
+          "w-full flex items-center gap-3 px-3 py-2.5 rounded-full cursor-pointer",
           "border border-border/15",
           "text-muted-foreground hover:text-foreground",
           "transition-all duration-200",

@@ -85,7 +85,7 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
                   window.scrollTo({ top: 0, behavior: "smooth" });
                   setMobileNavOpen(false);
                 }}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[1rem] transition-all duration-200 bg-primary/10 text-primary"
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-[1rem] transition-all duration-200 bg-primary/10 text-primary cursor-pointer"
               >
                 <GraduationCap className="h-5 w-5 shrink-0 text-primary" />
                 <span className="text-sm font-medium">Transcript</span>
@@ -99,7 +99,7 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
                   onExportClick();
                   setMobileNavOpen(false);
                 }}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-full border border-border/15 text-muted-foreground hover:text-foreground transition-all duration-200 hover:bg-secondary"
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-full border border-border/15 text-muted-foreground hover:text-foreground transition-all duration-200 hover:bg-secondary cursor-pointer"
               >
                 <Download className="h-5 w-5 shrink-0" />
                 <span className="text-sm font-medium">Export Data</span>

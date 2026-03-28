@@ -78,7 +78,7 @@ export function MajorEditor({ major, onUpdate, className }: MajorEditorProps) {
     <button
       onClick={() => setIsEditing(true)}
       className={cn(
-        "group flex items-center justify-between gap-2 w-full",
+        "group flex items-center justify-between gap-2 w-full cursor-text",
         "px-2 py-1.5 rounded-lg bg-secondary/50 hover:bg-secondary",
         "transition-colors text-left",
         className
@@ -88,7 +88,7 @@ export function MajorEditor({ major, onUpdate, className }: MajorEditorProps) {
         <p className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">
           Major
         </p>
-        <p className="text-sm font-medium truncate">
+        <p className="text-sm font-medium whitespace-normal break-words leading-snug">
           {major || "Not set"}
         </p>
       </div>
