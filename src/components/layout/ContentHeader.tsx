@@ -11,7 +11,7 @@ export function ContentHeader() {
       <header className="sticky top-0 z-30 h-[80px] bg-background/70 backdrop-blur-xl border-b border-border/5 items-center justify-between px-12 max-lg:px-8 max-md:px-4 hidden md:flex">
         {/* Left: Breadcrumbs */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-0">
-          <span className="text-foreground font-medium truncate">
+          <span className="text-[#4993FA] font-bold text-xl truncate">
             Transcript
           </span>
         </div>

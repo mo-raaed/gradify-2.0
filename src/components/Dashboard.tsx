@@ -15,6 +15,7 @@ import { AddSemesterDialog } from "./AddSemesterDialog";
 import { GpaGoalPlanner } from "./GpaGoalPlanner";
 import { ContentHeader } from "./layout/ContentHeader";
 import { DashboardSummary } from "./layout/DashboardSummary";
+import { GpaTrendChart } from "./charts/GpaTrendChart";
 import { useLayout } from "@/context/LayoutContext";
 import { useSearch } from "@/hooks/useSearch";
 import type { TranscriptData, Semester } from "@/lib/gpaCalculator";
@@ -236,6 +237,13 @@ export function Dashboard({
             </Button>
           </div>
         )}
+      </section>
+
+      {/* Zone 4: GPA Trend Analysis */}
+      <section className="px-12 max-lg:px-8 max-md:px-4 pb-12">
+        <div className="rounded-[2rem] bg-[#131a26] p-8 shadow-2xl border border-white/5 h-[400px] flex flex-col">
+          <GpaTrendChart semesters={allSemesters} />
+        </div>
       </section>
 
       {/* Dialogs */}

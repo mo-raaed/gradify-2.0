@@ -75,7 +75,7 @@ export function GpaTrendChart({ semesters }: GpaTrendChartProps) {
   return (
     <div className="w-full h-full min-h-[200px]">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-medium">GPA Trend</h3>
+        <h3 className="text-xl font-bold text-[#4993FA]">GPA Trend</h3>
       </div>
       <ResponsiveContainer width="100%" height="100%" minHeight={180}>
         <LineChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>

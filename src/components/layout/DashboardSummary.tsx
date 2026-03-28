@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { GpaTrendChart } from "../charts/GpaTrendChart";
+
 import type { Semester } from "@/lib/gpaCalculator";
 
 interface DashboardSummaryProps {
@@ -9,7 +9,7 @@ interface DashboardSummaryProps {
 }
 
 export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: DashboardSummaryProps) {
-  const numberHoverStyles = "inline-block text-white tracking-tight [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-left";
+  const numberHoverStyles = "inline-block text-white tracking-tight [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-center";
   // Calculate total earned credits (only completed courses)
   const totalEarnedCredits = semesters.reduce((sum, semester) => {
     if (semester.planned === true) return sum;
@@ -110,10 +110,6 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
         </div>
       </div>
 
-      {/* GPA Trend Chart */}
-      <div className="rounded-[2rem] bg-[#131a26] p-8 shadow-2xl border border-white/5 h-[400px] flex flex-col">
-        <GpaTrendChart semesters={semesters} />
-      </div>
     </section>
   );
 }

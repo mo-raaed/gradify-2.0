@@ -70,7 +70,7 @@ export function GradifyLogo({
           <span
             className={cn(
               s.title,
-              "text-blue-600 dark:text-sky-400"
+              "text-[#4993FA]"
             )}
           >
             Gradify
