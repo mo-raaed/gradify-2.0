@@ -48,7 +48,7 @@ export function InteractivePlanner({
   targetGPA,
   onClose,
 }: InteractivePlannerProps) {
-  const numberHoverStyles = "inline-block text-white tracking-tight [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-all duration-300 hover:scale-[1.15] hover:[text-shadow:0_0_40px_rgba(255,255,255,0.8)] cursor-default origin-center";
+  const numberHoverStyles = "inline-block text-white tracking-tight [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-center";
   const [semesters, setSemesters] = useState<PlannedSemester[]>(
     initialPathway.semesters
   );
@@ -222,16 +222,16 @@ export function InteractivePlanner({
       <div className="grid grid-cols-3 gap-3">
         <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
           <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Semesters</p>
-          <p className={`text-4xl font-extrabold ${numberHoverStyles}`}>{semesters.length}</p>
+          <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{semesters.length}</p>
         </div>
         <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
           <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">New Credits</p>
-          <p className={`text-4xl font-extrabold ${numberHoverStyles}`}>{totals.totalNewCredits}</p>
+          <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{totals.totalNewCredits}</p>
         </div>
         <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
           <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Projected GPA</p>
           <p
-            className={`text-4xl font-extrabold ${numberHoverStyles} ${
+            className={`text-3xl font-extrabold ${numberHoverStyles} ${
               totals.finalProjectedGPA >= targetGPA
                 ? "text-[#9EEBDB]"
                 : "text-red-400 opacity-90"
