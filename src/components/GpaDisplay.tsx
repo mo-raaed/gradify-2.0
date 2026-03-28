@@ -46,9 +46,9 @@ export function GpaDisplay({
       </p>
       <p
         className={cn(
-          "font-bold tracking-tight",
+          "font-bold tracking-tight inline-block text-white [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-center",
           sizeClasses[size],
-          variant === "primary" ? "text-primary" : "text-foreground"
+          variant === "primary" ? "text-white" : "text-white opacity-90"
         )}
       >
         {gpa.toFixed(2)}

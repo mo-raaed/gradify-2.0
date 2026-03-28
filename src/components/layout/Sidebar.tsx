@@ -1,5 +1,5 @@
-import { GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { GradifyLogo } from "@/components/branding/GradifyLogo";
 import { SidebarNav } from "./SidebarNav";
 import { SidebarFooter } from "./SidebarFooter";
 
@@ -28,11 +28,11 @@ export function Sidebar({ major, onMajorUpdate, onGpaGoalClick, onUploadClick, o
       )}
     >
       {/* Top: Branding/Logo */}
-      <div className="h-16 px-6 flex items-center gap-3 shrink-0 max-md:px-4">
-        <GraduationCap className="h-7 w-7 text-primary shrink-0" />
-        <span className="text-xl font-bold tracking-tight md:max-lg:hidden">
-          Gradify
-        </span>
+      <div className="h-16 px-6 flex items-center shrink-0 max-md:px-4 min-h-16">
+        <GradifyLogo
+          size="lg"
+          textClassName="md:max-lg:hidden"
+        />
       </div>
 
       {/* Middle: Navigation (flex-grow) */}

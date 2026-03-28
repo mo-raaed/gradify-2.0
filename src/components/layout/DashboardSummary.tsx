@@ -1,5 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { GpaTrendChart } from "../charts/GpaTrendChart";
+
 import type { Semester } from "@/lib/gpaCalculator";
 
 interface DashboardSummaryProps {
@@ -9,6 +9,7 @@ interface DashboardSummaryProps {
 }
 
 export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: DashboardSummaryProps) {
+  const numberHoverStyles = "inline-block text-white tracking-tight [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-center";
   // Calculate total earned credits (only completed courses)
   const totalEarnedCredits = semesters.reduce((sum, semester) => {
     if (semester.planned === true) return sum;
@@ -52,56 +53,56 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
   return (
     <section className="px-12 max-lg:px-8 max-md:px-4 py-6 space-y-6">
       {/* Stats Bar */}
-      <div className="rounded-[2rem] bg-card p-6 shadow-tonal dark:shadow-ambient">
-        <div className="grid grid-cols-4 max-lg:grid-cols-2 gap-6">
+      <div className="rounded-[2rem] bg-[#131a26] p-8 shadow-2xl border border-white/5">
+        <div className="grid grid-cols-4 max-lg:grid-cols-2 gap-8">
           {/* Earned Credits */}
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
+          <div className="space-y-3">
+            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Earned Credits
             </p>
-            <p className="text-2xl font-bold">{totalEarnedCredits}</p>
+            <p className={`text-5xl font-extrabold ${numberHoverStyles}`}>{totalEarnedCredits}</p>
           </div>
 
           {/* Semesters */}
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
+          <div className="space-y-3">
+            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Semesters
             </p>
-            <p className="text-2xl font-bold">{semesterCount}</p>
+            <p className={`text-5xl font-extrabold ${numberHoverStyles}`}>{semesterCount}</p>
           </div>
 
           {/* Updated Ago */}
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
+          <div className="space-y-3">
+            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Last Update
             </p>
-            <p className="text-sm font-semibold text-muted-foreground mt-1">
+            <p className="text-lg font-bold text-white mt-1 opacity-90">
               {getUpdatedAgoText()}
             </p>
           </div>
 
           {/* Cumulative GPA */}
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
+          <div className="space-y-3">
+            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Cumulative GPA
             </p>
-            <div className="flex items-baseline gap-2">
-              <p className="text-2xl font-bold">{cumulativeGPA.toFixed(2)}</p>
+            <div className="flex flex-col items-start gap-2">
+              <p className={`text-[3.5rem] leading-none font-extrabold ${numberHoverStyles}`}>{cumulativeGPA.toFixed(2)}</p>
               {gpaChange !== null && gpaChange !== 0 && (
                 <span
-                  className={`flex items-center gap-0.5 text-xs font-medium ${
+                  className={`flex items-center gap-1.5 text-sm font-bold ${
                     gpaChange > 0
-                      ? "text-emerald-500"
-                      : "text-destructive"
+                      ? "text-[#9EEBDB]"
+                      : "text-red-400"
                   }`}
                 >
                   {gpaChange > 0 ? (
-                    <TrendingUp className="h-3 w-3" />
+                    <TrendingUp className="h-4 w-4" />
                   ) : (
-                    <TrendingDown className="h-3 w-3" />
+                    <TrendingDown className="h-4 w-4" />
                   )}
                   {gpaChange > 0 ? "+" : ""}
-                  {gpaChange.toFixed(2)}
+                  {gpaChange.toFixed(2)} from last term
                 </span>
               )}
             </div>
@@ -109,10 +110,6 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
         </div>
       </div>
 
-      {/* GPA Trend Chart */}
-      <div className="rounded-[2rem] bg-card p-6 shadow-tonal dark:shadow-ambient">
-        <GpaTrendChart semesters={semesters} />
-      </div>
     </section>
   );
 }

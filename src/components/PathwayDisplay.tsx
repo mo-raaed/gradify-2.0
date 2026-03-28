@@ -29,6 +29,7 @@ export function PathwayDisplay({
   targetGPA,
   onClose,
 }: PathwayDisplayProps) {
+  const numberHoverStyles = "inline-block text-white tracking-tight [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-center";
   const savePlannedSemesters = useMutation(api.transcripts.savePlannedSemesters);
 
   const handleSave = async () => {
@@ -44,17 +45,17 @@ export function PathwayDisplay({
     <div className="space-y-4">
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="p-4 rounded-[2rem] bg-secondary text-center">
-          <p className="text-xs text-muted-foreground">Semesters Needed</p>
-          <p className="text-2xl font-bold">{pathway.semesters.length}</p>
+        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
+          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Semesters Needed</p>
+          <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{pathway.semesters.length}</p>
         </div>
-        <div className="p-4 rounded-[2rem] bg-secondary text-center">
-          <p className="text-xs text-muted-foreground">New Credits</p>
-          <p className="text-2xl font-bold">{pathway.totalNewCredits}</p>
+        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
+          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">New Credits</p>
+          <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{pathway.totalNewCredits}</p>
         </div>
-        <div className="p-4 rounded-[2rem] bg-secondary text-center">
-          <p className="text-xs text-muted-foreground">Projected GPA</p>
-          <p className="text-2xl font-bold text-primary">
+        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
+          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Projected GPA</p>
+          <p className={`text-3xl font-extrabold text-[#9EEBDB] ${numberHoverStyles}`}>
             {pathway.finalProjectedGPA.toFixed(2)}
           </p>
         </div>

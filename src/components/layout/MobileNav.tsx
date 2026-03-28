@@ -2,6 +2,7 @@ import { Menu, GraduationCap, X, Download } from "lucide-react";
 import { useLayout } from "@/context/LayoutContext";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { GradifyLogo } from "@/components/branding/GradifyLogo";
 import { GpaDisplay } from "../GpaDisplay";
 import { ThemeToggle } from "../ThemeToggle";
 import { MajorEditor } from "../MajorEditor";
@@ -35,18 +36,17 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
         </Button>
 
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <GraduationCap className="h-5 w-5 text-primary" />
-          <span className="font-bold">Gradify</span>
+        <div className="flex items-center justify-center min-w-0 flex-1 px-1">
+          <GradifyLogo size="sm" className="justify-center" />
         </div>
 
-        {/* Cumulative GPA */}
+        {/* Cumulative GPA (spacer matches hamburger width when absent so logo stays centered) */}
         {cumulativeGPA !== undefined ? (
-          <div className="scale-90">
+          <div className="scale-90 shrink-0">
             <GpaDisplay gpa={cumulativeGPA} label="GPA" size="sm" variant="primary" />
           </div>
         ) : (
-          <div className="w-10" />
+          <div className="w-10 shrink-0" aria-hidden />
         )}
       </header>
 
@@ -66,11 +66,8 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
         >
           <div className="h-full flex flex-col overflow-x-hidden">
             {/* Header */}
-            <div className="h-16 px-6 flex items-center justify-between shrink-0 border-b border-border/5">
-              <div className="flex items-center gap-3">
-                <GraduationCap className="h-7 w-7 text-primary" />
-                <span className="text-xl font-bold tracking-tight">Gradify</span>
-              </div>
+            <div className="h-16 px-6 flex items-center justify-between shrink-0 border-b border-border/5 gap-2">
+              <GradifyLogo size="md" className="min-w-0" />
               <Button
                 variant="ghost"
                 size="icon"
