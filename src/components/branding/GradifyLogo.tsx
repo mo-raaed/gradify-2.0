@@ -37,7 +37,7 @@ const sizeConfig: Record<
 };
 
 /**
- * Brand lockup: circular blue gradient + mortarboard + “Gradify” / “CELESTIAL ACADEMIC HUB”
+ * Brand lockup: circular blue gradient + mortarboard + “Gradify” / “AUIS GPA CALCULATOR”
  * (matches the product reference: vibrant blue wordmark, cool gray tagline).
  */
 export function GradifyLogo({
@@ -81,7 +81,7 @@ export function GradifyLogo({
               "text-slate-500 dark:text-slate-400"
             )}
           >
-            Celestial Academic Hub
+            AUIS GPA Calculator
           </span>
         </div>
       )}

@@ -29,6 +29,7 @@ export function PathwayDisplay({
   targetGPA,
   onClose,
 }: PathwayDisplayProps) {
+  const numberHoverStyles = "inline-block transition-all duration-300 hover:scale-[1.15] hover:text-primary hover:[text-shadow:0_0_20px_rgba(5,99,128,0.5)] dark:hover:text-white dark:hover:[text-shadow:0_0_25px_rgba(255,255,255,0.8)] cursor-default origin-center";
   const savePlannedSemesters = useMutation(api.transcripts.savePlannedSemesters);
 
   const handleSave = async () => {
@@ -46,15 +47,15 @@ export function PathwayDisplay({
       <div className="grid grid-cols-3 gap-3">
         <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">Semesters Needed</p>
-          <p className="text-2xl font-bold">{pathway.semesters.length}</p>
+          <p className={`text-2xl font-bold ${numberHoverStyles}`}>{pathway.semesters.length}</p>
         </div>
         <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">New Credits</p>
-          <p className="text-2xl font-bold">{pathway.totalNewCredits}</p>
+          <p className={`text-2xl font-bold ${numberHoverStyles}`}>{pathway.totalNewCredits}</p>
         </div>
         <div className="p-4 rounded-[2rem] bg-secondary text-center">
           <p className="text-xs text-muted-foreground">Projected GPA</p>
-          <p className="text-2xl font-bold text-primary">
+          <p className={`text-2xl font-bold text-primary ${numberHoverStyles}`}>
             {pathway.finalProjectedGPA.toFixed(2)}
           </p>
         </div>

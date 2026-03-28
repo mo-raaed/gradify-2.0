@@ -9,6 +9,7 @@ interface DashboardSummaryProps {
 }
 
 export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: DashboardSummaryProps) {
+  const numberHoverStyles = "inline-block transition-all duration-300 hover:scale-[1.15] hover:text-primary hover:[text-shadow:0_0_20px_rgba(5,99,128,0.5)] dark:hover:text-white dark:hover:[text-shadow:0_0_25px_rgba(255,255,255,0.8)] cursor-default origin-left";
   // Calculate total earned credits (only completed courses)
   const totalEarnedCredits = semesters.reduce((sum, semester) => {
     if (semester.planned === true) return sum;
@@ -59,7 +60,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
             <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
               Earned Credits
             </p>
-            <p className="text-2xl font-bold">{totalEarnedCredits}</p>
+            <p className={`text-2xl font-bold ${numberHoverStyles}`}>{totalEarnedCredits}</p>
           </div>
 
           {/* Semesters */}
@@ -67,7 +68,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
             <p className="text-xs text-muted-foreground font-medium uppercase tracking-[0.1em]">
               Semesters
             </p>
-            <p className="text-2xl font-bold">{semesterCount}</p>
+            <p className={`text-2xl font-bold ${numberHoverStyles}`}>{semesterCount}</p>
           </div>
 
           {/* Updated Ago */}
@@ -86,7 +87,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
               Cumulative GPA
             </p>
             <div className="flex items-baseline gap-2">
-              <p className="text-2xl font-bold">{cumulativeGPA.toFixed(2)}</p>
+              <p className={`text-2xl font-bold ${numberHoverStyles}`}>{cumulativeGPA.toFixed(2)}</p>
               {gpaChange !== null && gpaChange !== 0 && (
                 <span
                   className={`flex items-center gap-0.5 text-xs font-medium ${

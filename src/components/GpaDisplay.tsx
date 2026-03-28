@@ -46,7 +46,7 @@ export function GpaDisplay({
       </p>
       <p
         className={cn(
-          "font-bold tracking-tight",
+          "font-bold tracking-tight inline-block transition-all duration-300 hover:scale-[1.15] hover:text-primary hover:[text-shadow:0_0_20px_rgba(5,99,128,0.5)] dark:hover:text-white dark:hover:[text-shadow:0_0_25px_rgba(255,255,255,0.8)] cursor-default origin-center",
           sizeClasses[size],
           variant === "primary" ? "text-primary" : "text-foreground"
         )}
