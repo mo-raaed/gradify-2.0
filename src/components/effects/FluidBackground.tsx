@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const NUM_PARTICLES = 12;
-const INTERACT_RADIUS = 250;
+const INTERACT_RADIUS = 350;
 const SPRING_COEF = 0.03;
 const MOUSE_PULL = 0.05;
 const FRICTION = 0.85;
@@ -131,7 +131,7 @@ export function FluidBackground() {
         p.x += p.vx;
         p.y += p.vy;
         
-        p.opacity += (targetOpacity - p.opacity) * 0.08;
+        p.opacity += (targetOpacity - p.opacity) * 0.05;
 
         if (p.opacity > 0.01) {
           // Draw fluid particle
