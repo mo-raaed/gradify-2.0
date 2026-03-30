@@ -1,85 +1,66 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
-const NUM_PARTICLES = 12;
-const INTERACT_RADIUS = 350;
-const SPRING_COEF = 0.03;
-const MOUSE_PULL = 0.05;
-const FRICTION = 0.85;
+// Configuration from technical guide
+const SPACING = 30;
+const REVEAL_RADIUS = 180;
+const MAX_DISPLACEMENT = 10;
+const CIRCLE_SIZE = 22; // Ensures they overlap when displaced to trigger the gooey filter
 
-interface Particle {
-  id: number;
+interface GridPoint {
   x: number;
   y: number;
-  vx: number;
-  vy: number;
-  anchorX: number;
-  anchorY: number;
-  opacity: number;
-  size: number;
+  ref: HTMLDivElement | null;
 }
 
 export function FluidBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<GridPoint[][]>([]);
   const mouseRef = useRef({ x: -1000, y: -1000 });
+  const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
 
+  // Handle Resize & Grid Generation
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let w = window.innerWidth;
-    let h = window.innerHeight;
-    canvas.width = w;
-    canvas.height = h;
-
-    const initParticles = () => {
-      const newParticles: Particle[] = [];
-      const cols = 4;
-      const rows = Math.ceil(NUM_PARTICLES / cols);
-      
-      for (let i = 0; i < NUM_PARTICLES; i++) {
-        const row = Math.floor(i / cols);
-        const col = i % cols;
-        
-        const cellW = w / cols;
-        const cellH = h / rows;
-        const xBase = cellW * col + cellW / 2;
-        const yBase = cellH * row + cellH / 2;
-        
-        const anchorX = xBase + (Math.random() - 0.5) * (cellW * 0.6);
-        const anchorY = yBase + (Math.random() - 0.5) * (cellH * 0.6);
-        
-        newParticles.push({
-          id: i,
-          x: anchorX,
-          y: anchorY,
-          vx: 0,
-          vy: 0,
-          anchorX,
-          anchorY,
-          opacity: 0,
-          size: 60 + Math.random() * 40, // Slightly larger base size for better merging visibility
-        });
-      }
-      particlesRef.current = newParticles;
-    };
-
-    initParticles();
+    if (typeof window === "undefined") return;
 
     let resizeTimer: NodeJS.Timeout;
+    const calculateGrid = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const cols = Math.ceil(w / SPACING) + 1; // Add padding to avoid edge clipping
+      const rows = Math.ceil(h / SPACING) + 1;
+
+      const newGrid: GridPoint[][] = [];
+      for (let r = 0; r < rows; r++) {
+        const rowArr: GridPoint[] = [];
+        for (let c = 0; c < cols; c++) {
+          rowArr.push({
+            x: c * SPACING,
+            y: r * SPACING,
+            ref: null, // Will be attached later
+          });
+        }
+        newGrid.push(rowArr);
+      }
+
+      gridRef.current = newGrid;
+      setDimensions({ cols, rows });
+    };
+
+    calculateGrid();
+
     const onResize = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        w = window.innerWidth;
-        h = window.innerHeight;
-        canvas.width = w;
-        canvas.height = h;
-        initParticles();
-      }, 100);
+      resizeTimer = setTimeout(calculateGrid, 150);
     };
+
     window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Handle Mouse physics & Render Loop
+  useEffect(() => {
+    if (dimensions.cols === 0) return;
 
     const onMouseMove = (e: MouseEvent) => {
       mouseRef.current.x = e.clientX;
@@ -89,70 +70,78 @@ export function FluidBackground() {
       mouseRef.current.x = -1000;
       mouseRef.current.y = -1000;
     };
+
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseleave", onMouseLeave);
 
-    // To handle dark/light mode dynamically without reacting to state internally
-    const getIsDark = () => document.documentElement.classList.contains("dark");
-
     let animationId: number;
+
     const step = () => {
-      ctx.clearRect(0, 0, w, h);
-      const isDark = getIsDark();
       const mouse = mouseRef.current;
+      const { cols, rows } = dimensions;
+      const grid = gridRef.current;
 
-      // We use a global composite operation to make overlapping soft gradients look like liquid fluid
-      ctx.globalCompositeOperation = "screen";
+      // Extremely efficient CULLING: Only loop through the grid points that are physically close to the mouse.
+      // 1. Convert mouse coordinate to grid coordinate
+      const centerCol = Math.round(mouse.x / SPACING);
+      const centerRow = Math.round(mouse.y / SPACING);
 
-      for (let i = 0; i < NUM_PARTICLES; i++) {
-        const p = particlesRef.current[i];
+      // 2. Determine bounds (radius / spacing + buffer)
+      const range = Math.ceil(REVEAL_RADIUS / SPACING) + 1;
 
-        const dx = mouse.x - p.x;
-        const dy = mouse.y - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        let targetOpacity = 0;
-        
-        if (dist < INTERACT_RADIUS) {
-          targetOpacity = Math.max(0, 1 - (dist / INTERACT_RADIUS));
-          // Provide organic offset so they orbit the mouse instead of stacking perfectly
-          const orbitX = mouse.x + Math.sin(p.id * 1.5) * 50;
-          const orbitY = mouse.y + Math.cos(p.id * 1.5) * 50;
-          
-          p.vx += (orbitX - p.x) * MOUSE_PULL;
-          p.vy += (orbitY - p.y) * MOUSE_PULL;
-        } else {
-          p.vx += (p.anchorX - p.x) * SPRING_COEF;
-          p.vy += (p.anchorY - p.y) * SPRING_COEF;
-        }
-        
-        p.vx *= FRICTION;
-        p.vy *= FRICTION;
-        p.x += p.vx;
-        p.y += p.vy;
-        
-        p.opacity += (targetOpacity - p.opacity) * 0.05;
 
-        if (p.opacity > 0.01) {
-          // Draw fluid particle
-          const radius = p.size;
-          const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
-          
-          // Aura Midnight styling: Electric Cerulean in light mode, primary baby blue in dark mode
-          const r = isDark ? 129 : 0;
-          const g = isDark ? 174 : 127;
-          const b = isDark ? 255 : 255;
-          
-          const maxAlpha = p.opacity;
-          
-          gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${maxAlpha * 0.8})`);
-          gradient.addColorStop(0.4, `rgba(${r}, ${g}, ${b}, ${maxAlpha * 0.4})`);
-          gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-          
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-          ctx.fillStyle = gradient;
-          ctx.fill();
+
+      // First, quickly reset everything that might have been interacting in the previous frames
+      // To strictly follow physics constraint "must return to original center immediately", we
+      // only operate on elements in the bounding box and clear out elements at the edges of the box.
+      // Note: A smarter approach is looping the previous active box and resetting, but the bounding box is small enough.
+      
+      // We will loop the bounding box. If something is outside INTERACT_RADIUS, reset it.
+      // Elements fully outside the bounding box are already reset (or were reset as the box shifted).
+
+
+      // Note: to guarantee no stuck elements, we could keep a list of active elements.
+      // But clearing a slightly larger bounding box is exceptionally fast.
+      const clearMinCol = Math.max(0, centerCol - range - 1);
+      const clearMaxCol = Math.min(cols - 1, centerCol + range + 1);
+      const clearMinRow = Math.max(0, centerRow - range - 1);
+      const clearMaxRow = Math.min(rows - 1, centerRow + range + 1);
+
+      for (let r = clearMinRow; r <= clearMaxRow; r++) {
+        for (let c = clearMinCol; c <= clearMaxCol; c++) {
+          const pt = grid[r][c];
+          if (!pt.ref) continue;
+
+          const dx = pt.x - mouse.x;
+          const dy = pt.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < REVEAL_RADIUS) {
+            // Apply physics: attraction & reveal
+            const force = 1 - dist / REVEAL_RADIUS; // 0 to 1
+            const opacity = Math.max(0, Math.min(1, force));
+            
+            // Subtle displacement towards mouse
+            // Normalize direction vector (from mouse TO point so it pushes? Wait, "move circle along this vector")
+            // The guide: "attracted to my mouse cursor". So move FROM anchor TO mouse.
+            // Direction = mouse - pt.x
+            let dirX = 0, dirY = 0;
+            if (dist > 0) {
+              dirX = -dx / dist; // pointing toward mouse
+              dirY = -dy / dist;
+            }
+            
+            const displacement = MAX_DISPLACEMENT * force;
+            const transX = pt.x + dirX * displacement - CIRCLE_SIZE / 2;
+            const transY = pt.y + dirY * displacement - CIRCLE_SIZE / 2;
+
+            pt.ref.style.transform = `translate3d(${transX}px, ${transY}px, 0)`;
+            pt.ref.style.opacity = opacity.toFixed(3);
+          } else {
+            // Reset to original center immediately
+            pt.ref.style.transform = `translate3d(${pt.x - CIRCLE_SIZE / 2}px, ${pt.y - CIRCLE_SIZE / 2}px, 0)`;
+            pt.ref.style.opacity = "0";
+          }
         }
       }
 
@@ -162,18 +151,77 @@ export function FluidBackground() {
     animationId = requestAnimationFrame(step);
 
     return () => {
-      window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseleave", onMouseLeave);
-      clearTimeout(resizeTimer);
       cancelAnimationFrame(animationId);
+      
+      // Clean up the DOM to initial states so nothing gets stuck on re-render
+      gridRef.current.forEach(row => row.forEach(pt => {
+        if (pt.ref) {
+          pt.ref.style.opacity = "0";
+          pt.ref.style.transform = `translate3d(${pt.x - CIRCLE_SIZE / 2}px, ${pt.y - CIRCLE_SIZE / 2}px, 0)`;
+        }
+      }));
     };
-  }, []);
+  }, [dimensions]);
+
+  if (dimensions.cols === 0) return null;
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[-1]"
-    />
+    <>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{ display: "none" }}>
+        <defs>
+          <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+            <feColorMatrix 
+              in="blur" 
+              mode="matrix" 
+              values="1 0 0 0 0  
+                      0 1 0 0 0  
+                      0 0 1 0 0  
+                      0 0 0 18 -7" 
+              result="goo" 
+            />
+            <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+          </filter>
+        </defs>
+      </svg>
+
+      <div
+        ref={containerRef}
+        className={cn(
+          "fixed inset-0 pointer-events-none z-[-1] overflow-hidden",
+          "mix-blend-overlay dark:mix-blend-screen"
+        )}
+        style={{ filter: "url('#goo')" }}
+      >
+        {gridRef.current.map((rowArr, rIndex) =>
+          rowArr.map((pt, cIndex) => (
+            <div
+              key={`${rIndex}-${cIndex}`}
+              ref={(el) => {
+                pt.ref = el;
+                // Instant setup to avoid pop-in
+                if (el) {
+                  el.style.transform = `translate3d(${pt.x - CIRCLE_SIZE / 2}px, ${pt.y - CIRCLE_SIZE / 2}px, 0)`;
+                  el.style.opacity = "0";
+                }
+              }}
+              className={cn(
+                "absolute top-0 left-0 rounded-full will-change-transform",
+                // Aura Sky (Light): rgba(135, 206, 235, 0.4)
+                // Aura Midnight (Dark): rgba(0, 204, 255, 0.6) with deep glow
+                "bg-[rgba(135,206,235,0.4)] dark:bg-[rgba(0,204,255,0.6)] dark:shadow-[0_0_15px_rgba(0,204,255,0.4)]"
+              )}
+              style={{
+                width: CIRCLE_SIZE,
+                height: CIRCLE_SIZE,
+                willChange: "transform, opacity",
+              }}
+            />
+          ))
+        )}
+      </div>
+    </>
   );
 }
