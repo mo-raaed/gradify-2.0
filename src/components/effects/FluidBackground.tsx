@@ -24,13 +24,13 @@ export function FluidBackground() {
 
     let animationId: number;
     const loop = () => {
-      // Smooth lerp (floating follow effect)
-      current.x += (mouse.x - current.x) * 0.1;
-      current.y += (mouse.y - current.y) * 0.1;
+      // Smooth lerp - increased tracking speed (less delay)
+      current.x += (mouse.x - current.x) * 0.35;
+      current.y += (mouse.y - current.y) * 0.35;
 
       if (glowRef.current) {
-        // Offset by half of the width/height (800 / 2 = 400) to keep the mouse exactly in the center
-        glowRef.current.style.transform = `translate3d(${current.x - 400}px, ${current.y - 400}px, 0)`;
+        // Offset by half of the dimensions (200 / 2 = 100) to keep the cursor centered exactly inside the hue
+        glowRef.current.style.transform = `translate3d(${current.x - 100}px, ${current.y - 100}px, 0)`;
       }
 
       animationId = requestAnimationFrame(loop);
@@ -50,11 +50,10 @@ export function FluidBackground() {
         ref={glowRef}
         className={cn(
           "absolute top-0 left-0",
-          "w-[800px] h-[800px] rounded-full",
-          // Adapt to Aurora themes: smooth sky blue in light, rich electric cyan / blue in dark
-          // Adjust Opacity so it acts purely as ambient light, not obstructing text
-          "bg-[#4993FA]/10 dark:bg-[#4993FA]/20",
-          "blur-[150px]", 
+          "w-[200px] h-[200px] rounded-full",
+          // Muted visibility specifically calibrated for a smaller spotlight
+          "bg-[#4993FA]/20 dark:bg-[#4993FA]/30",
+          "blur-[80px]", 
           "will-change-transform transition-opacity duration-1000 opacity-0"
         )}
       />
