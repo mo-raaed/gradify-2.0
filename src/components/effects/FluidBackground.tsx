@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 const NUM_PARTICLES = 12;
-const INTERACT_RADIUS = 250; 
-const SPRING_COEF = 0.02;
+const INTERACT_RADIUS = 250;
+const SPRING_COEF = 0.03;
 const MOUSE_PULL = 0.05;
 const FRICTION = 0.85;
 
@@ -17,22 +16,25 @@ interface Particle {
   anchorY: number;
   opacity: number;
   size: number;
-  ref: HTMLDivElement | null;
 }
 
 export function FluidBackground() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: -1000, y: -1000 });
-  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let w = window.innerWidth;
+    let h = window.innerHeight;
+    canvas.width = w;
+    canvas.height = h;
 
     const initParticles = () => {
-      let w = window.innerWidth;
-      let h = window.innerHeight;
-      
       const newParticles: Particle[] = [];
       const cols = 4;
       const rows = Math.ceil(NUM_PARTICLES / cols);
@@ -41,18 +43,13 @@ export function FluidBackground() {
         const row = Math.floor(i / cols);
         const col = i % cols;
         
-        // Distribute evenly across the grid
         const cellW = w / cols;
         const cellH = h / rows;
         const xBase = cellW * col + cellW / 2;
         const yBase = cellH * row + cellH / 2;
         
-        // Add random scatter so it feels natural, not rigid
         const anchorX = xBase + (Math.random() - 0.5) * (cellW * 0.6);
         const anchorY = yBase + (Math.random() - 0.5) * (cellH * 0.6);
-        
-        // Re-use existing ref if resizing
-        const existingNode = particlesRef.current[i]?.ref || null;
         
         newParticles.push({
           id: i,
@@ -62,26 +59,28 @@ export function FluidBackground() {
           vy: 0,
           anchorX,
           anchorY,
-          opacity: 0, // Starts invisible
-          size: 40 + Math.random() * 20, // 40px to 60px
-          ref: existingNode
+          opacity: 0,
+          size: 60 + Math.random() * 40, // Slightly larger base size for better merging visibility
         });
       }
       particlesRef.current = newParticles;
-      if (!isInitialized) setIsInitialized(true);
     };
 
     initParticles();
 
-    // Resize handler
     let resizeTimer: NodeJS.Timeout;
     const onResize = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(initParticles, 100);
+      resizeTimer = setTimeout(() => {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w;
+        canvas.height = h;
+        initParticles();
+      }, 100);
     };
     window.addEventListener("resize", onResize);
 
-    // Mouse tracking
     const onMouseMove = (e: MouseEvent) => {
       mouseRef.current.x = e.clientX;
       mouseRef.current.y = e.clientY;
@@ -93,16 +92,21 @@ export function FluidBackground() {
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("mouseleave", onMouseLeave);
 
-    // Physics Loop
+    // To handle dark/light mode dynamically without reacting to state internally
+    const getIsDark = () => document.documentElement.classList.contains("dark");
+
     let animationId: number;
     const step = () => {
+      ctx.clearRect(0, 0, w, h);
+      const isDark = getIsDark();
       const mouse = mouseRef.current;
-      
+
+      // We use a global composite operation to make overlapping soft gradients look like liquid fluid
+      ctx.globalCompositeOperation = "screen";
+
       for (let i = 0; i < NUM_PARTICLES; i++) {
         const p = particlesRef.current[i];
-        if (!p) continue;
 
-        // Calculate distance from mouse
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -110,42 +114,51 @@ export function FluidBackground() {
         let targetOpacity = 0;
         
         if (dist < INTERACT_RADIUS) {
-          // Attract towards mouse but keep some organic drift instead of exact center
           targetOpacity = Math.max(0, 1 - (dist / INTERACT_RADIUS));
-          // Provide slight random offset based on ID so they don't all stack exactly
-          const hoverTargetX = mouse.x + (Math.sin(p.id) * 30);
-          const hoverTargetY = mouse.y + (Math.cos(p.id) * 30);
+          // Provide organic offset so they orbit the mouse instead of stacking perfectly
+          const orbitX = mouse.x + Math.sin(p.id * 1.5) * 50;
+          const orbitY = mouse.y + Math.cos(p.id * 1.5) * 50;
           
-          p.vx += (hoverTargetX - p.x) * MOUSE_PULL;
-          p.vy += (hoverTargetY - p.y) * MOUSE_PULL;
+          p.vx += (orbitX - p.x) * MOUSE_PULL;
+          p.vy += (orbitY - p.y) * MOUSE_PULL;
         } else {
-          // Drift back to permanent anchor point slowly
           p.vx += (p.anchorX - p.x) * SPRING_COEF;
           p.vy += (p.anchorY - p.y) * SPRING_COEF;
         }
         
-        // Physics update
         p.vx *= FRICTION;
         p.vy *= FRICTION;
         p.x += p.vx;
         p.y += p.vy;
         
-        // Smoothly fade opacity in and out
-        p.opacity += (targetOpacity - p.opacity) * 0.1;
-        
-        // Write instantly to DOM without causing React state re-renders
-        if (p.ref) {
-          const transX = p.x - p.size / 2;
-          const transY = p.y - p.size / 2;
-          p.ref.style.transform = `translate3d(${transX}px, ${transY}px, 0)`;
-          p.ref.style.opacity = p.opacity.toFixed(3);
+        p.opacity += (targetOpacity - p.opacity) * 0.08;
+
+        if (p.opacity > 0.01) {
+          // Draw fluid particle
+          const radius = p.size;
+          const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
+          
+          // Aura Midnight styling: Electric Cerulean in light mode, primary baby blue in dark mode
+          const r = isDark ? 129 : 0;
+          const g = isDark ? 174 : 127;
+          const b = isDark ? 255 : 255;
+          
+          const maxAlpha = p.opacity;
+          
+          gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${maxAlpha * 0.8})`);
+          gradient.addColorStop(0.4, `rgba(${r}, ${g}, ${b}, ${maxAlpha * 0.4})`);
+          gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+          
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
         }
       }
-      
+
       animationId = requestAnimationFrame(step);
     };
-    
-    // Start loop
+
     animationId = requestAnimationFrame(step);
 
     return () => {
@@ -155,55 +168,12 @@ export function FluidBackground() {
       clearTimeout(resizeTimer);
       cancelAnimationFrame(animationId);
     };
-  }, [isInitialized]);
-
-  if (!isInitialized) return null;
+  }, []);
 
   return (
-    <>
-      <svg className="fixed top-0 left-0 w-0 h-0 pointer-events-none" aria-hidden="true">
-        <defs>
-          <filter id="gooey-morph">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  
-                      0 1 0 0 0  
-                      0 0 1 0 0  
-                      0 0 0 35 -15"
-              result="goo"
-            />
-            {/* Standard metaball composition */}
-            <feBlend in="SourceGraphic" in2="goo" />
-          </filter>
-        </defs>
-      </svg>
-      
-      <div 
-        ref={containerRef}
-        className="pointer-events-none fixed inset-0 z-[-1] overflow-hidden" 
-        style={{ filter: "url(#gooey-morph)" }}
-      >
-        {particlesRef.current.map((p) => (
-          <div
-            key={p.id}
-            ref={(el) => {
-              p.ref = el;
-            }}
-            className={cn(
-               "absolute top-0 left-0 rounded-full will-change-transform",
-               // The unified color matching the aura midnight theme reference (Electric Cerulean / Primary)
-               "bg-[#007FFF] dark:bg-[#81aeff]"
-            )}
-            style={{ 
-              width: `${p.size}px`, 
-              height: `${p.size}px`,
-              opacity: 0 // Physics loop overrides this immediately
-            }}
-          />
-        ))}
-      </div>
-    </>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-[-1]"
+    />
   );
 }
