@@ -9,7 +9,7 @@ interface DashboardSummaryProps {
 }
 
 export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: DashboardSummaryProps) {
-  const numberHoverStyles = "inline-block text-white tracking-tight [text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-center";
+  const numberHoverStyles = "inline-block text-gray-900 dark:text-white tracking-tight [text-shadow:0_0_15px_rgba(73,147,250,0.2)] dark:[text-shadow:0_0_20px_rgba(255,255,255,0.4)] transition-transform duration-300 hover:scale-[1.10] cursor-default origin-center";
   // Calculate total earned credits (only completed courses)
   const totalEarnedCredits = semesters.reduce((sum, semester) => {
     if (semester.planned === true) return sum;
@@ -53,11 +53,11 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
   return (
     <section className="px-12 max-lg:px-8 max-md:px-4 py-6 space-y-6">
       {/* Stats Bar */}
-      <div className="rounded-[2rem] bg-[#131a26] p-8 shadow-2xl border border-white/5">
+      <div className="rounded-[2rem] bg-white dark:bg-[#131a26] p-8 shadow-2xl border border-black/5 dark:border-white/5">
         <div className="grid grid-cols-4 max-lg:grid-cols-2 gap-8">
           {/* Earned Credits */}
           <div className="space-y-3">
-            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
+            <p className="text-sm text-primary dark:text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Earned Credits
             </p>
             <p className={`text-5xl font-extrabold ${numberHoverStyles}`}>{totalEarnedCredits}</p>
@@ -65,7 +65,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
 
           {/* Semesters */}
           <div className="space-y-3">
-            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
+            <p className="text-sm text-primary dark:text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Semesters
             </p>
             <p className={`text-5xl font-extrabold ${numberHoverStyles}`}>{semesterCount}</p>
@@ -73,17 +73,17 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
 
           {/* Updated Ago */}
           <div className="space-y-3">
-            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
+            <p className="text-sm text-primary dark:text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Last Update
             </p>
-            <p className="text-lg font-bold text-white mt-1 opacity-90">
+            <p className="text-lg font-bold text-gray-800 dark:text-white mt-1 opacity-90">
               {getUpdatedAgoText()}
             </p>
           </div>
 
           {/* Cumulative GPA */}
           <div className="space-y-3">
-            <p className="text-sm text-[#6891C3] font-bold uppercase tracking-[0.1em]">
+            <p className="text-sm text-primary dark:text-[#6891C3] font-bold uppercase tracking-[0.1em]">
               Cumulative GPA
             </p>
             <div className="flex flex-col items-start gap-2">
