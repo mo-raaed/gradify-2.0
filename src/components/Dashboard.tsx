@@ -178,7 +178,7 @@ export function Dashboard({
           <div className="flex gap-3 max-md:flex-col">
             <Button
               onClick={() => setIsAddSemesterOpen(true)}
-              className="h-10 px-4 max-md:w-full rounded-full bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20 hover:bg-[#4993FA] hover:text-[#131a26] transition-colors cursor-pointer"
+              className="h-10 px-4 max-md:w-full rounded-full bg-white text-primary border border-primary/20 hover:bg-primary/10 dark:bg-[#131a26] dark:text-[#4993FA] dark:border-[#4993FA]/20 dark:hover:bg-[#4993FA] dark:hover:text-[#131a26] transition-colors cursor-pointer"
             >
               <Plus className="h-4 w-4 mr-2" />
               <span className="text-sm font-medium">Add Semester</span>
@@ -232,7 +232,7 @@ export function Dashboard({
             <p className="text-muted-foreground mb-4">No semesters yet</p>
             <Button 
               onClick={() => setIsAddSemesterOpen(true)}
-              className="rounded-full bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20 hover:bg-[#4993FA] hover:text-[#131a26] transition-colors cursor-pointer"
+              className="rounded-full bg-white text-primary border border-primary/20 hover:bg-primary/10 dark:bg-[#131a26] dark:text-[#4993FA] dark:border-[#4993FA]/20 dark:hover:bg-[#4993FA] dark:hover:text-[#131a26] transition-colors cursor-pointer"
             >
               <Plus className="mr-2 h-4 w-4" />
               Add Semester
@@ -243,7 +243,7 @@ export function Dashboard({
 
       {/* Zone 4: GPA Trend Analysis */}
       <section className="px-12 max-lg:px-8 max-md:px-4 pb-12">
-        <div className="rounded-[2rem] bg-[#131a26] p-8 shadow-2xl border border-white/5 h-[400px] flex flex-col">
+        <div className="rounded-[2rem] bg-white dark:bg-[#131a26] p-8 shadow-2xl border border-black/5 dark:border-white/5 h-[400px] flex flex-col">
           <GpaTrendChart semesters={allSemesters} />
         </div>
       </section>
