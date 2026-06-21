@@ -74,6 +74,15 @@ export function shouldIncludeInGpa(grade: string): boolean {
 }
 
 /**
+ * Check if a grade is a passing grade (earns credits)
+ * Excludes F, W, WF, IP, and other non-passing grades
+ */
+export function isPassingGrade(grade: string): boolean {
+  const NON_PASSING_GRADES = new Set(["F", "W", "WF", "IP"]);
+  return !NON_PASSING_GRADES.has(grade);
+}
+
+/**
  * Get the grade type from a grade string
  */
 export function getGradeType(grade: string): Course["gradeType"] {
