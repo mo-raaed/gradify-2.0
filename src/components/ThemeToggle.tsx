@@ -31,9 +31,12 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     setTheme((current) => {
-      if (current === "light") return "dark";
-      if (current === "dark") return "system";
-      return "light";
+      // If current is system, evaluate what it currently looks like to toggle to the opposite
+      if (current === "system") {
+        const isDark = typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        return isDark ? "light" : "dark";
+      }
+      return current === "dark" ? "light" : "dark";
     });
   };
 
