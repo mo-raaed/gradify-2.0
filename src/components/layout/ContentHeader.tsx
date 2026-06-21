@@ -2,11 +2,15 @@ import { GlobalSearch } from "../search/GlobalSearch";
 import { useLayout } from "@/context/LayoutContext";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/clerk-react";
+import { useGuest } from "@/context/GuestContext";
 
 export function ContentHeader() {
   const { mobileSearchOpen } = useLayout();
+  const { isGuest } = useGuest();
   const { user } = useUser();
-  const displayName = user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Student";
+  const displayName = isGuest
+    ? "Guest"
+    : user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "Student";
 
   return (
     <>

@@ -12,6 +12,7 @@ interface AppShellProps {
   onGpaGoalClick: () => void;
   onUploadClick: () => void;
   onExportClick: () => void;
+  isGuest?: boolean;
 }
 
 export function AppShell({
@@ -22,6 +23,7 @@ export function AppShell({
   onGpaGoalClick,
   onUploadClick,
   onExportClick,
+  isGuest,
 }: AppShellProps) {
   return (
     <div className="min-h-screen">
@@ -32,6 +34,7 @@ export function AppShell({
         onGpaGoalClick={onGpaGoalClick}
         onUploadClick={onUploadClick}
         onExportClick={onExportClick}
+        isGuest={isGuest}
       />
 
       {/* Mobile Navigation - Header + Drawer */}
@@ -42,6 +45,7 @@ export function AppShell({
         onMajorUpdate={onMajorUpdate}
         onUploadClick={onUploadClick}
         onExportClick={onExportClick}
+        isGuest={isGuest}
       />
 
       {/* Mobile Bottom Tab Bar */}

@@ -7,24 +7,46 @@ import {
 import { useEffect, useState, useCallback } from "react";
 import { api } from "../convex/_generated/api";
 import { SignInButton, SignUpButton } from "@clerk/clerk-react";
-import { GraduationCap, FileText, BarChart3, Target } from "lucide-react";
+import { GraduationCap, FileText, BarChart3, Target, UserRound } from "lucide-react";
 import { Dashboard } from "@/components/Dashboard";
 import { AppShell } from "@/components/layout/AppShell";
 import { LayoutProvider } from "@/context/LayoutContext";
 import { FluidBackground } from "@/components/effects/FluidBackground";
 import { Button } from "@/components/ui/button";
+import { GuestProvider, useGuest } from "@/context/GuestContext";
 
 export default function App() {
   return (
-    <div className="min-h-screen relative z-0">
-      <FluidBackground />
+    <GuestProvider>
+      <div className="min-h-screen relative z-0">
+        <FluidBackground />
+        <AppContent />
+      </div>
+    </GuestProvider>
+  );
+}
+
+/**
+ * Routes between guest mode, authenticated, and unauthenticated states.
+ * Guest mode takes priority — if the user is in guest mode, show the
+ * dashboard regardless of Clerk auth state.
+ */
+function AppContent() {
+  const { isGuest } = useGuest();
+
+  if (isGuest) {
+    return <GuestContent />;
+  }
+
+  return (
+    <>
       <Authenticated>
         <AuthenticatedContent />
       </Authenticated>
       <Unauthenticated>
         <LandingPage />
       </Unauthenticated>
-    </div>
+    </>
   );
 }
 
@@ -83,7 +105,98 @@ function AuthenticatedContent() {
   );
 }
 
+/**
+ * Guest mode content — renders the same Dashboard + AppShell,
+ * but data comes from localStorage via GuestContext.
+ */
+function GuestContent() {
+  const guest = useGuest();
+  const [isGoalPlannerOpen, setIsGoalPlannerOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+
+  const handleMajorUpdate = (major: string) => {
+    guest.updateMajor(major);
+  };
+
+  const handleExport = useCallback(() => {
+    if (!guest.transcript) return;
+    const jsonString = JSON.stringify(guest.transcript, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "gradify-export.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [guest.transcript]);
+
+  return (
+    <LayoutProvider>
+      <AppShell
+        major={guest.transcript?.major}
+        cumulativeGPA={guest.transcript?.cumulativeGPA}
+        onMajorUpdate={handleMajorUpdate}
+        onGpaGoalClick={() => setIsGoalPlannerOpen(true)}
+        onUploadClick={() => setIsUploadOpen(true)}
+        onExportClick={handleExport}
+        isGuest
+      >
+        {/* Guest banner */}
+        <GuestBanner />
+        <Dashboard
+          isGoalPlannerOpen={isGoalPlannerOpen}
+          setIsGoalPlannerOpen={setIsGoalPlannerOpen}
+          isUploadOpen={isUploadOpen}
+          setIsUploadOpen={setIsUploadOpen}
+        />
+      </AppShell>
+    </LayoutProvider>
+  );
+}
+
+/**
+ * Persistent banner shown to guest users encouraging sign-up.
+ */
+function GuestBanner() {
+  const { exitGuestMode } = useGuest();
+  const [dismissed, setDismissed] = useState(false);
+
+  if (dismissed) return null;
+
+  return (
+    <div className="mx-12 max-lg:mx-8 max-md:mx-4 mb-4">
+      <div className="rounded-2xl bg-primary/10 border border-primary/20 px-5 py-3 flex items-center justify-between gap-4 max-md:flex-col max-md:items-start">
+        <div className="flex items-center gap-3 min-w-0">
+          <UserRound className="h-5 w-5 text-primary shrink-0" />
+          <p className="text-sm text-foreground">
+            <span className="font-semibold">Guest mode</span> — your data is stored locally in this browser.{" "}
+            <SignInButton mode="modal">
+              <button
+                className="text-primary hover:underline font-medium cursor-pointer"
+                onClick={() => exitGuestMode()}
+              >
+                Sign in
+              </button>
+            </SignInButton>{" "}
+            to save permanently.
+          </p>
+        </div>
+        <button
+          onClick={() => setDismissed(true)}
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function LandingPage() {
+  const { enterGuestMode } = useGuest();
+
   return (
     <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4">
       <div className="max-w-2xl mx-auto text-center">
@@ -139,18 +252,28 @@ function LandingPage() {
               Sign In
             </Button>
           </SignInButton>
-          <SignUpButton mode="modal">
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full sm:w-auto min-w-[160px]"
-            >
-              Create Account
-            </Button>
-          </SignUpButton>
+          <Button
+            variant="outline"
+            size="lg"
+            className="w-full sm:w-auto min-w-[160px]"
+            onClick={enterGuestMode}
+          >
+            <UserRound className="mr-2 h-4 w-4" />
+            Sign In as Guest
+          </Button>
         </div>
 
-        <p className="mt-8 text-xs text-muted-foreground">
+        {/* Sign-up text link */}
+        <p className="mt-5 text-sm text-muted-foreground">
+          Don't have an account?{" "}
+          <SignUpButton mode="modal">
+            <button className="text-primary hover:underline font-medium cursor-pointer">
+              Create one
+            </button>
+          </SignUpButton>
+        </p>
+
+        <p className="mt-6 text-xs text-muted-foreground">
           Built for AUIS students · Your data stays private
         </p>
       </div>
