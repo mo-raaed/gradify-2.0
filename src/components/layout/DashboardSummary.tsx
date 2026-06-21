@@ -1,6 +1,6 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
 
-import type { Semester } from "@/lib/gpaCalculator";
+import { isPassingGrade, type Semester } from "@/lib/gpaCalculator";
 
 interface DashboardSummaryProps {
   semesters: Semester[];
@@ -15,7 +15,9 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
     if (semester.planned === true) return sum;
     return (
       sum +
-      semester.courses.reduce((courseSum, course) => courseSum + course.credits, 0)
+      semester.courses.reduce((courseSum, course) => {
+        return isPassingGrade(course.grade) ? courseSum + course.credits : courseSum;
+      }, 0)
     );
   }, 0);
 

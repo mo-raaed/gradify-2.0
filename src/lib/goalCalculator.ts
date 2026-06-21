@@ -7,6 +7,7 @@ import {
   GRADE_POINTS,
   generateId,
   roundToTwoDecimals,
+  isPassingGrade,
   type Semester,
 } from "./gpaCalculator";
 
@@ -324,6 +325,7 @@ export function calculateCurrentStats(semesters: Semester[]): {
 } {
   let totalCredits = 0;
   let totalQualityPoints = 0;
+  let gpaCredits = 0;
   let inProgressCredits = 0;
 
   for (const semester of semesters) {
@@ -337,14 +339,19 @@ export function calculateCurrentStats(semesters: Semester[]): {
         continue;
       }
       
-      if (course.includeInGpa && !course.retaken) {
-        totalCredits += course.credits;
-        totalQualityPoints += course.credits * (GRADE_POINTS[course.grade] ?? 0);
+      if (!course.retaken) {
+        if (isPassingGrade(course.grade)) {
+          totalCredits += course.credits;
+        }
+        if (course.includeInGpa) {
+          totalQualityPoints += course.credits * (GRADE_POINTS[course.grade] ?? 0);
+          gpaCredits += course.credits;
+        }
       }
     }
   }
 
-  const currentGPA = totalCredits > 0 ? roundToTwoDecimals(totalQualityPoints / totalCredits) : 0;
+  const currentGPA = gpaCredits > 0 ? roundToTwoDecimals(totalQualityPoints / gpaCredits) : 0;
   const inProgressSemesters = findInProgressSemesters(semesters);
 
   return { totalCredits, totalQualityPoints, currentGPA, inProgressCredits, inProgressSemesters };
