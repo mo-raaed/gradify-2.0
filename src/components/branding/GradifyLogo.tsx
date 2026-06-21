@@ -60,7 +60,7 @@ export function GradifyLogo({
         aria-hidden
       >
         <GraduationCap
-          className={cn(s.icon, "text-primary-foreground dark:text-foreground")}
+          className={cn(s.icon, "text-primary-foreground")}
           strokeWidth={2}
         />
       </div>
@@ -70,7 +70,8 @@ export function GradifyLogo({
           <span
             className={cn(
               s.title,
-              "text-foreground tracking-tighter"
+              "text-foreground tracking-tighter",
+              "dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-primary dark:to-cyan-400"
             )}
           >
             Gradify
