@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss";
 
+/* Tell Tailwind v4 to use the .dark class for the dark: variant */
+@custom-variant dark (&:is(.dark *));
+
 /* Design System: Weightless Clarity (Light) / Arctic Lens (Dark) */
 @theme {
   /* Typography - Plus Jakarta Sans for everything */
