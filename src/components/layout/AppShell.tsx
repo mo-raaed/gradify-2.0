@@ -24,7 +24,7 @@ export function AppShell({
   onExportClick,
 }: AppShellProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Desktop/Tablet Sidebar */}
       <Sidebar
         major={major}

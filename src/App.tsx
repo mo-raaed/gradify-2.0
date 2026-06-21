@@ -8,14 +8,16 @@ import { useEffect, useState, useCallback } from "react";
 import { api } from "../convex/_generated/api";
 import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { GraduationCap, FileText, BarChart3, Target } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Dashboard } from "@/components/Dashboard";
 import { AppShell } from "@/components/layout/AppShell";
 import { LayoutProvider } from "@/context/LayoutContext";
+import { FluidBackground } from "@/components/effects/FluidBackground";
+import { Button } from "@/components/ui/button";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative z-0">
+      <FluidBackground />
       <Authenticated>
         <AuthenticatedContent />
       </Authenticated>

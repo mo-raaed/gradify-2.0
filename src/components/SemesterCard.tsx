@@ -51,7 +51,7 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
 
-  const actionBtnClass = "rounded-full bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20 hover:bg-[#4993FA] hover:text-[#131a26] transition-colors cursor-pointer flex items-center justify-center";
+  const actionBtnClass = "rounded-full bg-white text-primary border border-primary/20 hover:bg-primary/10 dark:bg-[#131a26] dark:text-[#4993FA] dark:border-[#4993FA]/20 dark:hover:bg-[#4993FA] dark:hover:text-[#131a26] transition-colors cursor-pointer flex items-center justify-center";
 
   // Check if this is a planned semester
   const isPlanned = semester.planned === true;

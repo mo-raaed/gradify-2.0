@@ -57,17 +57,18 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       className={cn(
         "inline-flex items-center justify-center w-9 h-9 rounded-full cursor-pointer",
-        "bg-[#131a26] text-[#4993FA] border border-[#4993FA]/20",
-        "hover:bg-[#4993FA] hover:text-[#131a26]",
+        "bg-white text-primary border border-primary/20 hover:bg-primary/10",
+        "dark:bg-[#131a26] dark:text-[#4993FA] dark:border-[#4993FA]/20",
+        "dark:hover:bg-[#4993FA] dark:hover:text-[#131a26]",
         "transition-all duration-200 hover:scale-105 active:scale-95",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
       )}
       title={`Current: ${theme}. Click to toggle.`}
     >
       {effectiveTheme === "dark" ? (
-        <Moon className="h-4 w-4 text-foreground" />
+        <Moon className="h-4 w-4" />
       ) : (
-        <Sun className="h-4 w-4 text-foreground" />
+        <Sun className="h-4 w-4" />
       )}
     </button>
   );
