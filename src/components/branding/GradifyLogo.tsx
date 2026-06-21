@@ -53,14 +53,14 @@ export function GradifyLogo({
       <div
         className={cn(
           "rounded-full shrink-0 flex items-center justify-center",
-          "bg-gradient-to-br from-sky-300 via-sky-500 to-blue-700",
-          "shadow-sm shadow-blue-900/20",
+          "bg-gradient-to-br from-primary to-primary-container",
+          "shadow-sm shadow-primary/20",
           s.circle
         )}
         aria-hidden
       >
         <GraduationCap
-          className={cn(s.icon, "text-[#0a1628] dark:text-[#0c1929]")}
+          className={cn(s.icon, "text-primary-foreground dark:text-foreground")}
           strokeWidth={2}
         />
       </div>
@@ -70,7 +70,7 @@ export function GradifyLogo({
           <span
             className={cn(
               s.title,
-              "text-[#4993FA]"
+              "text-foreground tracking-tighter"
             )}
           >
             Gradify
@@ -78,7 +78,7 @@ export function GradifyLogo({
           <span
             className={cn(
               s.tagline,
-              "text-slate-500 dark:text-slate-400"
+              "text-muted-foreground"
             )}
           >
             AUIS GPA Calculator
