@@ -45,7 +45,7 @@ export function SidebarNav({ onGpaGoalClick, onUploadClick, onExportClick }: Sid
         }}
         className={cn(
           "w-full flex items-center gap-3 px-3 py-3 rounded-full",
-          "bg-gradient-to-r from-primary to-[var(--color-primary-container)]",
+          "bg-gradient-to-r from-primary to-primary-container dark:to-accent",
           "text-primary-foreground font-semibold",
           "transition-all duration-300",
           "hover:shadow-[0_0_20px_rgba(129,174,255,0.4)]",
