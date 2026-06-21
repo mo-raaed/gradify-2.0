@@ -9,9 +9,10 @@ interface SidebarProps {
   onGpaGoalClick: () => void;
   onUploadClick: () => void;
   onExportClick: () => void;
+  isGuest?: boolean;
 }
 
-export function Sidebar({ major, onMajorUpdate, onGpaGoalClick, onUploadClick, onExportClick }: SidebarProps) {
+export function Sidebar({ major, onMajorUpdate, onGpaGoalClick, onUploadClick, onExportClick, isGuest }: SidebarProps) {
   return (
     <aside
       className={cn(
@@ -46,7 +47,7 @@ export function Sidebar({ major, onMajorUpdate, onGpaGoalClick, onUploadClick, o
 
       {/* Bottom: Footer */}
       <div className="shrink-0 p-4 border-t border-border/5">
-        <SidebarFooter major={major} onMajorUpdate={onMajorUpdate} />
+        <SidebarFooter major={major} onMajorUpdate={onMajorUpdate} isGuest={isGuest} />
       </div>
     </aside>
   );

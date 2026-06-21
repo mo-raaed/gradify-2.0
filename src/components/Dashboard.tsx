@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import {
   Plus,
   RotateCcw,
@@ -18,6 +16,7 @@ import { DashboardSummary } from "./layout/DashboardSummary";
 import { GpaTrendChart } from "./charts/GpaTrendChart";
 import { useLayout } from "@/context/LayoutContext";
 import { useSearch } from "@/hooks/useSearch";
+import { useTranscriptData } from "@/hooks/useTranscriptData";
 import type { TranscriptData, Semester } from "@/lib/gpaCalculator";
 
 // Stable empty array to avoid new reference on every render
@@ -38,15 +37,9 @@ export function Dashboard({
 }: DashboardProps) {
   const [isAddSemesterOpen, setIsAddSemesterOpen] = useState(false);
 
-  // Convex queries and mutations
-  const transcript = useQuery(api.transcripts.getMyTranscript);
-  const saveTranscript = useMutation(api.transcripts.saveTranscript);
-  const updateCourse = useMutation(api.transcripts.updateCourse);
-  const addSemester = useMutation(api.transcripts.addSemester);
-  const removeSemester = useMutation(api.transcripts.removeSemester);
-  const addCourse = useMutation(api.transcripts.addCourse);
-  const removeCourse = useMutation(api.transcripts.removeCourse);
-  const deleteTranscript = useMutation(api.transcripts.deleteTranscript);
+  // Unified data layer — works for both authenticated and guest users
+  const data = useTranscriptData();
+  const transcript = data.transcript;
 
   // Layout context
   const {
@@ -71,17 +64,17 @@ export function Dashboard({
   }
 
   // Handle PDF transcript parsed
-  const handleTranscriptParsed = async (data: TranscriptData) => {
-    await saveTranscript({
-      semesters: data.semesters,
-      cumulativeGPA: data.cumulativeGPA,
-      major: data.major,
+  const handleTranscriptParsed = async (parsedData: TranscriptData) => {
+    await data.saveTranscript({
+      semesters: parsedData.semesters,
+      cumulativeGPA: parsedData.cumulativeGPA,
+      major: parsedData.major,
     });
   };
 
   // Handle add semester
   const handleAddSemester = async (name: string) => {
-    await addSemester({ name });
+    await data.addSemester(name);
   };
 
   // Handle reset - deletes entire transcript and returns to welcome screen
@@ -91,7 +84,7 @@ export function Dashboard({
       "Are you sure you want to reset? This will delete all your transcript data and return to the welcome screen."
     );
     if (!confirmed) return;
-    await deleteTranscript();
+    await data.deleteTranscript();
   };
 
   // Empty state - no transcript yet
@@ -203,25 +196,15 @@ export function Dashboard({
             ref={(element) => registerSemesterRef(semester.id, element)}
             semester={semester}
             onUpdateCourse={(courseId, updates) =>
-              updateCourse({
-                semesterId: semester.id,
-                courseId,
-                updates,
-              })
+              data.updateCourse(semester.id, courseId, updates)
             }
             onAddCourse={(course) =>
-              addCourse({
-                semesterId: semester.id,
-                ...course,
-              })
+              data.addCourse(semester.id, course)
             }
             onRemoveCourse={(courseId) =>
-              removeCourse({
-                semesterId: semester.id,
-                courseId,
-              })
+              data.removeCourse(semester.id, courseId)
             }
-            onRemoveSemester={() => removeSemester({ semesterId: semester.id })}
+            onRemoveSemester={() => data.removeSemester(semester.id)}
             highlighted={highlightedSemesters.has(semester.id)}
             highlightedCourseIds={highlightedCourses}
           />

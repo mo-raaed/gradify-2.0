@@ -1,4 +1,4 @@
-import { Menu, GraduationCap, X, Download } from "lucide-react";
+import { Menu, GraduationCap, X, Download, UserRound } from "lucide-react";
 import { useLayout } from "@/context/LayoutContext";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -15,12 +15,15 @@ interface MobileNavProps {
   onMajorUpdate: (major: string) => void;
   onUploadClick: () => void;
   onExportClick: () => void;
+  isGuest?: boolean;
 }
 
-export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }: MobileNavProps) {
+export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick, isGuest = false }: MobileNavProps) {
   const { mobileNavOpen, setMobileNavOpen } = useLayout();
   const { user } = useUser();
-  const displayName = user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "";
+  const displayName = isGuest
+    ? "Guest"
+    : user?.firstName || user?.username || user?.emailAddresses?.[0]?.emailAddress?.split("@")[0] || "";
 
   return (
     <>
@@ -112,13 +115,19 @@ export function MobileNav({ cumulativeGPA, major, onMajorUpdate, onExportClick }
               <div className="flex items-center justify-between gap-2">
                 <ThemeToggle />
                 <div className="flex items-center gap-2">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        avatarBox: "h-8 w-8",
-                      },
-                    }}
-                  />
+                  {isGuest ? (
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                      <UserRound className="h-4 w-4 text-primary" />
+                    </div>
+                  ) : (
+                    <UserButton
+                      appearance={{
+                        elements: {
+                          avatarBox: "h-8 w-8",
+                        },
+                      }}
+                    />
+                  )}
                   <span className="text-xs font-medium text-muted-foreground truncate max-w-[100px]">
                     {displayName}
                   </span>
