@@ -4,20 +4,20 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] cursor-pointer",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] cursor-pointer",
   {
     variants: {
       variant: {
         default:
-          "bg-gradient-to-br from-primary to-primary-container dark:to-accent text-primary-foreground hover:brightness-110 dark:hover:shadow-[0_0_15px_rgba(129,174,255,0.4)] border-none",
+          "bg-primary-solid text-white hover:brightness-110 shadow-card border-none",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border-[1.5px] border-[var(--color-outline-variant)]/15 bg-transparent text-primary hover:bg-secondary/50",
+          "border border-border bg-transparent text-primary hover:bg-surface-2",
         secondary:
-          "bg-secondary text-foreground hover:bg-muted dark:bg-transparent dark:border-[1.5px] dark:border-[var(--color-outline-variant)]/15 dark:text-primary dark:hover:bg-[var(--color-surface-variant)]/30",
+          "bg-surface-2 text-foreground hover:bg-surface-3",
         ghost:
-          "hover:bg-secondary text-foreground dark:hover:bg-[var(--color-surface-variant)]/30",
+          "hover:bg-surface-2 text-foreground",
         link:
           "text-primary underline-offset-4 hover:underline",
       },
