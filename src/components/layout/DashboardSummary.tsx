@@ -55,7 +55,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
   return (
     <section className="px-12 max-lg:px-8 max-md:px-4 py-6 space-y-6">
       {/* Stats Bar */}
-      <div className="rounded-[2rem] bg-card p-8 shadow-2xl border border-border">
+      <div className="rounded-lg bg-card p-8 shadow-2xl border border-border">
         <div className="grid grid-cols-4 max-lg:grid-cols-2 gap-8">
           {/* Earned Credits */}
           <div className="space-y-3">
@@ -94,7 +94,7 @@ export function DashboardSummary({ semesters, cumulativeGPA, updatedAt }: Dashbo
                 <span
                   className={`flex items-center gap-1.5 text-sm font-bold ${
                     gpaChange > 0
-                      ? "text-[#9EEBDB]"
+                      ? "text-primary"
                       : "text-red-400"
                   }`}
                 >

@@ -45,7 +45,7 @@ export function SidebarNav({ onGpaGoalClick, onUploadClick, onExportClick }: Sid
         }}
         className={cn(
           "w-full flex items-center gap-3 px-3 py-3 rounded-full",
-          "bg-gradient-to-r from-primary to-primary-container dark:to-accent",
+          "bg-primary-solid",
           "text-primary-foreground font-semibold",
           "transition-all duration-300",
           "hover:shadow-[0_0_20px_rgba(129,174,255,0.4)]",
@@ -64,11 +64,11 @@ export function SidebarNav({ onGpaGoalClick, onUploadClick, onExportClick }: Sid
         }}
         className={cn(
           "w-full flex items-center gap-3 px-3 py-2.5 rounded-full",
-          "bg-gradient-to-r from-amber-500/15 to-orange-500/15 dark:from-amber-500/20 dark:to-orange-500/20",
-          "text-amber-900 dark:text-amber-400 font-semibold",
+          "bg-brand/10",
+          "text-brand font-semibold",
           "transition-all duration-300",
-          "hover:from-amber-500/25 hover:to-orange-500/25 dark:hover:from-amber-500/30 dark:hover:to-orange-500/30",
-          "hover:shadow-[0_0_15px_rgba(245,158,11,0.15)] dark:hover:shadow-[0_0_15px_rgba(245,158,11,0.25)]"
+          "hover:bg-brand/15",
+          "hover:shadow-card"
         )}
       >
         <Target className="h-5 w-5 shrink-0" />

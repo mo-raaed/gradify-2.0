@@ -54,10 +54,10 @@ export function GpaTrendChart({ semesters }: GpaTrendChartProps) {
 
   // Color scheme
   const colors = {
-    cumulative: isDark ? "#81aeff" : "#056380",
-    semester: isDark ? "#8fd5f7" : "#8fd5f7",
-    grid: isDark ? "rgba(67, 72, 79, 0.2)" : "rgba(136, 179, 206, 0.2)",
-    text: isDark ? "#a7abb4" : "#356079",
+    cumulative: isDark ? "#8F97EC" : "#252D6B",
+    semester: isDark ? "#D68A9C" : "#7D1F34",
+    grid: isDark ? "rgba(236, 233, 240, 0.12)" : "rgba(19, 28, 48, 0.12)",
+    text: isDark ? "#A9A6BC" : "#545C6E",
   };
 
   // Abbreviate semester names for chart (e.g., "2024/25 Fall" → "F24")
@@ -96,12 +96,12 @@ export function GpaTrendChart({ semesters }: GpaTrendChartProps) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: isDark ? "#1a2028" : "#ffffff",
+              backgroundColor: isDark ? "#141830" : "#FFFFFF",
               border: isDark ? "1px solid rgba(67, 72, 79, 0.15)" : "1px solid rgba(136, 179, 206, 0.15)",
               borderRadius: "12px",
               fontSize: "12px",
             }}
-            labelStyle={{ color: isDark ? "#e1e5ee" : "#003348", fontWeight: 500 }}
+            labelStyle={{ color: isDark ? "#ECE9F0" : "#131C30", fontWeight: 500 }}
           />
           <Legend
             wrapperStyle={{ fontSize: "12px" }}

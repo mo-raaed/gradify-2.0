@@ -195,7 +195,7 @@ export function GpaGoalPlanner({
         {step === "settings" && (
           <div className="space-y-6">
             {/* Current Status */}
-            <div className="p-6 rounded-[2rem] bg-secondary space-y-2">
+            <div className="p-6 rounded-lg bg-secondary space-y-2">
               <h3 className="font-medium flex items-center gap-2">
                 <Info className="h-4 w-4" />
                 Current Status
@@ -213,13 +213,13 @@ export function GpaGoalPlanner({
                   <>
                     <div>
                       <span className="text-muted-foreground">In-Progress Credits:</span>{" "}
-                      <span className="font-semibold text-amber-600">
+                      <span className="font-semibold text-brand">
                         {currentStats.inProgressCredits}
                       </span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">IP Semesters:</span>{" "}
-                      <span className="font-semibold text-amber-600">
+                      <span className="font-semibold text-brand">
                         {currentStats.inProgressSemesters.length}
                       </span>
                     </div>
@@ -227,7 +227,7 @@ export function GpaGoalPlanner({
                 )}
               </div>
               {currentStats.inProgressCredits > 0 && (
-                <p className="text-xs text-amber-600 mt-2">
+                <p className="text-xs text-brand mt-2">
                   Your in-progress courses will be included in the plan with suggested grades.
                 </p>
               )}
@@ -425,9 +425,9 @@ export function GpaGoalPlanner({
                   <button
                     type="button"
                     onClick={() => setPlanningMode("breakdown")}
-                    className={`p-4 rounded-[2rem] text-left transition-all hover:scale-[1.02] ${
+                    className={`p-4 rounded-lg text-left transition-all hover:scale-[1.02] ${
                       planningMode === "breakdown"
-                        ? "bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20"
+                        ? "bg-primary/10"
                         : "bg-secondary hover:bg-muted"
                     }`}
                   >
@@ -439,9 +439,9 @@ export function GpaGoalPlanner({
                   <button
                     type="button"
                     onClick={() => setPlanningMode("interactive")}
-                    className={`p-4 rounded-[2rem] text-left transition-all hover:scale-[1.02] ${
+                    className={`p-4 rounded-lg text-left transition-all hover:scale-[1.02] ${
                       planningMode === "interactive"
-                        ? "bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20"
+                        ? "bg-primary/10"
                         : "bg-secondary hover:bg-muted"
                     }`}
                   >
@@ -472,17 +472,17 @@ export function GpaGoalPlanner({
           <div className="space-y-6">
             {/* Feasibility Status */}
             <div
-              className={`p-4 rounded-[2rem] ${
+              className={`p-4 rounded-lg ${
                 pathway.feasibility.isAchievable
                   ? "bg-green-500/10"
-                  : "bg-amber-500/10"
+                  : "bg-brand/10"
               }`}
             >
               <div className="flex items-start gap-3">
                 {pathway.feasibility.isAchievable ? (
                   <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
                 ) : (
-                  <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />
+                  <AlertTriangle className="h-5 w-5 text-brand mt-0.5" />
                 )}
                 <div>
                   <h3 className="font-medium">

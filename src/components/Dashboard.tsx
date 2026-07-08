@@ -226,7 +226,7 @@ export function Dashboard({
 
       {/* Zone 4: GPA Trend Analysis */}
       <section className="px-12 max-lg:px-8 max-md:px-4 pb-12">
-        <div className="rounded-[2rem] bg-card p-8 shadow-2xl border border-border h-[400px] flex flex-col">
+        <div className="rounded-lg bg-card p-8 shadow-2xl border border-border h-[400px] flex flex-col">
           <GpaTrendChart semesters={allSemesters} />
         </div>
       </section>

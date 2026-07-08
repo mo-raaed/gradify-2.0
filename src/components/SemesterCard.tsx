@@ -51,7 +51,7 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAddCourseOpen, setIsAddCourseOpen] = useState(false);
 
-  const actionBtnClass = "rounded-full bg-white text-primary border border-primary/20 hover:bg-primary/10 dark:bg-[#131a26] dark:text-[#4993FA] dark:border-[#4993FA]/20 dark:hover:bg-[#4993FA] dark:hover:text-[#131a26] transition-colors cursor-pointer flex items-center justify-center";
+  const actionBtnClass = "rounded-full bg-surface text-primary border border-border hover:bg-surface-2 transition-colors cursor-pointer flex items-center justify-center";
 
   // Check if this is a planned semester
   const isPlanned = semester.planned === true;
@@ -65,7 +65,7 @@ export const SemesterCard = forwardRef<HTMLDivElement, SemesterCardProps>(
       ref={ref}
       id={`semester-${semester.id}`}
       className={cn(
-        "rounded-[2rem] overflow-hidden transition-all duration-300 hover:scale-[1.01] max-md:hover:scale-100",
+        "rounded-lg overflow-hidden transition-all duration-300 hover:scale-[1.01] max-md:hover:scale-100",
         isPlanned
           ? "bg-primary/5"
           : "bg-card shadow-tonal dark:shadow-ambient",

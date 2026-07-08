@@ -53,8 +53,8 @@ export function GradifyLogo({
       <div
         className={cn(
           "rounded-full shrink-0 flex items-center justify-center",
-          "bg-gradient-to-br from-primary to-primary-container dark:from-[#007FFF] dark:to-[#8fd5f7]",
-          "shadow-sm shadow-primary/20 dark:shadow-[#007FFF]/20",
+          "bg-primary-solid",
+          "shadow-card",
           s.circle
         )}
         aria-hidden
@@ -70,8 +70,7 @@ export function GradifyLogo({
           <span
             className={cn(
               s.title,
-              "text-foreground tracking-tighter",
-              "dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-[#007FFF] dark:to-[#8fd5f7]"
+              "font-display text-foreground tracking-tight"
             )}
           >
             Gradify

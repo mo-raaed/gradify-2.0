@@ -45,17 +45,17 @@ export function PathwayDisplay({
     <div className="space-y-4">
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
-          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Semesters Needed</p>
+        <div className="p-4 rounded-lg bg-surface-2 border border-border text-center">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.1em] mb-2">Semesters Needed</p>
           <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{pathway.semesters.length}</p>
         </div>
-        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
-          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">New Credits</p>
+        <div className="p-4 rounded-lg bg-surface-2 border border-border text-center">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.1em] mb-2">New Credits</p>
           <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{pathway.totalNewCredits}</p>
         </div>
-        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
-          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Projected GPA</p>
-          <p className={`text-3xl font-extrabold text-[#9EEBDB] ${numberHoverStyles}`}>
+        <div className="p-4 rounded-lg bg-surface-2 border border-border text-center">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.1em] mb-2">Projected GPA</p>
+          <p className={`text-3xl font-extrabold text-primary ${numberHoverStyles}`}>
             {pathway.finalProjectedGPA.toFixed(2)}
           </p>
         </div>
@@ -63,7 +63,7 @@ export function PathwayDisplay({
 
       {/* Winter/Summer Recommendation */}
       {pathway.winterSummerRecommended && (
-        <div className="flex items-start gap-2 p-4 rounded-[2rem] bg-blue-500/10">
+        <div className="flex items-start gap-2 p-4 rounded-lg bg-blue-500/10">
           <Lightbulb className="h-4 w-4 text-blue-600 mt-0.5" />
           <p className="text-sm text-blue-800">
             Consider taking winter or summer courses to reach your goal faster or
@@ -77,19 +77,19 @@ export function PathwayDisplay({
         {pathway.semesters.map((semester) => (
           <div
             key={semester.id}
-            className={`p-4 rounded-[2rem] ${
+            className={`p-4 rounded-lg ${
               semester.isExisting
-                ? "bg-amber-500/10"
+                ? "bg-brand/10"
                 : "bg-secondary"
             }`}
           >
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
-                <BookOpen className={`h-4 w-4 ${semester.isExisting ? "text-amber-600" : "text-primary"}`} />
+                <BookOpen className={`h-4 w-4 ${semester.isExisting ? "text-brand" : "text-primary"}`} />
                 <span className="font-medium">{semester.name}</span>
                 <span className={`px-2 py-0.5 rounded-full text-xs ${
                   semester.isExisting
-                    ? "bg-amber-500/20 text-amber-700"
+                    ? "bg-brand/15 text-brand"
                     : "bg-primary/10 text-primary"
                 }`}>
                   {semester.isExisting ? "Current (IP)" : "Planned"}

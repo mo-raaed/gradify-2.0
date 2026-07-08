@@ -196,7 +196,7 @@ export function InteractivePlanner({
   return (
     <div className="space-y-4">
       {/* Effort Slider */}
-      <div className="p-4 rounded-[2rem] bg-secondary space-y-3">
+      <div className="p-4 rounded-lg bg-secondary space-y-3">
         <div className="flex items-center justify-between">
           <Label className="flex items-center gap-2">
             <Gauge className="h-4 w-4" />
@@ -220,20 +220,20 @@ export function InteractivePlanner({
 
       {/* Summary Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
-          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Semesters</p>
+        <div className="p-4 rounded-lg bg-surface-2 border border-border text-center">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.1em] mb-2">Semesters</p>
           <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{semesters.length}</p>
         </div>
-        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
-          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">New Credits</p>
+        <div className="p-4 rounded-lg bg-surface-2 border border-border text-center">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.1em] mb-2">New Credits</p>
           <p className={`text-3xl font-extrabold ${numberHoverStyles}`}>{totals.totalNewCredits}</p>
         </div>
-        <div className="p-4 rounded-[2rem] bg-[#131a26] border border-white/5 text-center">
-          <p className="text-xs text-[#6891C3] font-bold uppercase tracking-[0.1em] mb-2">Projected GPA</p>
+        <div className="p-4 rounded-lg bg-surface-2 border border-border text-center">
+          <p className="text-xs text-muted-foreground font-bold uppercase tracking-[0.1em] mb-2">Projected GPA</p>
           <p
             className={`text-3xl font-extrabold ${numberHoverStyles} ${
               totals.finalProjectedGPA >= targetGPA
-                ? "text-[#9EEBDB]"
+                ? "text-primary"
                 : "text-red-400 opacity-90"
             }`}
           >
@@ -244,9 +244,9 @@ export function InteractivePlanner({
 
       {/* Goal Status */}
       {totals.finalProjectedGPA < targetGPA && (
-        <div className="flex items-start gap-2 p-4 rounded-[2rem] bg-amber-500/10">
-          <Lightbulb className="h-4 w-4 text-amber-600 mt-0.5" />
-          <p className="text-sm text-amber-800">
+        <div className="flex items-start gap-2 p-4 rounded-lg bg-brand/10">
+          <Lightbulb className="h-4 w-4 text-brand mt-0.5" />
+          <p className="text-sm text-foreground/80">
             Your current plan projects to{" "}
             <strong>{totals.finalProjectedGPA.toFixed(2)}</strong>, which is below
             your target of <strong>{targetGPA.toFixed(2)}</strong>. Try increasing
@@ -260,19 +260,19 @@ export function InteractivePlanner({
         {semesters.map((semester, semIndex) => (
           <div
             key={semester.id}
-            className={`p-4 rounded-[2rem] ${
+            className={`p-4 rounded-lg ${
               semester.isExisting
-                ? "bg-amber-500/10"
+                ? "bg-brand/10"
                 : "bg-secondary"
             }`}
           >
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div className="flex items-center gap-2">
-                <BookOpen className={`h-4 w-4 ${semester.isExisting ? "text-amber-600" : "text-primary"}`} />
+                <BookOpen className={`h-4 w-4 ${semester.isExisting ? "text-brand" : "text-primary"}`} />
                 <span className="font-medium">{semester.name}</span>
                 <span className={`px-2 py-0.5 rounded-full text-xs ${
                   semester.isExisting
-                    ? "bg-amber-500/20 text-amber-700"
+                    ? "bg-brand/15 text-brand"
                     : "bg-primary/10 text-primary"
                 }`}>
                   {semester.isExisting ? "Current (IP)" : "Planned"}

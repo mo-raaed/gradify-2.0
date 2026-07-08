@@ -34,7 +34,7 @@ export function GpaDisplay({
   return (
     <div
       className={cn(
-        "rounded-[2rem] text-center transition-all duration-300",
+        "rounded-lg text-center transition-all duration-300",
         containerSizes[size],
         variant === "primary"
           ? "bg-gradient-to-br from-primary/20 to-[var(--color-primary-container)]/20"

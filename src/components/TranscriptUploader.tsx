@@ -105,7 +105,7 @@ export function TranscriptUploader({
             onDrop={handleDrop}
             onClick={() => document.getElementById("file-upload")?.click()}
             className={cn(
-              "relative cursor-pointer rounded-[2rem] p-8 text-center transition-all duration-200 hover:scale-[1.02]",
+              "relative cursor-pointer rounded-lg p-8 text-center transition-all duration-200 hover:scale-[1.02]",
               isDragging
                 ? "bg-primary/10"
                 : "bg-secondary hover:bg-muted",
