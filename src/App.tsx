@@ -8,21 +8,24 @@ import { useEffect, useState, useCallback } from "react";
 import { api } from "../convex/_generated/api";
 import { SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { GraduationCap, FileText, BarChart3, Target, UserRound } from "lucide-react";
+import { LazyMotion, MotionConfig } from "motion/react";
 import { Dashboard } from "@/components/Dashboard";
 import { AppShell } from "@/components/layout/AppShell";
 import { LayoutProvider } from "@/context/LayoutContext";
-import { FluidBackground } from "@/components/effects/FluidBackground";
 import { Button } from "@/components/ui/button";
 import { GuestProvider, useGuest } from "@/context/GuestContext";
 
 export default function App() {
   return (
-    <GuestProvider>
-      <div className="min-h-screen relative z-0">
-        <FluidBackground />
-        <AppContent />
-      </div>
-    </GuestProvider>
+    <LazyMotion features={() => import("./motionFeatures").then(m => m.default)} strict>
+      <MotionConfig reducedMotion="user">
+        <GuestProvider>
+          <div className="min-h-screen relative z-0">
+            <AppContent />
+          </div>
+        </GuestProvider>
+      </MotionConfig>
+    </LazyMotion>
   );
 }
 

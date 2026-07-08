@@ -2,77 +2,58 @@ import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Theme = "light" | "dark" | "system";
+type Theme = "light" | "dark";
 
+/**
+ * Theme state with system-preference follow.
+ *
+ * Only an explicit user toggle writes to localStorage — the class-swap
+ * effect never does. This keeps the `prefers-color-scheme` change
+ * listener live for visitors who never picked a theme manually.
+ * The FOUC script in index.html resolves the pre-paint class the same way.
+ */
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== "undefined") {
-      return (localStorage.getItem("theme") as Theme) || "system";
-    }
-    return "system";
+    const saved = localStorage.getItem("theme");
+    if (saved === "light" || saved === "dark") return saved;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   });
 
   useEffect(() => {
     const root = document.documentElement;
-
-    if (theme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-    } else if (theme === "light") {
-      root.classList.add("light");
-      root.classList.remove("dark");
-    } else {
-      // System preference
-      root.classList.remove("light", "dark");
-    }
-
-    localStorage.setItem("theme", theme);
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme((current) => {
-      // If current is system, evaluate what it currently looks like to toggle to the opposite
-      if (current === "system") {
-        const isDark = typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
-        return isDark ? "light" : "dark";
-      }
-      return current === "dark" ? "light" : "dark";
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => {
+      const saved = localStorage.getItem("theme");
+      if (saved !== "light" && saved !== "dark") setTheme(e.matches ? "dark" : "light");
+    };
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const toggleTheme = () =>
+    setTheme((prev) => {
+      const next: Theme = prev === "light" ? "dark" : "light";
+      localStorage.setItem("theme", next);
+      return next;
     });
-  };
-
-  // Get effective theme for icon display
-  const getEffectiveTheme = () => {
-    if (theme === "system") {
-      if (typeof window !== "undefined") {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      }
-      return "light";
-    }
-    return theme;
-  };
-
-  const effectiveTheme = getEffectiveTheme();
 
   return (
     <button
       onClick={toggleTheme}
       className={cn(
         "inline-flex items-center justify-center w-9 h-9 rounded-full cursor-pointer",
-        "bg-white text-primary border border-primary/20 hover:bg-primary/10",
-        "dark:bg-[#131a26] dark:text-[#4993FA] dark:border-[#4993FA]/20",
-        "dark:hover:bg-[#4993FA] dark:hover:text-[#131a26]",
+        "bg-surface text-primary border border-border hover:bg-surface-2",
         "transition-all duration-200 hover:scale-105 active:scale-95",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"
       )}
       title={`Current: ${theme}. Click to toggle.`}
     >
-      {effectiveTheme === "dark" ? (
-        <Moon className="h-4 w-4" />
-      ) : (
-        <Sun className="h-4 w-4" />
-      )}
+      {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
     </button>
   );
 }

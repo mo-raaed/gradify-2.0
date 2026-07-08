@@ -4,8 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/gradify-cap.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F8F6F3" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0E1C" />
     <link rel="stylesheet" href="/src/index.css" />
     <title>Gradify GPA Calculator</title>
+
+    <!-- Prevent FOUC: always resolve and apply a theme class before first
+         paint (saved choice, else system preference). The Heritage tokens
+         rely on this — there are no prefers-color-scheme CSS fallbacks. -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme');
+        var theme =
+          saved === 'light' || saved === 'dark'
+            ? saved
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.classList.add(theme);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
