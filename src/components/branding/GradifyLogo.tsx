@@ -70,7 +70,7 @@ export function GradifyLogo({
           <span
             className={cn(
               s.title,
-              "font-display text-foreground tracking-tight"
+              "font-display text-brand tracking-tight"
             )}
           >
             Gradify
